@@ -1,0 +1,6 @@
+AuthType Basic
+AuthName "yalapeo"
+AuthUserFile /home/admin/web/yala.peo.go.th/public_html/pictures/.htpasswd
+require valid-user
+
+Options +Indexes

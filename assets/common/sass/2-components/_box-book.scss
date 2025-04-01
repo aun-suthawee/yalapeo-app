@@ -1,0 +1,33 @@
+.box-book {
+  position: relative;
+  display: block;
+  padding: 1rem;
+  margin-bottom: 2rem;
+  transition: all .2s ease, visibility 0s;
+  border: 1px solid rgba(5, 114, 203, 0);
+  box-shadow: 3.54px 3.54px 4px -5px #000;
+  //  background: rgba(248, 246, 231, 0.45);
+  background-color: #efeeee;
+  text-decoration: none !important;
+
+  &:hover {
+    background: #f5313f;
+
+    .book-title {
+      color: white !important;
+    }
+  }
+
+  a {
+    text-decoration: none;
+    color: #333;
+
+    &:hover {
+      color: black;
+    }
+  }
+
+  .book-logo {
+    margin: 0 auto;
+  }
+}

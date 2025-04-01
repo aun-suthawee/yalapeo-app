@@ -1,0 +1,117 @@
+$white: #fff !default;
+$gray-100: #f6f6f6 !default;
+$gray-200: #f0f0f0 !default;
+$gray-300: #dee2e6 !default;
+$gray-400: #ced4da !default;
+$gray-500: #adb5bd !default;
+$gray-600: #999 !default;
+$gray-700: #555 !default;
+$gray-800: #333 !default;
+$gray-900: #222 !default;
+$black: #000 !default;
+
+$blue: #158CBA !default;
+$indigo: #6610f2 !default;
+$purple: #6f42c1 !default;
+$pink: #e83e8c !default;
+$red: #FF4136 !default;
+$orange: #fd7e14 !default;
+$yellow: #FF851B !default;
+$green: #28B62C !default;
+$teal: #20c997 !default;
+$cyan: #75CAEB !default;
+
+$primary: $blue !default;
+$secondary: $gray-200 !default;
+$success: $green !default;
+$info: $cyan !default;
+$warning: $yellow !default;
+$danger: $red !default;
+$light: $gray-100 !default;
+$dark: $gray-700 !default;
+
+$yiq-contrasted-threshold: 200 !default;
+
+@mixin shadow($width: 4px) {
+    border-style: solid;
+    border-width: 0 1px $width 1px;
+}
+
+.btn {
+    @include shadow();
+    text-transform: uppercase;
+
+    &:not(.disabled):hover {
+        margin-top: 1px;
+        border-bottom-width: 3px;
+    }
+
+    &:not(.disabled):active {
+        margin-top: 2px;
+        border-bottom-width: 2px;
+    }
+}
+
+.bgded {
+    background-image: url(../../../assets/common/images/demo/backgrounds/01.png);
+}
+
+.well {
+    border: 1px solid $gray-200;
+    box-shadow: inset 0 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.alert {
+    color: $white;
+    @include shadow();
+
+    &-primary {
+        background-color: $primary;
+        border-color: darken($primary, 5%);
+    }
+
+    &-secondary {
+        background-color: $secondary;
+        border-color: darken($secondary, 5%);
+    }
+
+    &-success {
+        background-color: $success;
+        border-color: darken($success, 5%);
+    }
+
+    &-info {
+        background-color: $info;
+        border-color: darken($info, 5%);
+    }
+
+    &-danger {
+        background-color: $danger;
+        border-color: darken($danger, 5%);
+    }
+
+    &-warning {
+        background-color: $warning;
+        border-color: darken($warning, 5%);
+    }
+
+    &-dark {
+        background-color: $dark;
+        border-color: darken($dark, 5%);
+    }
+
+    &-light {
+        background-color: $light;
+        border-color: darken($light, 5%);
+    }
+
+    .alert-link {
+        font-weight: normal;
+        color: #fff;
+        text-decoration: underline;
+    }
+}
+
+.form-control {
+    box-shadow: inset 0 2px 0 rgba(0, 0, 0, 0.075);
+}

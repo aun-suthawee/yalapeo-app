@@ -1,0 +1,13 @@
+{
+  "name": "Box",
+  "alias": "box",
+  "description": "",
+  "keywords": [],
+  "order": 0,
+  "providers": [
+    "Modules\\Box\\Providers\\BoxServiceProvider"
+  ],
+  "aliases": {},
+  "files": [],
+  "requires": []
+}

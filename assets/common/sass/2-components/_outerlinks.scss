@@ -1,0 +1,117 @@
+.outerlinks {
+  position: relative;
+  align-content: flex-start;
+  align-items: stretch;
+  // background: linear-gradient(0deg, #43a58e 0, #71ebbb 46%, #6edac1 100%);
+  background-color: #eee;
+  border-bottom: 0;
+  border-radius: 20px;
+  border-top: 4px solid #e4d915;
+  color: #243a45;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  font-size: x-large;
+  font-weight: 700;
+  height: 90px;
+  justify-content: center;
+  line-height: 1.25;
+  padding-left: 65px;
+  padding-right: 10px;
+  text-decoration: none;
+  margin-bottom: 18px;
+
+  &::before {
+    background-color: #e4d915;
+    background-image: var(--background);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    border-bottom: 4px solid #3478a2;
+    border-radius: 14px 0px;
+    border-top: 0;
+    content: " ";
+    position: absolute;
+    left: -10px;
+    top: -14px;
+    height: 70px;
+    width: 70px;
+  }
+
+  span {
+    text-transform: uppercase;
+    font-weight: 400;
+
+    &:nth-of-type(2) {
+      font-size: small;
+
+      @media screen and (max-width: 1920px) {
+      }
+
+      @media screen and (max-width: 1600px) {
+      }
+
+      @media screen and (max-width: 1440px) {
+      }
+
+      @media screen and (max-width: 1366px) {
+      }
+
+      @media screen and (max-width: 1280px) {
+      }
+
+      @media screen and (max-width: 960px) {
+      }
+
+      @media screen and (max-width: 768px) {
+      }
+
+      @media screen and (max-width: 640px) {
+        font-size: x-small;
+      }
+
+      @media screen and (max-width: 480px) {
+      }
+
+      @media screen and (max-width: 240px) {
+      }
+    }
+
+    @media screen and (max-width: 1920px) {
+    }
+
+    @media screen and (max-width: 1600px) {
+    }
+
+    @media screen and (max-width: 1440px) {
+    }
+
+    @media screen and (max-width: 1366px) {
+    }
+
+    @media screen and (max-width: 1280px) {
+    }
+
+    @media screen and (max-width: 960px) {
+    }
+
+    @media screen and (max-width: 768px) {
+    }
+
+    @media screen and (max-width: 640px) {
+      font-size: large;
+    }
+
+    @media screen and (max-width: 480px) {
+    }
+
+    @media screen and (max-width: 240px) {
+    }
+
+  }
+
+  small {
+    font-weight: 300;
+    color: #eee;
+  }
+}

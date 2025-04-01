@@ -1,0 +1,235 @@
+.navbar-top {
+  // background-color: $tone-primary;
+  // background: rgb(30, 135, 76);
+  background: $background-hightlight_2;
+  color: white;
+  font-size: small;
+  height: 43px !important;
+
+  .justify-content-sm-between {
+    @media screen and (max-width: 1920px) {
+    }
+
+    @media screen and (max-width: 1600px) {
+    }
+
+    @media screen and (max-width: 1440px) {
+    }
+
+    @media screen and (max-width: 1366px) {
+    }
+
+    @media screen and (max-width: 1280px) {
+    }
+
+    @media screen and (max-width: 960px) {
+    }
+
+    @media screen and (max-width: 768px) {
+    }
+
+    @media screen and (max-width: 640px) {
+    }
+
+    @media screen and (max-width: 480px) {
+      justify-content: space-between !important;
+      font-size: smaller;
+    }
+
+    @media screen and (max-width: 240px) {
+    }
+  }
+}
+
+.navbar {
+  background-color: #ffffffa1;
+  box-shadow: 0 3px 5px -5px #000;
+
+  .navbar-brand {
+    position: relative;
+
+    &::before {
+      z-index: 1;
+      content: '';
+      position: absolute;
+      height: calc(100% - 6px);
+      width: 60px;
+      background: #fffc;
+      left: -115px;
+      transform: skew(45deg);
+      top: 2px;
+    }
+
+    &:hover {
+      &::before {
+        transition: all 2s ease !important;
+        left: 100%;
+        opacity: 0
+      }
+    }
+
+    img {
+      @media screen and (max-width: 1920px) {
+      }
+
+      @media screen and (max-width: 1600px) {
+      }
+
+      @media screen and (max-width: 1440px) {
+      }
+
+      @media screen and (max-width: 1366px) {
+      }
+
+      @media screen and (max-width: 1280px) {
+      }
+
+      @media screen and (max-width: 960px) {
+      }
+
+      @media screen and (max-width: 768px) {
+      }
+
+      @media screen and (max-width: 640px) {
+      }
+
+      @media screen and (max-width: 480px) {
+        max-width: 222px;
+        width: 222px;
+        height: auto;
+        border: 0;
+        vertical-align: top;
+      }
+
+      @media screen and (max-width: 240px) {
+      }
+    }
+  }
+}
+
+.navbar-nav {
+  .nav-item {
+    .nav-link {
+      color: #022145;
+    }
+  }
+
+  .xdropdown-fluid {
+    position: static;
+  }
+
+  .dropdown-menu {
+    border: 0;
+    border-radius: 0;
+    top: 58px;
+    background: #f5f7f9;
+    transition: all 300ms ease;
+    min-width: 20rem;
+    max-width: 20rem;
+
+    // box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.05), -2px 0px 5px 1px rgba(0, 0, 0, 0.05);
+
+    .dropdown-item {
+      transition: background-color .1s;
+      white-space: normal;
+
+      &:hover {
+        background-color: $tone-primary;
+        color: white;
+      }
+    }
+
+    &.xdropdown-menu-fluid {
+      &.show {
+        top: 90px;
+        left: auto;
+        right: 0;
+        width: 1571px;
+        min-width: min-content;
+        max-width: max-content;
+        padding: 30px;
+
+        @media screen and (max-width: 1920px) {
+        }
+
+        @media screen and (max-width: 1600px) {
+        }
+
+        @media screen and (max-width: 1440px) {
+        }
+
+        @media screen and (max-width: 1366px) {
+        }
+
+        @media screen and (max-width: 1280px) {
+        }
+
+        @media screen and (max-width: 960px) {
+        }
+
+        @media screen and (max-width: 768px) {
+        }
+
+        @media screen and (max-width: 640px) {
+        }
+
+        @media screen and (max-width: 480px) {
+          width: auto;
+          padding: 10px 24px;
+        }
+
+        @media screen and (max-width: 240px) {
+        }
+
+        h5 {
+          font-size: 18px;
+          font-weight: 700;
+
+          @media screen and (max-width: 1920px) {
+          }
+
+          @media screen and (max-width: 1600px) {
+          }
+
+          @media screen and (max-width: 1440px) {
+          }
+
+          @media screen and (max-width: 1366px) {
+          }
+
+          @media screen and (max-width: 1280px) {
+          }
+
+          @media screen and (max-width: 960px) {
+          }
+
+          @media screen and (max-width: 768px) {
+          }
+
+          @media screen and (max-width: 640px) {
+          }
+
+          @media screen and (max-width: 480px) {
+            font-size: inherit;
+          }
+        }
+
+        ul {
+          list-style: none;
+          padding: 0;
+
+          li {
+            .dropdown-item {
+              white-space: normal !important;
+
+              &:hover {
+                background-color: $tone-primary;
+                color: white;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

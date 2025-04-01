@@ -1,0 +1,28 @@
+#mis {
+  background: url("../../../assets/images/bg-mis.jpg") no-repeat top center;
+  background-size: cover;
+
+  a {
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    &:hover {
+      color: #fff !important;
+    }
+
+    img {
+      // margin-bottom: 1rem;
+      transition: all .3s ease-in-out;
+    }
+
+    p {
+      font-family: $head-font;
+      font-size: large;
+      margin: 0;
+      color: white;
+    }
+  }
+}

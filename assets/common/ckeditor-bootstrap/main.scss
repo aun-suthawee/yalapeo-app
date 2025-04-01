@@ -1,0 +1,59 @@
+// @import "../../plugins/node_modules/bootstrap/scss/bootstrap";
+@import "../../common/sass/1-variables/fonts";
+
+@import "../../plugins/node_modules/bootstrap/scss/functions";
+@import "../../plugins/node_modules/bootstrap/scss/variables";
+@import "../../plugins/node_modules/bootstrap/scss/maps";
+@import "../../plugins/node_modules/bootstrap/scss/mixins";
+@import "../../plugins/node_modules/bootstrap/scss/utilities";
+
+// Layout & components
+@import "../../plugins/node_modules/bootstrap/scss/root";
+@import "../../plugins/node_modules/bootstrap/scss/reboot";
+@import "../../plugins/node_modules/bootstrap/scss/type";
+@import "../../plugins/node_modules/bootstrap/scss/images";
+@import "../../plugins/node_modules/bootstrap/scss/containers";
+@import "../../plugins/node_modules/bootstrap/scss/grid";
+
+// @import "../../plugins/node_modules/bootstrap/scss/tables";
+// @import "../../plugins/node_modules/bootstrap/scss/forms";
+@import "../../plugins/node_modules/bootstrap/scss/buttons";
+@import "../../plugins/node_modules/bootstrap/scss/transitions";
+
+// @import "../../plugins/node_modules/bootstrap/scss/dropdown";
+// @import "../../plugins/node_modules/bootstrap/scss/button-group";
+@import "../../plugins/node_modules/bootstrap/scss/nav";
+
+// @import "../../plugins/node_modules/bootstrap/scss/navbar";
+// @import "../../plugins/node_modules/bootstrap/scss/card";
+// @import "../../plugins/node_modules/bootstrap/scss/accordion";
+// @import "../../plugins/node_modules/bootstrap/scss/breadcrumb";
+// @import "../../plugins/node_modules/bootstrap/scss/pagination";
+// @import "../../plugins/node_modules/bootstrap/scss/badge";
+// @import "../../plugins/node_modules/bootstrap/scss/alert";
+// @import "../../plugins/node_modules/bootstrap/scss/progress";
+// @import "../../plugins/node_modules/bootstrap/scss/list-group";
+// @import "../../plugins/node_modules/bootstrap/scss/close";
+// @import "../../plugins/node_modules/bootstrap/scss/toasts";
+// @import "../../plugins/node_modules/bootstrap/scss/modal";
+// @import "../../plugins/node_modules/bootstrap/scss/tooltip";
+// @import "../../plugins/node_modules/bootstrap/scss/popover";
+// @import "../../plugins/node_modules/bootstrap/scss/carousel";
+// @import "../../plugins/node_modules/bootstrap/scss/spinners";
+// @import "../../plugins/node_modules/bootstrap/scss/offcanvas";
+// @import "../../plugins/node_modules/bootstrap/scss/placeholders";
+
+html,
+body {
+    margin: 0.375rem 0.75rem;
+    font-family: $body-font;
+    font-size: 14px;
+}
+
+code {
+    padding: 2px 4px;
+    font-size: 90%;
+    color: #c7254e;
+    background-color: #f9f2f4;
+    border-radius: 4px;
+}

@@ -1,0 +1,14 @@
+#init {
+  background: url("../../../assets/images/bg-init.jpg") no-repeat top center;
+  background-size: cover;
+
+  h2 {
+    color: #dc3560;
+  }
+
+  p {
+    font-family: $head-font;
+    line-height: 2.2rem;
+    font-size: 1.75rem;
+  }
+}

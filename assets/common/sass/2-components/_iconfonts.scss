@@ -1,0 +1,95 @@
+@font-face {
+  font-family: feather;
+  src: url(../../plugins/iconfonts/feather/fonts/feather-webfont.eot);
+  src: url(../../plugins/iconfonts/feather/fonts/feather-webfont.eot#iefix) format("embedded-opentype"), url(../../plugins/iconfonts/feather/fonts/feather-webfont.woff) format("woff"), url(../../plugins/iconfonts/feather/fonts/feather-webfont.ttf) format("truetype"), url(../../plugins/iconfonts/feather/fonts/feather-webfont.svg#feather) format("svg");
+}
+
+@font-face {
+  font-family: 'typicons';
+  font-weight: normal;
+  font-style: normal;
+  src: url(../../plugins/iconfonts/typicons/fonts/typicons.eot);
+  src: url(../../plugins/iconfonts/typicons/fonts/typicons.eot?#iefix) format("embedded-opentype"), url(../../plugins/iconfonts/typicons/fonts/typicons.woff) format("woff"), url(../../plugins/iconfonts/typicons/fonts/typicons.ttf) format("truetype"), url(../../plugins/iconfonts/typicons/fonts/typicons.svg#typicons) format("svg");
+}
+
+[class^="feather-"],
+[class*=" feather-"] {
+  font-family: 'feather' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  display: inline-block;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.typcn:before {
+  font-family: 'typicons';
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  height: 1em;
+  font-size: 1em;
+  text-align: center;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.typcn-news:before {
+  content: '\e0bf';
+
+  /* 'εé┐' */
+}
+
+.typcn-export-outline:before {
+  content: '\e06c';
+  /* 'εü¼' */
+}
+
+.typcn-export:before {
+  content: '\e06d';
+  /* 'εü¡' */
+}
+
+.feather-home:before {
+  content: "";
+}
+
+.feather-calendar:before {
+  content: "";
+}
+
+.feather-arrow-right:before {
+  content: "";
+}
+
+.feather-chevron-down:before {
+  content: "";
+}
+
+.feather-link-2:before {
+  content: "";
+}
+
+.feather-hash:before {
+  content: "";
+}
+
+.feather-chevron-right:before {
+  content: "";
+}
+
+.feather-arrow-left:before {
+  content: "";
+}
+
+.feather-arrow-right:before {
+  content: "";
+}

@@ -1,0 +1,157 @@
+.image-slider {
+    position: relative;
+    overflow: hidden;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+}
+
+.fullscreen {
+    height: 100vh;
+}
+
+.image-slider .slides {
+    position: relative;
+    overflow: hidden;
+}
+
+.flex-control-nav {
+    bottom: 14px;
+    z-index: 2;
+
+    @media screen and (max-width: 1920px) {}
+
+    @media screen and (max-width: 1600px) {}
+
+    @media screen and (max-width: 1440px) {}
+
+    @media screen and (max-width: 1366px) {}
+
+    @media screen and (max-width: 1280px) {}
+
+    @media screen and (max-width: 960px) {}
+
+    @media screen and (max-width: 768px) {}
+
+    @media screen and (max-width: 640px) {}
+
+    @media screen and (max-width: 480px) {
+        display: none;
+    }
+
+    @media screen and (max-width: 240px) {}
+}
+
+.flexslider .slides > li {
+    position: relative;
+}
+
+.flexslider {
+    .slides {
+        & > li {
+            & > a {
+                width: 100%;
+                display: block;
+            }
+        }
+    }
+}
+
+.flex-direction-nav a {
+    opacity: 1 !important;
+    text-decoration: none !important;
+    outline: none;
+}
+
+.flex-direction-nav .flex-next,
+.flex-direction-nav .flex-prev {
+    height: 54px;
+    width: 54px;
+    right: 20px !important;
+    opacity: 1 !important;
+    z-index: 2;
+    padding-right: 15px;
+    text-shadow: none;
+
+    @media screen and (max-width: 480px) {
+        display: none;
+    }
+}
+
+.flex-direction-nav .flex-prev {
+    left: 20px !important;
+    padding-left: 15px;
+}
+
+.flex-direction-nav a.flex-next:before,
+.flex-direction-nav a.flex-prev:before {
+    width: 38px;
+    height: 38px;
+    font-size: 36px;
+    text-shadow: none !important;
+    content: "";
+    background: url(../../../images/icon-arrow-right-dark.svg) 50% 50% no-repeat;
+    background-size: contain;
+}
+
+.flex-direction-nav a:hover.flex-next:before,
+.flex-direction-nav a:hover.flex-prev:before {
+    color: white;
+    opacity: 0.6;
+}
+
+.flex-direction-nav a.flex-prev:before {
+    content: "";
+    background: url(../../../images/icon-arrow-left-dark.svg) 50% 50% no-repeat;
+    background-size: contain;
+}
+
+.flex-control-paging li {
+    margin: 0 3px;
+
+    a {
+        position: relative;
+        border-radius: 50%;
+        transition: 300ms;
+        box-shadow: none;
+
+        &:after {
+            pointer-events: none;
+            position: absolute;
+            width: $flex-control-with;
+            height: $flex-control-with;
+            border-radius: 50%;
+            content: '';
+            box-sizing: content-box;
+            box-shadow: 0 0 0 3px #fff;
+            top: 0px;
+            left: 0px;
+            opacity: 0;
+            transition: 300ms;
+        }
+
+        &:hover {
+            background-color: #fff;
+            color: darken($color: $flex-active, $amount: 5);
+
+            &:after {
+                opacity: 1;
+                transform: scale(1.15);
+            }
+        }
+
+        &.flex-active {
+            width: 24px;
+            border-radius: 4px;
+            background-color: #fff;
+            border: 1px solid #d9d9d980;
+
+            &:after {
+                opacity: 0;
+                transform: none;
+            }
+        }
+    }
+}

@@ -1,0 +1,29 @@
+.bootstrap-select {
+    .btn {
+        font-weight: 400;
+    }
+
+    .btn:not([disabled]):not(.disabled):not(.btn-link):hover,
+    .btn:not([disabled]):not(.disabled):not(.btn-link):focus {
+        box-shadow: none;
+        transform: none;
+        border-color: #f4313f;
+        outline: 0;
+    }
+
+    .btn-light {
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 2px solid #ced4da;
+        border-radius: 4px;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+    & > .dropdown-toggle.bs-placeholder,
+    & > .dropdown-toggle.bs-placeholder:active,
+    & > .dropdown-toggle.bs-placeholder:focus,
+    & > .dropdown-toggle.bs-placeholder:hover {
+        font-weight: 400;
+    }
+}

@@ -1,0 +1,46 @@
+.gallery-box {
+  position: relative;
+  display: block;
+  padding: 1rem;
+  margin-bottom: 2rem;
+  transition: all 0.2s ease, visibility 0s;
+  border: 1px solid rgba(5, 114, 203, 0);
+  box-shadow: 3.54px 3.54px 4px -5px #000;
+  background-color: #efeeee;
+  text-decoration: none !important;
+
+  &:hover {
+    background: #5bcbaa;
+    transition: all 0.3s ease-in-out;
+
+    .gallery-box-title {
+      color: #126a2c !important;
+    }
+
+    img {
+      transform: scale(1.2, 1.2);
+      transition-duration: 1s;
+      transition-delay: .1s;
+      position: relative;
+      z-index: 1;
+    }
+  }
+
+  .gallery-box-logo {
+    margin: 0 auto;
+    object-fit: contain;
+    max-width: 100%;
+    background: #fff;
+    transition: transform .5s;
+    box-sizing: unset;
+  }
+
+  .gallery-box-title {
+    overflow: hidden;
+    height: 50px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+  }
+}

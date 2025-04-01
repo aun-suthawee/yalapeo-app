@@ -1,0 +1,13 @@
+{
+  "name": "Webboard",
+  "alias": "webboard",
+  "description": "",
+  "keywords": [],
+  "order": 0,
+  "providers": [
+    "Modules\\Webboard\\Providers\\WebboardServiceProvider"
+  ],
+  "aliases": {},
+  "files": [],
+  "requires": []
+}

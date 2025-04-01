@@ -1,0 +1,9 @@
+#news{
+    .btn{
+        &.actived{
+            background-color: #ffc107 !important;
+            border-color: #ffc107 !important;
+            color: black !important;
+        }
+    }
+}

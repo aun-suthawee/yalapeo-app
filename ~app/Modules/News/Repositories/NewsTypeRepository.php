@@ -1,0 +1,37 @@
+<?php
+
+namespace Modules\News\Repositories;
+
+use Modules\News\Entities\NewsType;
+use App\Repositories\BaseRepository;
+
+class NewsTypeRepository extends BaseRepository
+{
+  public function __construct()
+  {
+    $this->init([
+      'class_model_name' => NewsType::class
+    ]);
+  }
+
+  /**
+   * @return mixed
+   */
+  public function getAll($homepage = true)
+  {
+    $q = $this->classModelName::query();
+    if ($homepage) {
+      $q->where('title', '!=', 'จัดซื้อจัดจ้าง')
+      ->where('title', '!=', 'สรุปผลจัดซื้อจัดจ้างรายเดือน');
+    }
+
+    $q->orderBy('sort')->orderByDesc('id');
+
+    return $q->get();
+  }
+
+  public function redirectToList()
+  {
+    return redirect()->route('admin.news.type.index');
+  }
+}

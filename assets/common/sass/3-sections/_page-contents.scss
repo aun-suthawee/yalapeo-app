@@ -1,0 +1,131 @@
+.page-contents {
+  .page-header {
+    padding: 50px 0;
+    text-align: center;
+
+    // background-color: $color-page-header;
+    background: url(../../../assets/images/book-bg.png) no-repeat top center;
+    background-size: cover;
+    color: #feda02;
+  }
+
+  .page-detail {
+    min-height: 500px;
+    background-color: white;
+
+    @media screen and (max-width: 1920px) {
+    }
+
+    @media screen and (max-width: 1600px) {
+    }
+
+    @media screen and (max-width: 1440px) {
+    }
+
+    @media screen and (max-width: 1366px) {
+    }
+
+    @media screen and (max-width: 1280px) {
+    }
+
+    @media screen and (max-width: 960px) {
+    }
+
+    @media screen and (max-width: 768px) {
+    }
+
+    @media screen and (max-width: 640px) {
+      min-height: auto;
+    }
+
+    @media screen and (max-width: 480px) {
+    }
+
+    @media screen and (max-width: 240px) {
+    }
+
+    h3, h4 {
+      margin-bottom: 0;
+      font-family: $body-font !important;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+
+      &[style*="float:"] {
+        max-width: 100%;
+        height: auto;
+      }
+
+      &[style*="float:left"] {
+        float: left;
+        margin: 0 30px 10px 0;
+      }
+
+      &[style*="float:right"] {
+        float: right;
+        margin: 0 0 10px 30px;
+      }
+    }
+  }
+}
+
+.box-news {
+  transition: all .2s ease, visibility 0s;
+  border: 1px solid rgba(5, 114, 203, 0);
+  box-shadow: 3.54px 3.54px 4px -5px #000;
+  background-color: #efeeee;
+  padding: 15px;
+
+  a {
+    display: block;
+    color: #333;
+    margin-top: 10px;
+    height: 50px;
+    overflow: hidden;
+    text-decoration: none;
+
+    &:hover {
+      color: #333a;
+    }
+  }
+}
+
+.youtube-iframe {
+  &::before {
+    content: "" !important;
+  }
+
+  iframe {
+    max-width: 100%;
+    width: 100% !important;
+    height: 585px;
+
+    @media screen and (max-width: 640px) {
+      height: auto;
+    }
+  }
+}
+
+.facebook-iframe {
+  background: black;
+  display: table-cell;
+  width: 856px;
+  height: 585px;
+  vertical-align: middle;
+  text-align: center;
+
+  @media screen and (max-width: 640px) {
+    height: auto;
+  }
+
+  iframe {
+    width: 100% !important;
+    height: 481px;
+
+    @media screen and (max-width: 640px) {
+      height: auto;
+    }
+  }
+}

@@ -1,0 +1,21 @@
+.box-personal {
+  font-size: 14px;
+  min-width: 324px;
+  max-width: 324px;
+  max-height: 290px;
+  min-height: 290px;
+  text-align: center;
+  box-shadow: 1px 2px 3px 0 rgba(19, 18, 18, 0.2);
+  transition: all .3s ease-in-out;
+  margin: auto;
+  margin-bottom: 2em;
+
+  .box-personal-cover {
+    display: inline-table;
+    padding-top: 22px;
+
+    img {
+      width: 120px;
+    }
+  }
+}

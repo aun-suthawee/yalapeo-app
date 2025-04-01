@@ -1,0 +1,136 @@
+.btn-floating {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  padding: 0;
+  margin: 5px;
+  overflow: hidden;
+  vertical-align: middle;
+  cursor: pointer;
+  border-radius: 50%;
+  box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease-in-out;
+  text-align: center;
+  width: 56px;
+  height: 56px;
+  font-size: 26px;
+  line-height: 2.2;
+}
+
+div.floating-action-menu {
+  z-index: 99;
+  animation: 3s trian linear infinite;
+
+  & > .action-menu {
+    visibility: hidden;
+    transform: translateY(65px);
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 300ms linear;
+  }
+}
+
+div.floating-action-menu.active > .action-menu {
+  visibility: visible;
+  transform: translate(0);
+  opacity: 1;
+  padding-bottom: 0px;
+  max-height: 1000px;
+  margin-right: 5px;
+
+  & > .floating-action {
+    padding-right: -2.55rem;
+
+    .badge {
+      border-radius: 0;
+      padding: 6px 12px;
+    }
+
+    .btn-floating {
+      width: 42px;
+      height: 42px;
+      font-size: 18px;
+    }
+  }
+}
+
+div.floating-action-menu > .action-menu .btn-floating, div.floating-action-menu > .action-menu .badge {
+  transform: scale(0.4);
+  transition: all 500ms ease-in-out;
+}
+
+div.floating-action-menu.active > .action-menu .btn-floating, div.floating-action-menu.active > .action-menu .badge {
+  transform: scale(1);
+}
+
+div.floating-action-menu > .action-button {
+  position: relative;
+
+  //&::after {
+  //  content: 'Social Network';
+  //  font-family: $extra-font-1;
+  //  font-weight: 700;
+  //  color: #333;
+  //  white-space: nowrap;
+  //  position: absolute;
+  //  bottom: -20px;
+  //  left: 130px;
+  //}
+}
+
+div.floating-action-menu > .action-button > .btn-floating {
+  transition: all 500ms linear;
+}
+
+div.floating-action-menu.active > .action-button > .btn-floating {
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+div.floating-action-menu.active > .action-button > .btn-floating:hover {
+  background-color: #c82333;
+  border-color: #bd2130;
+}
+
+div.floating-action-menu > .action-button > .btn-floating > i {
+  transition: transform 500ms ease-in-out;
+}
+
+div.floating-action-menu.active > .action-button > .btn-floating > i {
+  transform: rotate(-315deg);
+}
+
+@keyframes trian {
+  0% {
+    bottom: 140px;
+  }
+
+  10% {
+    bottom: 150px;
+  }
+
+  20% {
+    bottom: 140px;
+  }
+
+  30% {
+    bottom: 150px;
+  }
+
+  70% {
+    bottom: 150px;
+  }
+
+  80% {
+    bottom: 140px;
+  }
+
+  90% {
+    bottom: 150px;
+  }
+
+  100% {
+    bottom: 140px;
+  }
+}
