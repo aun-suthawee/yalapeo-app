@@ -234,7 +234,6 @@ class HomeController extends BaseViewController
         // ดึงข้อมูลวิดีโอ TikTok ล่าสุด 6 รายการ
         $data['tiktok_videos'] = TiktokVideoModel::where('is_active', true)
             ->orderBy('created_at', 'desc')
-            ->take(6)
             ->get();
 
         return $this->render('home::index', $data);

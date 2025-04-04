@@ -485,7 +485,13 @@ return [
             'moreDocuments' => [],
         ],
         'กลุ่มนโยบายและแผน' => [
-            'documents' => [],
+            'documents' => [
+                [
+                    'url' =>
+                        'https://drive.google.com/file/d/1Jr1nnoT-VXpE6umgXrPjmTaEFD6H4qbK/view?usp=sharing',
+                    'title' => 'ระเบียบข้อมูลสารสนเทศ 2560',
+                ],
+            ],
             'moreDocuments' => [],
         ],
     ]
