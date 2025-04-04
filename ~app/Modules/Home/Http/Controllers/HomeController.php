@@ -10,6 +10,7 @@ use Modules\Box\Repositories\BoxRepository;
 use Modules\Gallery\Repositories\GalleryRepository;
 use Modules\Menu\Repositories\MenusideRepository;
 use Modules\News\Repositories\NewsRepository;
+use Modules\TiktokVideo\Entities\TiktokVideoModel;
 use Modules\Video\Repositories\VideoRepository;
 use Modules\Webboard\Repositories\WebboardRepository;
 
@@ -26,11 +27,11 @@ class HomeController extends BaseViewController
     public function __construct(BannerRepository $banner, BannerSmallRepository $bannerSmall, BookRepository $book, BoxRepository $box, GalleryRepository $gallery, MenusideRepository $menuSide, NewsRepository $news, WebboardRepository $webboard, VideoRepository $video)
     {
         $this->banner = $banner;
-        $this->bannerSmall = $bannerSmall;
+        // $this->bannerSmall = $bannerSmall;
         $this->book = $book;
         $this->box = $box;
         $this->gallery = $gallery;
-        $this->menuSide = $menuSide;
+        // $this->menuSide = $menuSide;
         $this->news = $news;
         $this->webboard = $webboard;
         $this->video = $video;
@@ -52,13 +53,13 @@ class HomeController extends BaseViewController
             ],
             10,
         );
-        $data['banner_smalls'] = $this->bannerSmall->limit(
-            [
-                'sort' => 'ASC',
-                'id' => 'DESC',
-            ],
-            10,
-        );
+        // $data['banner_smalls'] = $this->bannerSmall->limit(
+        //     [
+        //         'sort' => 'ASC',
+        //         'id' => 'DESC',
+        //     ],
+        //     10,
+        // );
         $data['lasted_news'] = $this->news->getLastedNewOfActivity([], 4);
         $data['news'] = $this->news->getNewOfTypeAll([], 8);
         $data['news_purchase'] = $this->news->getNewOfTypePurchase([]);
@@ -211,7 +212,14 @@ class HomeController extends BaseViewController
             ],
         ];
 
-        $data['stylesheets'] = [asset('assets/plugins/FlexSlider/css/flexslider.min.css'), asset('assets/plugins/node_modules/owl.carousel/dist/assets/owl.carousel.min.css'), asset('assets/plugins/node_modules/owl.carousel/dist/assets/owl.theme.default.min.css'), asset('https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css')];
+        $data['stylesheets'] = [
+            asset('assets/plugins/FlexSlider/css/flexslider.min.css'),
+            asset('assets/plugins/node_modules/owl.carousel/dist/assets/owl.carousel.min.css'),
+            asset('assets/plugins/node_modules/owl.carousel/dist/assets/owl.theme.default.min.css'),
+            asset('https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css'),
+            asset('assets/common/css/top-picture.css'),
+            asset('assets/common/css/home.css')
+        ];
         $data['scripts'] = [
             [
                 'link' => asset('assets/plugins/FlexSlider/js/jquery.flexslider-min.js'),
@@ -220,7 +228,14 @@ class HomeController extends BaseViewController
             asset('assets/plugins/node_modules/owl.carousel/dist/owl.carousel.min.js'),
             asset('https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js'),
             asset('assets/common/js/index.js'),
+            asset('assets/common/js/home.js'),
         ];
+
+        // ดึงข้อมูลวิดีโอ TikTok ล่าสุด 6 รายการ
+        $data['tiktok_videos'] = TiktokVideoModel::where('is_active', true)
+            ->orderBy('created_at', 'desc')
+            ->take(6)
+            ->get();
 
         return $this->render('home::index', $data);
     }

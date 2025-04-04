@@ -1,0 +1,13 @@
+{
+    "name": "TiktokVideo",
+    "alias": "tiktokvideo",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\TiktokVideo\\Providers\\TiktokVideoServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

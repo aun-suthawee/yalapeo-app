@@ -25,7 +25,8 @@
         content="{{ isset($body['title']) ? $body['title'] : '' }} - {{ $cacheMeta->title }}" />
     <link rel="alternate" href="{{ URL::current() }}" hreflang="th" />
 
-    <link rel="stylesheet" href="{{ asset('assets/common/css/top-picture.css') }}">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -43,6 +44,13 @@
         href="{{ asset('assets/plugins/node_modules/vanilla-cookieconsent/dist/cookieconsent.css') }}" media="print"
         onload="this.media='all'">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/common/css/bundle.min.css?v=' . time()) }}">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+
     @yield('stylesheet-content')
 </head>
 
@@ -201,6 +209,7 @@
     <script src="{{ asset('assets/common/js/app/app.js') }}"></script>
     <script src="{{ asset('assets/plugins/node_modules/wowjs/dist/wow.min.js') }}"></script>
     <script defer src="{{ asset('assets/plugins/node_modules/vanilla-cookieconsent/dist/cookieconsent.js') }}"></script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
 
     @if (isset($scripts))
         @foreach ($scripts as $script)

@@ -21,13 +21,6 @@ class Aside
             'permission_prefix' => "dashboard",
             'webfont_icon' => '<i class="app-menu__icon fas fa-tachometer-alt"></i>'
           ],
-          // [
-          //   'name' => 'Sandbox',
-          //   'active_name' => "admin/sandbox",
-          //   'url' => route('sandbox.index'),
-          //   'permission_prefix' => "sandbox",
-          //   'webfont_icon' => '<i class="app-menu__icon fas fa-tachometer-alt"></i>'
-          // ],
           [
             'name' => 'ข่าวสาร',
             'active_name' => "admin/news*",
@@ -95,13 +88,6 @@ class Aside
             'permission_prefix' => "gallery",
             'webfont_icon' => '<i class="app-menu__icon fas fa-images"></i>'
           ],
-          // [
-          //   'name' => 'วีดิโอ / Youtube',
-          //   'active_name' => "admin/video*",
-          //   'url' => route('admin.video.index'),
-          //   'permission_prefix' => "video",
-          //   'webfont_icon' => '<i class="app-menu__icon fab fa-youtube"></i>'
-          // ],
           [
             'name' => 'เว็บบอร์ด',
             'active_name' => "admin/webboard*",
@@ -143,6 +129,13 @@ class Aside
             'url' => route('admin.video.index'),
             'permission_prefix' => "video",
             'webfont_icon' => '<i class="app-menu__icon fab fa-youtube"></i>'
+          ],
+          [
+            'name' => 'วิดีโอ TikTok',
+            'active_name' => "admin/tiktokvideo*",
+            'url' => route('admin.tiktokvideo.index'),
+            'permission_prefix' => "tiktokvideo",
+            'webfont_icon' => '<i class="app-menu__icon fab fa-tiktok"></i>' 
           ],
         ]
       ],
