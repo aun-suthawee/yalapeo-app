@@ -2,6 +2,13 @@
 <html lang="{{ app()->getLocale() }}" ng-app="myApp">
 
 <head>
+
+    <title>สำนักงานศึกษาธิการจังหวัดยะลา | ศธจ.ยะลา</title>
+    <meta name="description"
+        content="เว็บไซต์ทางการของสำนักงานศึกษาธิการจังหวัดยะลา (ศธจ.ยะลา) ข้อมูลการศึกษา ข่าวสาร และบริการทางการศึกษาสำหรับประชาชนจังหวัดยะลา">
+    <meta name="keywords"
+        content="ศธจ.ยะลา, สำนักงานศึกษาธิการจังหวัดยะลา, การศึกษายะลา, ศึกษาธิการยะลา, ข้อมูลการศึกษายะลา, yalapeo, yalaedu, yala, education, yala education">
+
     <meta charset="utf-8">
     <title>{{ isset($body['title']) ? $body['title'] : '' }} - {{ $cacheMeta->title }}</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -16,8 +23,8 @@
         content="{{ isset($body['description']) ? $body['description'] : '' }} - {{ $cacheMeta->description }}" />
     <meta property="og:image" content="{{ asset('assets/images/meta-image.png') }}" />
 
-    <link rel="canonical" href="{{ request()->getHttpHost() }}" />
-    <meta property="og:site_name" content="congratulations-{{ date('Y') }}" />
+    <link rel="canonical" href="https://{{ request()->getHttpHost() }}{{ request()->getPathInfo() }}" />
+    <meta property="og:site_name" content="สำนักงานศึกษาธิการจังหวัดยะลา" />
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:description"
         content="{{ isset($body['description']) ? $body['description'] : '' }} - {{ $cacheMeta->description }}" />
@@ -50,6 +57,28 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+
+    <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "GovernmentOrganization",
+          "name": "สำนักงานศึกษาธิการจังหวัดยะลา",
+          "alternateName": "ศธจ.ยะลา",
+          "url": "https://yalapeo.go.th/",
+          "logo": "{{ asset('assets/images/logo.png') }}",
+          "sameAs": [
+            "https://www.facebook.com/yalaedu"
+          ],
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "3/4 ถนนอาคารสงเคราะห์ ตำบลสะเตง",
+            "addressLocality": "อำเภอเมืองยะลา",
+            "addressRegion": "ยะลา",
+            "postalCode": "95000",
+            "addressCountry": "TH"
+          }
+        }
+    </script>
 
     @yield('stylesheet-content')
 </head>

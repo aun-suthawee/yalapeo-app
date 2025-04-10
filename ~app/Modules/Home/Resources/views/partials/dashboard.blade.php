@@ -38,9 +38,9 @@
                     <div class="dashboard-frame">
                         <iframe
                             data-src="https://lookerstudio.google.com/embed/reporting/cce3a597-75c9-417f-885a-3c7dba974cbd/page/ZAkEF"
-                            frameborder="0" allowfullscreen
-                            onload="hideLoading('loading-dashboard1')"
-                            sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
+                            frameborder="0" allowfullscreen onload="hideLoading('loading-dashboard1')" loading="lazy"
+                            sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox">
+                        </iframe>
                     </div>
                 </div>
             </div>
@@ -56,8 +56,7 @@
                     <div class="dashboard-frame">
                         <iframe title="เด็กนอกระบบ 26-3"
                             data-src="https://app.powerbi.com/view?r=eyJrIjoiY2U3YjI3NDYtZjI2NC00N2M4LWE2NDItMjY0NzU4YmJmNTUwIiwidCI6ImZhNGU3MjMyLWUyODgtNDhmMS05MzMyLWM3N2Q4ZmVhNzhhNyIsImMiOjEwfQ%3D%3D"
-                            frameborder="0"
-                            onload="hideLoading('loading-dashboard2')"
+                            frameborder="0" onload="hideLoading('loading-dashboard2')" loading="lazy"
                             allowFullScreen="true"></iframe>
                     </div>
                 </div>
@@ -106,11 +105,11 @@
         const selectedDashboard = document.getElementById(dashboardId);
         if (selectedDashboard) {
             selectedDashboard.classList.add('active');
-            
+
             // โหลด iframe ถ้ายังไม่ได้โหลด
             const iframe = selectedDashboard.querySelector('iframe');
             const loadingId = 'loading-' + dashboardId;
-            
+
             if (iframe) {
                 // ถ้า iframe ยังไม่มี src, แสดงหน้า loading และตั้งค่า src
                 if (iframe.getAttribute('data-src') && !iframe.getAttribute('src')) {
@@ -182,8 +181,9 @@
                         const iframe = dashboardPanel.querySelector('iframe');
                         const panelId = dashboardPanel.id;
                         const loadingId = 'loading-' + panelId;
-                        
-                        if (iframe && iframe.getAttribute('data-src') && !iframe.getAttribute('src')) {
+
+                        if (iframe && iframe.getAttribute('data-src') && !iframe.getAttribute(
+                                'src')) {
                             showLoading(loadingId);
                             iframe.setAttribute('src', iframe.getAttribute('data-src'));
                         }

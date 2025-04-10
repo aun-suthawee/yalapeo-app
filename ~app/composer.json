@@ -21,6 +21,7 @@
     "phattarachai/line-notify": "^2.0",
     "spatie/laravel-fractal": "^5.8",
     "spatie/laravel-permission": "^5.11",
+    "spatie/laravel-sitemap": "^6.4",
     "verot/class.upload.php": "^2.1"
   },
   "require-dev": {
