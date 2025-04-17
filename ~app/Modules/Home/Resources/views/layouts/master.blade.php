@@ -16,21 +16,36 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="author" content="{{ request()->getHttpHost() }}">
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}" />
-    <meta property="og:url" content="{{ URL::current() }}" />
+    <meta property="og:url" content="{{ url()->current() }}" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="{{ isset($body['title']) ? $body['title'] : '' }} - {{ $cacheMeta->title }}" />
     <meta property="og:description"
         content="{{ isset($body['description']) ? $body['description'] : '' }} - {{ $cacheMeta->description }}" />
     <meta property="og:image" content="{{ asset('assets/images/meta-image.png') }}" />
 
-    <link rel="canonical" href="https://{{ request()->getHttpHost() }}{{ request()->getPathInfo() }}" />
+    <!-- Canonical and Alternate URLs for SEO -->
+    <link rel="canonical" href="{{ url()->current() }}" />
     <meta property="og:site_name" content="สำนักงานศึกษาธิการจังหวัดยะลา" />
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:description"
         content="{{ isset($body['description']) ? $body['description'] : '' }} - {{ $cacheMeta->description }}" />
     <meta name="twitter:title"
         content="{{ isset($body['title']) ? $body['title'] : '' }} - {{ $cacheMeta->title }}" />
-    <link rel="alternate" href="{{ URL::current() }}" hreflang="th" />
+    
+    <!-- Alternate language versions -->
+    <link rel="alternate" href="{{ url()->current() }}" hreflang="th" />
+
+    <!-- Paginations -->
+    @if(isset($paginator) && $paginator->hasPages())
+        @if($paginator->onFirstPage())
+            <link rel="next" href="{{ $paginator->nextPageUrl() }}" />
+        @elseif($paginator->hasMorePages())
+            <link rel="prev" href="{{ $paginator->previousPageUrl() }}" />
+            <link rel="next" href="{{ $paginator->nextPageUrl() }}" />
+        @else
+            <link rel="prev" href="{{ $paginator->previousPageUrl() }}" />
+        @endif
+    @endif
 
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 

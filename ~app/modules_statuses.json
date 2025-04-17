@@ -16,5 +16,6 @@
     "User": true,
     "Video": true,
     "Webboard": true,
-    "TiktokVideo": true
+    "TiktokVideo": true,
+    "ImageBoxSlider": true
 }

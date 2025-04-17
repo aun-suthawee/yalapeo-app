@@ -58,14 +58,15 @@ class Aside
                 'permission_prefix' => "banner_large",
                 'webfont_icon' => '<i class="app-menu__icon far fa-circle"></i>'
               ],
-              [
-                'name' => 'ภาพสไลด์ (S)',
-                'active_name' => "admin/banner/small**",
-                'url' => route('admin.banner.small.index'),
-                'permission_prefix' => "banner_small",
-                'webfont_icon' => '<i class="app-menu__icon far fa-circle"></i>'
-              ],
+
             ]
+          ],
+          [
+            'name' => 'รูปภาพสไลด์สี่เหลี่ยม',
+            'active_name' => "admin/imageboxslider*",
+            'url' => route('admin.imageboxslider.index'),
+            'permission_prefix' => "imageboxslider",
+            'webfont_icon' => '<i class="app-menu__icon fas fa-images"></i>'
           ],
           [
             'name' => ' Page',
@@ -118,7 +119,7 @@ class Aside
           ],
           [
             'name' => 'Box',
-            'active_name' => "admin/box*",
+            'active_name' => "admin/box**",
             'url' => route('admin.box.index'),
             'permission_prefix' => "box",
             'webfont_icon' => '<i class="app-menu__icon fas fa-dice-d6"></i>'
@@ -135,7 +136,7 @@ class Aside
             'active_name' => "admin/tiktokvideo*",
             'url' => route('admin.tiktokvideo.index'),
             'permission_prefix' => "tiktokvideo",
-            'webfont_icon' => '<i class="app-menu__icon fab fa-tiktok"></i>' 
+            'webfont_icon' => '<i class="app-menu__icon fab fa-tiktok"></i>'
           ],
         ]
       ],

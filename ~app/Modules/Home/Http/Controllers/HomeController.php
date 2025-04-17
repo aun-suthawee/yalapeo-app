@@ -11,6 +11,7 @@ use Modules\Gallery\Repositories\GalleryRepository;
 use Modules\Menu\Repositories\MenusideRepository;
 use Modules\News\Repositories\NewsRepository;
 use Modules\TiktokVideo\Entities\TiktokVideoModel;
+use Modules\ImageBoxSlider\Entities\ImageBoxSliderModel;
 use Modules\Video\Repositories\VideoRepository;
 use Modules\Webboard\Repositories\WebboardRepository;
 
@@ -232,7 +233,12 @@ class HomeController extends BaseViewController
         ];
 
         // ดึงข้อมูลวิดีโอ TikTok ล่าสุด 6 รายการ
-        $data['tiktok_videos'] = TiktokVideoModel::where('is_active', true)
+        $data['tiktok_videos'] = TiktokVideoModel::where('is_active', 1)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        // ดึงข้อมูล Image Box Sliders ล่าสุด 8 รายการ
+        $data['image_boxsliders'] = ImageBoxSliderModel::where('is_active', 1)
             ->orderBy('created_at', 'desc')
             ->get();
 

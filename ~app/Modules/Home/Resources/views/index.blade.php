@@ -4,7 +4,7 @@
     @include('home::partials.executive-section')
     @include('home::partials.banner-slider')
     @include('home::partials.outer-links')
-    @include('home::partials.latest-news')
+    @include('home::partials.image-box-slider')
     @include('home::partials.webboard')
     @include('home::partials.personnel')
     @include('home::partials.news-tabs')
