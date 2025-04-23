@@ -1,0 +1,13 @@
+{
+    "name": "YrpDashboard",
+    "alias": "yrpdashboard",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\YrpDashboard\\Providers\\YrpDashboardServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

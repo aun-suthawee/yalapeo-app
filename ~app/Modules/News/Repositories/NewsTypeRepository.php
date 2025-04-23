@@ -21,8 +21,7 @@ class NewsTypeRepository extends BaseRepository
   {
     $q = $this->classModelName::query();
     if ($homepage) {
-      $q->where('title', '!=', 'จัดซื้อจัดจ้าง')
-      ->where('title', '!=', 'สรุปผลจัดซื้อจัดจ้างรายเดือน');
+      $q->whereIn('title', ['ข่าวกิจกรรม', 'ข่าวประกาศ', 'ประชาสัมพันธ์']);
     }
 
     $q->orderBy('sort')->orderByDesc('id');
