@@ -1,4 +1,4 @@
-<section class="image-box-slider py-5" data-aos="fade-up">
+<section class="image-box-slider py-5">
     <div class="container-fluid px-md-5">
         <div class="slider-container position-relative overflow-hidden">
             @if(count($image_boxsliders) > 3)
@@ -32,7 +32,7 @@
             </div>
         </div>
 
-        <div class="text-center mt-4" data-aos="fade-up" data-aos-delay="300">
+        <div class="text-center mt-4">
             <a href="{{ route('imageboxslider.index') }}" class="btn btn-primary btn-view-all px-4 py-2">
                 <i class="fas fa-photo-video mr-2"></i>ดูรูปภาพและเอกสารทั้งหมด
                 <span class="badge badge-light ml-2">({{ count($image_boxsliders) }})</span>
@@ -124,69 +124,36 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const sliderWrapper = document.getElementById('imageBoxSlider');
-        const totalItems = sliderWrapper.children.length;
+        const totalItems = sliderWrapper ? sliderWrapper.children.length : 0;
         const visibleCount = Math.min(totalItems, 3);
         let currentIndex = 0;
         let isAnimating = false;
         
-        // ถ้ามีรูปน้อยกว่าหรือเท่ากับ 3 ไม่ต้องมีการเลื่อนอัตโนมัติ
-        if (totalItems <= 3) {
+        // ถ้าไม่มี slider หรือมีรูปน้อยกว่าหรือเท่ากับ 3 ไม่ต้องมีการเลื่อน
+        if (!sliderWrapper || totalItems <= 3) {
             return;
         }
-        
-        // สร้างสำเนาของสไลด์เพื่อทำให้เลื่อนแบบไม่มีที่สิ้นสุด
-        function setupInfiniteSlider() {
-            // สร้างสำเนาของสไลด์ทั้งหมดและเพิ่มต่อท้าย
-            const slidesHTMLContent = sliderWrapper.innerHTML;
-            sliderWrapper.innerHTML = slidesHTMLContent + slidesHTMLContent;
-        }
-        
-        setupInfiniteSlider();
         
         function slide(direction = 1) {
             if (isAnimating) return;
             isAnimating = true;
             
-            const duplicatedTotalItems = totalItems * 2;
-            
             if (direction > 0) {
                 currentIndex++;
-                
-                if (currentIndex >= totalItems) {
-                    updateSliderPosition();
-                    
-                    setTimeout(() => {
-                        currentIndex = currentIndex - totalItems;
-                        sliderWrapper.style.transition = 'none';
-                        updateSliderPosition();
-                        
-                        setTimeout(() => {
-                            sliderWrapper.style.transition = 'transform 0.6s ease-in-out';
-                            isAnimating = false;
-                        }, 10);
-                    }, 600);
-                } else {
-                    updateSliderPosition();
-                    setTimeout(() => {
-                        isAnimating = false;
-                    }, 600);
+                if (currentIndex >= totalItems - visibleCount + 1) {
+                    currentIndex = 0;
                 }
             } else {
                 currentIndex--;
-                
                 if (currentIndex < 0) {
-                    currentIndex = totalItems - 1;
-                    updateSliderPosition();
-                    setTimeout(() => {
-                        isAnimating = false;
-                    }, 600);
-                } else {
-                    updateSliderPosition();
-                    setTimeout(() => {
-                        isAnimating = false;
-                    }, 600);
+                    currentIndex = totalItems - visibleCount;
                 }
             }
+            
+            updateSliderPosition();
+            setTimeout(() => {
+                isAnimating = false;
+            }, 600);
         }
         
         function updateSliderPosition() {
@@ -200,27 +167,11 @@
         if (prevBtn && nextBtn) {
             prevBtn.addEventListener('click', function() {
                 slide(-1);
-                clearInterval(slidingInterval);
-                slidingInterval = setInterval(() => slide(1), 5000);
             });
             
             nextBtn.addEventListener('click', function() {
                 slide(1);
-                clearInterval(slidingInterval);
-                slidingInterval = setInterval(() => slide(1), 5000);
             });
         }
-        
-        let slidingInterval = setInterval(() => slide(1), 5000);
-        
-        sliderWrapper.addEventListener('mouseenter', function() {
-            clearInterval(slidingInterval);
-        });
-        
-        // เริ่มการเลื่อนอัตโนมัติอีกครั้งเมื่อเมาส์ออกจาก slider
-        sliderWrapper.addEventListener('mouseleave', function() {
-            clearInterval(slidingInterval);
-            slidingInterval = setInterval(() => slide(1), 5000);
-        });
     });
 </script>

@@ -31,13 +31,13 @@
         content="{{ isset($body['description']) ? $body['description'] : '' }} - {{ $cacheMeta->description }}" />
     <meta name="twitter:title"
         content="{{ isset($body['title']) ? $body['title'] : '' }} - {{ $cacheMeta->title }}" />
-    
+
     <!-- Alternate language versions -->
     <link rel="alternate" href="{{ url()->current() }}" hreflang="th" />
 
     <!-- Paginations -->
-    @if(isset($paginator) && $paginator->hasPages())
-        @if($paginator->onFirstPage())
+    @if (isset($paginator) && $paginator->hasPages())
+        @if ($paginator->onFirstPage())
             <link rel="next" href="{{ $paginator->nextPageUrl() }}" />
         @elseif($paginator->hasMorePages())
             <link rel="prev" href="{{ $paginator->previousPageUrl() }}" />
@@ -59,7 +59,7 @@
 
     @if (isset($stylesheets))
         @foreach ($stylesheets as $stylesheet)
-            <link rel="stylesheet" href="{{ $stylesheet }}">
+            <link rel="stylesheet" type="text/css" href="{{ $stylesheet }}">
         @endforeach
     @endif
     <link rel="stylesheet"
@@ -174,24 +174,23 @@
                 <div class="col-md-auto col-xl-auto col-sm-12 text-white">
                     <h4 class="mt-3">กระทรวงศึกษาธิการ</h4>
                     <ul>
-                        <li><a href="#">เกี่ยวกับกระทรวง</a></li>
-                        <li><a href="#">ข่าวสารกิจกรรม</a></li>
-                        <li><a href="#">การดำเนินงาน</a></li>
-                        <li><a href="#">แผนผังเว็บไซต์</a></li>
-                        <li><a href="#">ข่าวรับสมัครงาน</a></li>
-                        <li><a href="#">จัดซื้อจัดจ้าง</a></li>
+                        <li><a href="/เกี่ยวกับเรา">เกี่ยวกับกระทรวง</a></li>
+                        <li><a href="/news?type=7">ข่าวสารกิจกรรม</a></li>
+                        {{-- <li><a href="#">การดำเนินงาน</a></li> --}}
+                        {{-- <li><a href="#">ข่าวรับสมัครงาน</a></li> --}}
+                        <li><a href="/news?type=5">จัดซื้อจัดจ้าง</a></li>
                     </ul>
                 </div>
                 <div class="col-md-auto col-xl-auto col-sm-12 text-white">
                     <h4 class="mt-3">แหล่งความรู้</h4>
                     <ul>
-                        <li><a href="#">บทความที่น่าสนใจ</a></li>
-                        <li><a href="#">Infographic</a></li>
-                        <li><a href="#">บริการ Download การเรียนการสอน</a></li>
-                        <li><a href="#">สถิติการศึกษา</a></li>
-                        <li><a href="#">e-Book</a></li>
-                        <li><a href="#">e-library</a></li>
-                        <li><a href="#">งานวิจัย</a></li>
+                        <li><a href="#articles">ข่าวที่น่าสนใจ</a></li>
+                        <li><a href="#infographics">Infographic</a></li>
+                        {{-- <li><a href="#downloads">บริการ Download การเรียนการสอน</a></li> --}}
+                        <li><a href="#statistics">สถิติการศึกษา</a></li>
+                        <li><a href="#ebooks">e-Book</a></li>
+                        {{-- <li><a href="#elibrary">e-library</a></li> --}}
+                        {{-- <li><a href="#research">งานวิจัย</a></li> --}}
                     </ul>
                 </div>
                 <div class="col-md-auto col-xl-auto col-sm-12 text-white">

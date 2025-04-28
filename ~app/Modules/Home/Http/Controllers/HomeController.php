@@ -62,7 +62,7 @@ class HomeController extends BaseViewController
         //     10,
         // );
         $data['lasted_news'] = $this->news->getLastedNewOfActivity([], 4);
-        $data['news'] = $this->news->getNewOfTypeAll([], 8);
+        $data['news'] = $this->news->getNewOfTypeAll([], 6);
         $data['news_purchase'] = $this->news->getNewOfTypePurchase([]);
         $data['news_purchase_summary'] = $this->news->getNewOfTypePurchaseSummary([]);
         $data['galleries'] = $this->gallery->limit(

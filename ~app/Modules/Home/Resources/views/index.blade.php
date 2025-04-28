@@ -4,17 +4,29 @@
     @include('home::partials.executive-section')
     @include('home::partials.banner-slider')
     @include('home::partials.outer-links')
-    @include('home::partials.image-box-slider')
+    <div id="infographics">
+        @include('home::partials.image-box-slider')
+    </div>
     @include('home::partials.webboard')
     @include('home::partials.personnel')
-    @include('home::partials.news-tabs')
-    @include('home::partials.purchase-news')
-    @include('home::partials.videos')
+    <div id="articles">
+        @include('home::partials.news-tabs')
+    </div>
+    <div id="purchase">
+        @include('home::partials.purchase-news')
+    </div>
+    <div id="videos">
+        @include('home::partials.videos')
+    </div>
     @include('home::partials.tiktok-videos')
-    @include('home::partials.dashboard')
-    @include('home::partials.books')
+    <div id="statistics">
+        @include('home::partials.dashboard')
+    </div>
+    <div id="ebooks">
+        @include('home::partials.books')
+    </div>
     @if ($box->detail_2 != '')
-        <section class="pt-4 pt-md-5 pb-md-5">
+        <section id="downloads" class="pt-4 pt-md-5 pb-md-5">
             <div class="row">
                 <div class="col-12 text-center">
                     {!! $box->detail_2 !!}
@@ -22,5 +34,7 @@
             </div>
         </section>
     @endif
-    @include('home::partials.assessment')
+    <div id="assessment">
+        @include('home::partials.assessment')
+    </div>
 @endsection

@@ -2,6 +2,13 @@
 <html lang="{{ app()->getLocale() }}">
 
 <head>
+    <title>สำนักงานศึกษาธิการจังหวัดยะลา | ศธจ.ยะลา</title>
+    <meta name="description"
+        content="เว็บไซต์ทางการของสำนักงานศึกษาธิการจังหวัดยะลา (ศธจ.ยะลา) ข้อมูลการศึกษา ข่าวสาร และบริการทางการศึกษาสำหรับประชาชนจังหวัดยะลา">
+    <meta name="keywords"
+        content="ศธจ.ยะลา, สำนักงานศึกษาธิการจังหวัดยะลา, การศึกษายะลา, ศึกษาธิการยะลา, ข้อมูลการศึกษายะลา, yalapeo, yalaedu, yala, education, yala education">
+
+
     <meta charset="utf-8">
     <title>{{ isset($body['title']) ? $body['title'] : '' }} - {{ $cacheMeta->title }}</title>
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
@@ -17,7 +24,7 @@
     <meta content="{{ asset('assets/images/meta-image.png') }}" property="og:image" />
 
     <link href="https://{{ request()->getHttpHost() }}" rel="canonical" />
-    
+
     <meta content="congratulations-{{ date('Y') }}" property="og:site_name" />
     <meta content="summary" name="twitter:card" />
     <meta content="{{ isset($body['description']) ? $body['description'] : '' }} - {{ $cacheMeta->description }}"
@@ -43,7 +50,7 @@
             background-image: none !important;
         }
     </style>
-    
+
     <meta name="google-site-verification" content="LknSQzidBvbV45J0DPXpbnhhWYyUadC0wCitAeqLgCU" />
 
     <script type="application/ld+json">

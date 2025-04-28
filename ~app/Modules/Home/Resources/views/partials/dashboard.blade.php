@@ -1,17 +1,17 @@
 <section id="dashboard-section" class="dashboard-section py-5">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-lg-8" data-aos="fade-up">
+            <div class="col-lg-8">
                 <h2 class="title text-center mb-4">
                     <span class="text-highlight">สารสนเทศทางการศึกษา</span>จังหวัดยะลา
                 </h2>
-                <p class="text-center text-muted mb-4" data-aos="fade-up" data-aos-delay="100">
+                <p class="text-center text-muted mb-4">
                     ข้อมูลและสถิติที่สำคัญด้านการศึกษาของจังหวัดยะลา นำเสนอในรูปแบบ Dashboard ที่เข้าใจง่าย
                 </p>
             </div>
         </div>
 
-        <div class="row justify-content-center mb-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="row justify-content-center mb-4">
             <div class="col-md-8 text-center">
                 <div class="dashboard-tabs">
                     <button type="button" class="dashboard-tab active" id="dashboard1-btn"
@@ -26,7 +26,7 @@
             </div>
         </div>
 
-        <div class="dashboard-panels" data-aos="fade-up" data-aos-delay="300">
+        <div class="dashboard-panels">
             <div class="dashboard-panel active" id="dashboard1">
                 <div class="dashboard-frame-wrapper">
                     <div class="dashboard-loading" id="loading-dashboard1">
@@ -63,7 +63,7 @@
             </div>
         </div>
 
-        <div class="row mt-4" data-aos="fade-up" data-aos-delay="400">
+        <div class="row mt-4">
             <div class="col-md-12 text-center">
                 <div class="dashboard-info">
                     <div class="dashboard-info-item">
@@ -93,59 +93,43 @@
         }
     }
 
-    // Dashboard Toggle Function
     function showDashboard(dashboardId) {
-        // ซ่อนทุก dashboard ก่อน
+        // เปลี่ยนสถานะปุ่ม
+        const dashboardButtons = document.querySelectorAll('.dashboard-tab');
+        dashboardButtons.forEach(button => button.classList.remove('active'));
+        const activeButton = document.getElementById(dashboardId + '-btn');
+        if (activeButton) activeButton.classList.add('active');
+        
+        // จัดการกับ panel - ลบการใช้ transform และ opacity แบบ animation
         const dashboardPanels = document.querySelectorAll('.dashboard-panel');
         dashboardPanels.forEach(panel => {
             panel.classList.remove('active');
+            // ลบการ reset animation styles
+            panel.style.display = 'none';
         });
 
         // แสดง dashboard ที่เลือก
         const selectedDashboard = document.getElementById(dashboardId);
         if (selectedDashboard) {
             selectedDashboard.classList.add('active');
+            selectedDashboard.style.display = 'block';
 
-            // โหลด iframe ถ้ายังไม่ได้โหลด
-            const iframe = selectedDashboard.querySelector('iframe');
-            const loadingId = 'loading-' + dashboardId;
+            try {
+                const iframe = selectedDashboard.querySelector('iframe');
+                const loadingId = 'loading-' + dashboardId;
 
-            if (iframe) {
-                // ถ้า iframe ยังไม่มี src, แสดงหน้า loading และตั้งค่า src
-                if (iframe.getAttribute('data-src') && !iframe.getAttribute('src')) {
+                if (iframe && iframe.getAttribute('data-src') && !iframe.getAttribute('src')) {
                     showLoading(loadingId);
                     iframe.setAttribute('src', iframe.getAttribute('data-src'));
                 }
-                // ถ้า iframe มี src แล้วแต่ยังไม่โหลดเสร็จ ให้แสดงหน้า loading
-                else if (iframe.getAttribute('src') && !iframe.contentDocument.readyState === 'complete') {
-                    showLoading(loadingId);
-                }
+            } catch (error) {
+                console.error("Error loading iframe:", error);
             }
         }
 
-        // อัปเดตปุ่มให้ active
-        const dashboardButtons = document.querySelectorAll('.dashboard-tab');
-        dashboardButtons.forEach(button => {
-            button.classList.remove('active');
-        });
-
-        // ทำให้ปุ่มที่เลือกเป็น active
-        const activeButton = document.getElementById(dashboardId + '-btn');
-        if (activeButton) {
-            activeButton.classList.add('active');
-        }
-
-        // เพิ่ม animation ให้กับ dashboard ที่ถูกเลือก
-        setTimeout(() => {
-            selectedDashboard.style.transform = 'translateY(0)';
-            selectedDashboard.style.opacity = '1';
-        }, 50);
-
-        // บันทึกค่าลงใน localStorage เพื่อจำค่าเมื่อกลับมาที่หน้านี้อีกครั้ง
         localStorage.setItem('selectedDashboard', dashboardId);
     }
 
-    // เมื่อโหลดหน้าเสร็จ
     document.addEventListener('DOMContentLoaded', function() {
         // กำหนดสไตล์เริ่มต้นสำหรับ loading indicator
         document.querySelectorAll('.dashboard-loading').forEach(loading => {
@@ -162,21 +146,17 @@
             loading.style.zIndex = '10';
         });
 
-        // ดึงค่าจาก localStorage (ถ้ามี)
         const savedDashboard = localStorage.getItem('selectedDashboard');
         if (savedDashboard) {
             showDashboard(savedDashboard);
         } else {
-            // ถ้าไม่มีค่าที่บันทึกไว้ให้แสดง dashboard แรกและโหลด iframe ของมัน
             showDashboard('dashboard1');
         }
 
-        // ตั้งค่า lazy load สำหรับ iframe
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     const dashboardPanel = entry.target;
-                    // ตรวจสอบว่าเป็น panel ที่กำลังแสดงอยู่
                     if (dashboardPanel.classList.contains('active')) {
                         const iframe = dashboardPanel.querySelector('iframe');
                         const panelId = dashboardPanel.id;

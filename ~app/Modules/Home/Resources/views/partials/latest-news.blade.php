@@ -1,12 +1,12 @@
-<section class="lasted-news" data-aos="fade-up">
+<section class="lasted-news">
     <div class="container-fluid px-md-5 py-5">
         <div class="row">
             <div class="col-md-8">
-                <h2 class="title text-center" data-aos="fade-up">
+                <h2 class="title text-center">
                     <span class="text-highlight">ข่าวกิจกรรม</span>ศธจ.ยะลา
                 </h2>
                 <div class="row justify-content-center mt-0 mt-md-5">
-                    <div class="col-md-6" data-aos="fade-right" data-aos-delay="100">
+                    <div class="col-md-6">
                         <div class="card overflow-hidden news-card main-news-card">
                             <img src="{{ $lasted_news[0]->cover }}" class="img-fluid news-image" alt="{{ Request::getHost() }}">
                             <div class="card-body">
@@ -27,9 +27,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6" data-aos="fade-left" data-aos-delay="200">
+                    <div class="col-md-6">
                         @for ($n = 1; $n < count($lasted_news); $n++)
-                            <div class="row mb-4" data-aos="fade-left" data-aos-delay="{{ 200 + ($n * 50) }}">
+                            <div class="row mb-4">
                                 <div class="col-md-12">
                                     <div class="card news-card secondary-news-card">
                                         <div class="card-body">
@@ -61,7 +61,7 @@
                             </div>
                         @endfor
 
-                        <div class="text-end" data-aos="fade-up" data-aos-delay="300">
+                        <div class="text-end">
                             <a href="{{ route('news.index') }}/?type=7" class="btn btn-danger view-all-btn">
                                 ดูทั้งหมด
                             </a>
@@ -71,7 +71,7 @@
             </div>
 
             @if ($box->detail_1 != '')
-                <div class="col-md-4 mt-5 mt-md-0" data-aos="fade-left" data-aos-delay="250">
+                <div class="col-md-4 mt-5 mt-md-0">
                     <div class="box-content h-100 d-flex flex-column justify-content-center p-3">
                         {!! $box->detail_1 !!}
                     </div>

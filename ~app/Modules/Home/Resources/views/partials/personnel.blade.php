@@ -1,12 +1,12 @@
 <section id="mis">
     <div class="container">
         <div class="pt-4 pt-md-5 pb-md-5">
-            <h2 class="title text-center" data-aos="fade-up">
+            <h2 class="title text-center">
                 <span class="text-highlight">ข้อมูลบุคลากร</span>และกฎหมายระเบียบที่เกี่ยวข้อง
             </h2>
             <div class="row justify-content-center">
                 @forelse ($global_menus as $index => $value)
-                    <div class="col-6 col-sm-6 col-md-2 mt-5 text-center" data-aos="fade-up" data-aos-delay="{{ $index * 50 }}">
+                    <div class="col-6 col-sm-6 col-md-2 mt-5 text-center">
                         <div class="menu-item-clickable" data-bs-toggle="modal"
                             data-bs-target="#menuModal{{ $index }}">
                             <img src="{{ $value['cover'] ?? asset('images/default-cover.png') }}"

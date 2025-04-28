@@ -1,4 +1,4 @@
-/* Personnel section styles */
+Personnel section styles
 .menu-item-clickable {
     cursor: pointer;
     padding: 10px;
@@ -22,7 +22,7 @@
 }
 
 .menu-text-clickable {
-    color: #212529;
+    color: #ffffff;
     transition: color 0.3s ease;
     margin-top: 10px;
     font-weight: 500;
@@ -59,6 +59,7 @@
 [data-aos] {
     pointer-events: none;
 }
+
 [data-aos].aos-animate {
     pointer-events: auto;
 }
@@ -68,6 +69,7 @@
     transform: translateY(30px);
     transition: opacity 0.6s ease, transform 0.6s ease;
 }
+
 .fade-up-custom.aos-animate {
     opacity: 1;
     transform: translateY(0);
@@ -207,9 +209,11 @@
     0% {
         box-shadow: 0 0 0 0 rgba(13, 110, 253, 0.4);
     }
+
     70% {
         box-shadow: 0 0 0 10px rgba(13, 110, 253, 0);
     }
+
     100% {
         box-shadow: 0 0 0 0 rgba(13, 110, 253, 0);
     }
@@ -226,7 +230,7 @@
         height: 80px;
         border-radius: 15px;
     }
-    
+
     .assessment-title {
         font-size: 0.85rem;
     }
@@ -238,7 +242,7 @@
         height: 70px;
         border-radius: 12px;
     }
-    
+
     .assessment-card {
         padding: 10px;
     }
@@ -374,7 +378,8 @@
 
 .dashboard-frame {
     position: relative;
-    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    padding-bottom: 56.25%;
+    /* 16:9 aspect ratio */
     height: 0;
     overflow: hidden;
 }
@@ -431,9 +436,11 @@
     0% {
         box-shadow: 0 0 0 0 rgba(13, 110, 253, 0.4);
     }
+
     70% {
         box-shadow: 0 0 0 10px rgba(13, 110, 253, 0);
     }
+
     100% {
         box-shadow: 0 0 0 0 rgba(13, 110, 253, 0);
     }
@@ -450,15 +457,16 @@
         font-size: 0.9rem;
         padding: 8px 15px;
     }
-    
+
     .dashboard-info {
         flex-direction: column;
         align-items: center;
         gap: 10px;
     }
-    
+
     .dashboard-frame {
-        padding-bottom: 75%; /* Increased height for mobile */
+        padding-bottom: 75%;
+        /* Increased height for mobile */
     }
 }
 
@@ -492,9 +500,11 @@
     0% {
         transform: translateY(0px);
     }
+
     50% {
         transform: translateY(-10px);
     }
+
     100% {
         transform: translateY(0px);
     }
@@ -531,9 +541,11 @@
     0% {
         box-shadow: 0 0 0 0 rgba(13, 110, 253, 0.4);
     }
+
     70% {
         box-shadow: 0 0 0 10px rgba(13, 110, 253, 0);
     }
+
     100% {
         box-shadow: 0 0 0 0 rgba(13, 110, 253, 0);
     }
@@ -719,6 +731,7 @@ h1:hover .text-highlight::before {
     0% {
         background-position: -200% 0;
     }
+
     100% {
         background-position: 200% 0;
     }
@@ -731,12 +744,10 @@ h1:hover .text-highlight::before {
     right: 0;
     bottom: 0;
     left: 0;
-    background: linear-gradient(
-        to right,
-        rgba(255, 255, 255, 0) 0%,
-        rgba(255, 255, 255, 0.2) 50%,
-        rgba(255, 255, 255, 0) 100%
-    );
+    background: linear-gradient(to right,
+            rgba(255, 255, 255, 0) 0%,
+            rgba(255, 255, 255, 0.2) 50%,
+            rgba(255, 255, 255, 0) 100%);
     background-size: 200% 100%;
     pointer-events: none;
     animation: shimmer 2s infinite;
@@ -755,7 +766,7 @@ h1:hover .text-highlight::before {
         height: 40px;
         font-size: 18px;
     }
-    
+
     .featured .play-button {
         width: 60px;
         height: 60px;
@@ -830,7 +841,7 @@ h1:hover .text-highlight::before {
 
 .news-item {
     margin-bottom: 10px;
-    padding: 12px 15px;
+    padding: 0; /* ลบ padding จากตัว item */
     border-radius: 8px;
     background-color: #fff;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
@@ -838,24 +849,25 @@ h1:hover .text-highlight::before {
     transform: translateY(0);
 }
 
-.news-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-    background-color: #fff9f9;
+/* เพิ่มเส้นคั่นระหว่างรายการ */
+.news-item:not(:last-child) {
+    border-bottom: 1px solid #f0f0f0;
 }
 
 .news-link {
     display: block;
-    color: #343a40;
+    color: #343a40 !important; /* บังคับให้เป็นสีเข้มเสมอ */
     text-decoration: none;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     transition: color 0.3s ease;
+    padding: 8px 5px; /* เพิ่ม padding เพื่อให้พื้นที่คลิกกว้างขึ้น */
 }
 
 .news-link:hover {
-    color: #dc3545;
+    color: #dc3545 !important; /* สีแดงเมื่อ hover */
+    background-color: rgba(220, 53, 69, 0.05); /* พื้นหลังแดงอ่อนเมื่อ hover */
 }
 
 .news-link i {
@@ -921,6 +933,7 @@ h1:hover .text-highlight::before {
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -949,7 +962,7 @@ h1:hover .text-highlight::before {
     width: 100%;
     height: 100%;
     background: radial-gradient(circle at top left, rgba(13, 110, 253, 0.05), transparent 60%),
-                radial-gradient(circle at bottom right, rgba(13, 110, 253, 0.05), transparent 60%);
+        radial-gradient(circle at bottom right, rgba(13, 110, 253, 0.05), transparent 60%);
     z-index: 0;
 }
 
@@ -1061,10 +1074,12 @@ h1:hover .text-highlight::before {
         transform: scale(1);
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     }
+
     50% {
         transform: scale(1.02);
         box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
     }
+
     100% {
         transform: scale(1);
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
@@ -1086,6 +1101,7 @@ h1:hover .text-highlight::before {
         opacity: 0;
         transform: translateY(30px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -1329,6 +1345,7 @@ h1:hover .text-highlight::before {
         opacity: 0;
         transform: translateY(30px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -1364,7 +1381,7 @@ h1:hover .text-highlight::before {
     left: -100%;
     width: 50%;
     height: 100%;
-    background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 100%);
+    background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 100%);
     transform: skewX(-25deg);
     transition: left 0.75s;
 }
@@ -1612,6 +1629,7 @@ h1:hover .text-highlight::before {
         opacity: 0;
         transform: translateX(-20px);
     }
+
     to {
         opacity: 1;
         transform: translateX(0);
@@ -1630,9 +1648,11 @@ h1:hover .text-highlight::before {
     0% {
         box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.4);
     }
+
     70% {
         box-shadow: 0 0 0 10px rgba(255, 193, 7, 0);
     }
+
     100% {
         box-shadow: 0 0 0 0 rgba(255, 193, 7, 0);
     }
@@ -1643,41 +1663,182 @@ h1:hover .text-highlight::before {
 }
 
 .slider-container {
-        margin: 0 auto;
-        position: relative;
-        max-width: 100%;
+    margin: 0 auto;
+    position: relative;
+    max-width: 100%;
+}
+
+.slider-wrapper {
+    transition: transform 0.6s ease-in-out;
+}
+
+.slider-item:hover img {
+    transform: scale(1.03);
+    transition: transform 0.3s ease;
+}
+
+.slider-item img {
+    transition: transform 0.3s ease;
+}
+
+.image-info {
+    opacity: 0.9;
+    transition: opacity 0.3s ease;
+}
+
+.slider-item:hover .image-info {
+    opacity: 1;
+}
+
+.btn-view-all {
+    font-weight: 500;
+    border-radius: 30px;
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.btn-view-all:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 123, 255, 0.3);
+}
+
+.vision-container {
+    margin-left: -80px;
+    margin-right: -80px;
+    margin-top: -35px;
+}
+
+@media (max-width: 991px) {
+    .vision-container {
+        margin-left: -40px;
+        margin-right: -40px;
     }
-    
-    .slider-wrapper {
-        transition: transform 0.6s ease-in-out;
+
+    .title-education {
+        margin-top: -20px;
     }
-    
-    .slider-item:hover img {
-        transform: scale(1.03);
-        transition: transform 0.3s ease;
+
+    .vision-text {
+        font-size: 1.35rem;
     }
-    
-    .slider-item img {
-        transition: transform 0.3s ease;
+}
+
+@media (max-width: 767px) {
+    .vision-container {
+        margin-left: -20px;
+        margin-right: -20px;
     }
-    
-    .image-info {
-        opacity: 0.9;
-        transition: opacity 0.3s ease;
+
+    .title-education {
+        font-size: 1.75rem;
+        margin-top: 0;
     }
-    
-    .slider-item:hover .image-info {
-        opacity: 1;
+
+    .vision-text {
+        font-size: 1.25rem;
     }
-    
-    .btn-view-all {
-        font-weight: 500;
-        border-radius: 30px;
-        box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
-        transition: all 0.3s ease;
+}
+
+@media (max-width: 575px) {
+    .vision-container {
+        margin-left: 0;
+        margin-right: 0;
     }
-    
-    .btn-view-all:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 6px 15px rgba(0, 123, 255, 0.3);
+
+    .title-education {
+        font-size: 1.5rem;
     }
+
+    .vision-text {
+        font-size: 1.1rem;
+    }
+}
+
+.vision-title {
+    color: #083d8a;
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.vision-title:after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 25%;
+    right: 25%;
+    height: 2px;
+    background: linear-gradient(to right, transparent, #f8c541, transparent);
+}
+
+.vision-subtitle {
+    color: #555;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 1.6;
+    margin-bottom: 0.8rem;
+}
+
+.vission-highlight {
+    color: #083d8a;
+    font-weight: 600;
+}
+
+/* เพิ่ม CSS สำหรับเครื่องหมายคำพูด */
+.vision-container {
+    padding: 20px 30px;
+    position: relative;
+}
+
+.quote-marks {
+    font-size: 140px;
+    line-height: 0;
+    position: absolute;
+    color: rgba(8, 61, 138, 0.1);
+    font-family: 'Georgia', serif;
+}
+
+.quote-left {
+    top: 10px;
+    left: -20px;
+}
+
+.quote-right {
+    bottom: -70px;
+    right: -20px;
+}
+
+/* Responsive styling */
+@media (max-width: 991px) {
+    .quote-marks {
+        font-size: 100px;
+    }
+
+    .quote-left {
+        top: 0px;
+        left: -10px;
+    }
+
+    .quote-right {
+        bottom: -50px;
+        right: -10px;
+    }
+}
+
+@media (max-width: 767px) {
+    .quote-marks {
+        font-size: 80px;
+    }
+
+    .quote-left {
+        top: 0px;
+        left: 0;
+    }
+
+    .quote-right {
+        bottom: -40px;
+        right: 0;
+    }
+}
