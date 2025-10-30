@@ -15,13 +15,15 @@
           <div class="tile-body">
             <div class="form-row">
               <div class="form-group col-md-12">
-                <label>หัวข้อ</label>
+                <label>หัวข้อ <span class="text-danger">*</span> <small class="text-muted">(ไม่เกิน 191 ตัวอักษร)</small></label>
                 <input type="text"
-                       class="form-control"
-                       name="title"
-                       value="{{ isset($result->title) ? $result->title : '' }}"
-                       placeholder="ระบุหัวข้อ"
-                       required>
+                     class="form-control @error('title') is-invalid @enderror"
+                     name="title"
+                     maxlength="191"
+                     value="{{ isset($result->title) ? $result->title : '' }}"
+                     placeholder="ระบุหัวข้อ"
+                     required>
+                <x-error-message title="title" />
               </div>
             </div>
             <div class="form-row">
@@ -61,8 +63,21 @@
                        class="form-control krajee-input"
                        data-msg-placeholder="เลือกไฟล์หน้าปก"
                        accept="image/*"
-                       data-initial-caption="{{ $result->cover }}">
+                       data-initial-caption="{{ $result->cover !== 'assets/images/new_thumbnail.jpg' ? basename($result->cover) : 'รูปภาพตั้งต้น' }}">
                 <small class="form-text text-muted">ขนาดรูปภาพที่เหมาะสม 670 × 405 pixel (กว้าง x สูง)</small>
+                
+                <!-- แสดงรูปภาพปัจจุบัน -->
+                <div class="mt-2">
+                  <p><small>รูปภาพปัจจุบัน:</small></p>
+                  @if($result->cover !== 'assets/images/new_thumbnail.jpg')
+                    <img src="{{ Storage::url('news/' . gen_folder($result->id) . '/crop/' . $result->cover) }}" 
+                         alt="รูปภาพปัจจุบัน" style="max-height: 100px;">
+                  @else
+                    <img src="{{ asset('assets/images/new_thumbnail.jpg') }}" 
+                         alt="รูปภาพตั้งต้น" style="max-height: 100px;">
+                    <p class="mt-1"><small>(รูปภาพตั้งต้น)</small></p>
+                  @endif
+                </div>
               </div>
             </div>
             <div class="form-row">
@@ -125,6 +140,9 @@
                          name="attach[]"
                          multiple>
                 </div>
+                <small class="form-text text-muted">
+                  รองรับไฟล์: PDF, Word (.doc, .docx), Excel (.xls, .xlsx), PowerPoint (.ppt, .pptx)
+                </small>
               </div>
             </div>
           </div>
@@ -157,7 +175,7 @@
         initialPreview: @php echo $result->initialPreview; @endphp,
         initialPreviewAsData: true,
         initialPreviewConfig: @php echo $result->initialPreviewConfig; @endphp,
-        deleteUrl: "@php echo route('admin.news.attach-destroy', [$result->id])  @endphp",
+        deleteUrl: "{{ secure_url(route('admin.news.attach-destroy', [$result->id], false)) }}",
         overwriteInitial: false,
         initialPreviewFileType: 'image',
         uploadAsync: false,
@@ -165,7 +183,7 @@
         showCaption: false,
         showRemove: false,
         showUpload: false,
-        allowedFileExtensions: ["doc", "docx", "pdf", "ppt", "pptx"],
+        allowedFileExtensions: ["doc", "docx", "pdf", "ppt", "pptx", "xls", "xlsx"],
         fileActionSettings: {
           showDrag: true,
           showZoom: true,
@@ -175,13 +193,41 @@
         purifyHtml: true,
       }).on('filesorted', function (event, params) {
         // console.log('File sorted ', params.previewId, params.oldIndex, params.newIndex, params.stack);
-        $.post("@php echo route('admin.news.attach-sort', [$result->id]) @endphp", {
+        $.post("{{ secure_url(route('admin.news.attach-sort', [$result->id], false)) }}", {
           stack: params.stack
         }, function (data, textStatus, jqXHR) {
           console.log(data, textStatus, jqXHR);
-        }, "JSON");
+        }, "JSON").fail(function(xhr, status, error) {
+          console.error('Error sorting files:', error);
+          alert('เกิดข้อผิดพลาดในการจัดเรียงไฟล์ กรุณาลองอีกครั้ง');
+        });
+      }).on('filepredelete', function(event, key, jqXHR) {
+        // เพิ่ม event handler สำหรับการลบไฟล์
+        console.log('Deleting file with key:', key);
+      }).on('filedeleted', function(event, key, jqXHR) {
+        // event handler เมื่อลบไฟล์สำเร็จ
+        console.log('File deleted successfully, key:', key);
+        var response = jqXHR.responseJSON;
+        if (response && response.message) {
+          // แสดงข้อความสำเร็จ (ถ้าต้องการ)
+          console.log('Success:', response.message);
+        }
+      }).on('filedeleteerror', function(event, key, jqXHR) {
+        // event handler เมื่อเกิดข้อผิดพลาดในการลบไฟล์
+        console.error('Error deleting file, key:', key);
+        var response = jqXHR.responseJSON;
+        var errorMessage = 'เกิดข้อผิดพลาดในการลบไฟล์ กรุณาลองอีกครั้ง';
+        
+        if (response && response.error) {
+          errorMessage = response.error;
+        } else if (response && response.message) {
+          errorMessage = response.message;
+        }
+        
+        alert(errorMessage);
       });
 
     });
   </script>
 @endsection
+

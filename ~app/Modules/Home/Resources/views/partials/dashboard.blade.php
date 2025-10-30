@@ -1,4 +1,4 @@
-<section id="dashboard-section" class="dashboard-section py-5">
+<section id="statistics" class="dashboard-section py-5">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-8">
@@ -22,6 +22,10 @@
                         onclick="showDashboard('dashboard2')">
                         <i class="fas fa-user-graduate me-2"></i> ข้อมูลติดตามเด็กนอกระบบ
                     </button>
+                    <button type="button" class="dashboard-tab" id="dashboard3-btn"
+                        onclick="showDashboard('dashboard3')">
+                        <i class="fas fa-chart-line me-2"></i> รายงานผลการทดสอบทางการศึกษาระดับชาติ (NT/RT/ONET)
+                    </button>
                 </div>
             </div>
         </div>
@@ -36,10 +40,20 @@
                         <p class="mt-2">กำลังโหลดข้อมูล กรุณารอสักครู่...</p>
                     </div>
                     <div class="dashboard-frame">
-                        <iframe
+                        {{-- 2567 --}}
+                        {{-- <iframe
                             data-src="https://lookerstudio.google.com/embed/reporting/cce3a597-75c9-417f-885a-3c7dba974cbd/page/ZAkEF"
                             frameborder="0" allowfullscreen onload="hideLoading('loading-dashboard1')" loading="lazy"
-                            sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox">
+                            sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
+                            style="width: 100%; height: 768px; aspect-ratio: 16/9;">
+                        </iframe> --}}
+
+                        {{-- 2568 --}}
+                        <iframe
+                            src="https://lookerstudio.google.com/embed/reporting/b8961b17-455d-4e22-8a28-c76338d3bdf0/page/UVgRF"
+                            frameborder="0" allowfullscreen onload="hideLoading('loading-dashboard1')" loading="lazy"
+                            sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
+                            style="width: 100%; height: 768px; aspect-ratio: 16/9;">
                         </iframe>
                     </div>
                 </div>
@@ -57,7 +71,27 @@
                         <iframe title="เด็กนอกระบบ 26-3"
                             data-src="https://app.powerbi.com/view?r=eyJrIjoiY2U3YjI3NDYtZjI2NC00N2M4LWE2NDItMjY0NzU4YmJmNTUwIiwidCI6ImZhNGU3MjMyLWUyODgtNDhmMS05MzMyLWM3N2Q4ZmVhNzhhNyIsImMiOjEwfQ%3D%3D"
                             frameborder="0" onload="hideLoading('loading-dashboard2')" loading="lazy"
-                            allowFullScreen="true"></iframe>
+                            allowFullScreen="true" style="width: 100%; height: 768px; aspect-ratio: 16/9;">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-panel" id="dashboard3">
+                <div class="dashboard-frame-wrapper">
+                    <div class="dashboard-loading" id="loading-dashboard3">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">กำลังโหลด...</span>
+                        </div>
+                        <p class="mt-2">กำลังโหลดข้อมูล กรุณารอสักครู่...</p>
+                    </div>
+                    <div class="dashboard-frame">
+                        <iframe
+                            src="https://lookerstudio.google.com/embed/reporting/9b0cb1b5-e141-4e3a-8220-108e1a51d113/page/p_xqsvsprsud"
+                            frameborder="0" allowfullscreen onload="hideLoading('loading-dashboard3')" loading="lazy"
+                            sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
+                            style="width: 100%; height: 768px; aspect-ratio: 16/9;">
+                        </iframe>
                     </div>
                 </div>
             </div>
@@ -99,7 +133,7 @@
         dashboardButtons.forEach(button => button.classList.remove('active'));
         const activeButton = document.getElementById(dashboardId + '-btn');
         if (activeButton) activeButton.classList.add('active');
-        
+
         // จัดการกับ panel - ลบการใช้ transform และ opacity แบบ animation
         const dashboardPanels = document.querySelectorAll('.dashboard-panel');
         dashboardPanels.forEach(panel => {

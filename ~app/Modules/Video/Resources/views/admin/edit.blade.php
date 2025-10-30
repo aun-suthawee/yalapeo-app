@@ -16,17 +16,15 @@
 																<label>ที่อยู่วิดิโอ <span class="badge badge-danger">YouTube</span> <span class="badge badge-primary">Facebook</span> </label>
 																<input type="text" class="form-control @error('url') is-invalid @enderror" name="url" value="{{ $result->url }}" placeholder="ex. https://www.youtube.com/watch?v=6Oo5trPKpOo">
 																<small class="form-text text-muted">
-																	สำหรับวิดีโอจาก
-																	<b>Facebook</b> เพื่อให้สามารถบันทึกข้อมูลลงสู่ระบบได้ให้ทำตามขั้นตอนดังนี้<br>
-																	1. คัดลอกตัวเลข ID ตรงท้ายลิงก์ (ตัวเลขหลังคำว่า "videos/")<br>
-																	2. แล้วใส่ตัวเลขนั้นหลัง
-																	"watch?v=" แทน<br><br>
-																		
-																		<b>ตัวอย่าง:</b><br>
-																		ลิงก์เดิมที่บันทึกมาจากเพจ ศธจ.ยะลา: https://www.facebook.com/yalaedu/videos/1367499458026596<br>
-																		ลิงก์ใหม่ เพื่อที่จะสามารถบันทึกได้: https://www.facebook.com/watch?v=1367499458026596
-																</small>
-																<x-error-message title="url" />
+                                                                  สำหรับวิดีโอจาก
+                                                                  <b>Facebook</b> เพื่อให้สามารถบันทึกข้อมูลลงสู่ระบบได้ให้ทำตามขั้นตอนดังนี้<br>
+                                                                  1. คัดลอกตัวเลข ID ตรงท้ายลิงก์ (ตัวเลขหลังคำว่า "videos/")<br>
+                                                                  2. แล้วใส่ตัวเลขนั้นหลัง "watch?v=" แทน<br><br>
+										                          <b>ตัวอย่าง:</b><br>
+										                          ลิงก์เดิมที่บันทึกมาจากเพจ ศธจ.ยะลา: https://www.facebook.com/yalaedu/videos/1367499458026596<br>
+										                          ลิงก์ใหม่ เพื่อที่จะสามารถบันทึกได้: https://www.facebook.com/watch?v=1367499458026596
+								                                </small>
+ 															    <x-error-message title="url" />
 														</div>
 														<div class="form-group col-md-5">
 																<label>หัวข้อ</label>

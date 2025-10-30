@@ -46,47 +46,14 @@ class RouteServiceProvider extends ServiceProvider
    */
   protected function mapAdminRoutes()
   {
-    if (!$this->isSubdomain(request()->getHost())) {
-      Route::middleware('web')
-        ->namespace($this->moduleNamespace)
-        ->group(module_path('Assessment', '/Routes/admin.php'));
-    }
+    Route::namespace($this->moduleNamespace)
+      ->group(module_path('Assessment', 'Routes/admin.php'));
   }
 
   protected function mapWebRoutes()
   {
-    if (!$this->isSubdomain(request()->getHost())) {
-      Route::middleware('web')
-        ->namespace($this->moduleNamespace)
-        ->group(module_path('Assessment', '/Routes/web.php'));
-    }
-  }
-
-  /**
-   * ตรวจสอบว่า hostname ที่ส่งมาเป็น subdomain หรือไม่
-   *
-   * @param string $host
-   * @return bool
-   */
-  protected function isSubdomain($host)
-  {
-    // รายชื่อ subdomain ที่มีในระบบ
-    $subdomains = ['yrp'];
-
-    $baseDomain = 'yalapeo-app.test';
-
-    // ถ้า host คือโดเมนหลัก จะคืนค่า false
-    if ($host === $baseDomain) {
-      return false;
-    }
-
-    // ตรวจสอบว่า host เป็น subdomain หรือไม่
-    foreach ($subdomains as $subdomain) {
-      if (strpos($host, $subdomain . '.') === 0) {
-        return true;
-      }
-    }
-
-    return false;
+    Route::middleware('web')
+      ->namespace($this->moduleNamespace)
+      ->group(module_path('Assessment', 'Routes/web.php'));
   }
 }

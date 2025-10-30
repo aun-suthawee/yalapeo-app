@@ -61,19 +61,20 @@ class RouteServiceProvider extends ServiceProvider
   protected function isSubdomain($host)
   {
     // รายชื่อ subdomain ที่มีในระบบ
-    $subdomains = ['yrp'];
+    $subdomains = ['ypr'];
 
-    $baseDomain = 'yalapeo-app.test';
+    $baseDomain = parse_url(config('app.url'), PHP_URL_HOST) ?: parse_url(config('app.asset_url'), PHP_URL_HOST);
+    $baseDomain = $baseDomain ?: $host;
 
-    // ถ้า host คือโดเมนหลัก จะคืนค่า false
     if ($host === $baseDomain) {
       return false;
     }
 
-    // ตรวจสอบว่า host เป็น subdomain หรือไม่
     foreach ($subdomains as $subdomain) {
       if (strpos($host, $subdomain . '.') === 0) {
-        return true;
+        $expectedSuffix = '.' . $baseDomain;
+
+        return substr($host, -strlen($expectedSuffix)) === $expectedSuffix;
       }
     }
 

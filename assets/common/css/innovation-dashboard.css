@@ -1,0 +1,600 @@
+/* Innovation zone styles */
+:root {
+    --innovation-bg: #f5f7ff;
+    --innovation-card-bg: #0f172a;
+    --innovation-card-contrast: #ffffff;
+    --innovation-accent: #6366f1;
+    --innovation-chip-bg: rgba(99, 102, 241, 0.12);
+    --innovation-chip-color: #4338ca;
+    --innovation-muted: #64748b;
+    --innovation-border: rgba(15, 23, 42, 0.08);
+}
+
+.innovation-zone {
+    margin-top: 0;
+    padding: 5rem 0 5rem;
+    background: linear-gradient(180deg, 
+        #ffffff 0%, 
+        rgba(248, 250, 255, 0.6) 15%, 
+        rgba(241, 245, 255, 0.75) 30%, 
+        rgba(237, 242, 255, 0.85) 50%, 
+        #f8fafc 100%
+    );
+    position: relative;
+    overflow: hidden;
+}
+
+.innovation-zone::before,
+.innovation-zone::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle at center, rgba(99, 102, 241, 0.08), transparent 70%);
+    z-index: 0;
+}
+
+.innovation-zone::before {
+    width: 420px;
+    height: 420px;
+    top: -140px;
+    right: -80px;
+}
+
+.innovation-zone::after {
+    width: 320px;
+    height: 320px;
+    bottom: -120px;
+    left: -120px;
+}
+
+.innovation-zone .container {
+    position: relative;
+    z-index: 2;
+}
+
+.innovation-zone .zone-header {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.innovation-zone .zone-title {
+    max-width: 520px;
+}
+
+.innovation-zone .zone-title h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #0f172a;
+    line-height: 1.25;
+}
+
+.innovation-zone .zone-title p {
+    margin-top: 0.75rem;
+    font-size: 1rem;
+    color: var(--innovation-muted);
+    line-height: 1.65;
+}
+
+/* .innovation-zone .zone-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem;
+    width: 100%;
+    max-width: 520px;
+} */
+
+.innovation-zone .summary-card {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid var(--innovation-border);
+    border-radius: 18px;
+    padding: 1.1rem 1.25rem;
+    box-shadow: 0 14px 40px -24px rgba(15, 23, 42, 0.45);
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
+.innovation-zone .summary-card span {
+    font-size: 0.85rem;
+    color: var(--innovation-muted);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+}
+
+.innovation-zone .summary-card strong {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.innovation-zone .filters-panel {
+    margin-top: 3rem;
+    background: rgba(255, 255, 255, 0.94);
+    border-radius: 22px;
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    padding: 1.5rem 2rem;
+    box-shadow: 0 35px 80px -45px rgba(99, 102, 241, 0.55);
+    backdrop-filter: blur(6px);
+}
+
+.innovation-zone .filters-panel form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.innovation-zone .filter-search {
+    flex: 1 1 260px;
+    position: relative;
+    max-width: 420px;
+}
+
+.innovation-zone .filter-search input {
+    width: 100%;
+    padding: 0.85rem 1rem 0.85rem 3rem;
+    border-radius: 14px;
+    border: 1px solid rgba(148, 163, 184, 0.4);
+    background: rgba(248, 250, 255, 0.85);
+    font-size: 0.95rem;
+    color: #0f172a;
+    transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+.innovation-zone .filter-search input:focus {
+    outline: none;
+    border-color: rgba(99, 102, 241, 0.5);
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12);
+}
+
+.innovation-zone .filter-search i {
+    position: absolute;
+    top: 50%;
+    left: 1rem;
+    transform: translateY(-50%);
+    color: var(--innovation-muted);
+    font-size: 1rem;
+}
+
+.innovation-zone .filter-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.innovation-zone .filter-meta .results-count {
+    font-size: 0.9rem;
+    color: var(--innovation-muted);
+}
+
+.innovation-zone .categories-scroll {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+}
+
+.innovation-zone .category-chip {
+    border: none;
+    background: var(--innovation-chip-bg);
+    color: var(--innovation-chip-color);
+    padding: 0.65rem 1.1rem;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 8px 18px -12px rgba(67, 56, 202, 0.45);
+}
+
+.innovation-zone .category-chip .count {
+    font-size: 0.8rem;
+    color: inherit;
+    opacity: 0.75;
+}
+
+.innovation-zone .category-chip.is-active {
+    background: var(--innovation-accent);
+    color: #ffffff;
+    box-shadow: 0 16px 35px -18px rgba(99, 102, 241, 0.75);
+}
+
+.innovation-zone .category-chip:is(:hover, :focus-visible) {
+    transform: translateY(-1px);
+    outline: none;
+}
+
+.innovation-zone .innovation-grid {
+    /* Keep the grid responsive but allow it to span the full viewport
+       (full-bleed) rather than being constrained by any container.
+       We use the left:50% / margin-left:-50vw trick to stretch to the
+       viewport width while keeping the grid content centered. */
+    margin-top: 2.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+    gap: 1.5rem;
+
+    /* Full-bleed layout */
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    /* inner horizontal padding: increased ~3x for wider gutters */
+    padding: 0 3.75rem;
+    box-sizing: border-box;
+    max-width: none;
+}
+
+/* Container wrapper for innovation zone content */
+.innovation-zone > .container {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 1.25rem;
+}
+
+@media (max-width: 1200px) {
+    .innovation-zone .innovation-grid {
+        padding: 0 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .innovation-zone .innovation-grid {
+        /* restore comfortable padding on small screens to avoid overflow */
+        padding: 0 1rem;
+        width: auto;
+        left: 0;
+        margin-left: 0;
+        margin-right: 0;
+        right: 0;
+    }
+}
+
+.innovation-zone .innovation-card {
+    position: relative;
+    background: var(--innovation-card-bg);
+    color: var(--innovation-card-contrast);
+    border-radius: 18px;
+    overflow: hidden;
+    text-decoration: none;
+    box-shadow: 0 35px 70px -45px rgba(15, 23, 42, 0.75);
+    transform: translateY(0);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    min-height: 160px;
+}
+
+.innovation-zone .innovation-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 40px 80px -45px rgba(79, 70, 229, 0.85);
+}
+
+.innovation-zone .innovation-card .card-figure {
+    position: relative;
+    width: 200px;
+    height: 100%;
+    min-height: 160px;
+    background: linear-gradient(135deg, rgba(79, 70, 229, 0.7), rgba(14, 116, 144, 0.6));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.innovation-zone .innovation-card .card-figure img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.innovation-zone .innovation-card:hover .card-figure img {
+    transform: scale(1.05);
+}
+
+.innovation-zone .innovation-card .figure-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 45%, rgba(15, 23, 42, 0.85) 100%);
+}
+
+.innovation-zone .innovation-card .figure-badge {
+    position: absolute;
+    top: 0.9rem;
+    left: 0.9rem;
+    padding: 0.45rem 0.85rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    backdrop-filter: blur(8px);
+    background: rgba(15, 23, 42, 0.55);
+}
+
+.innovation-zone .innovation-card .status-pill {
+    position: absolute;
+    top: 0.9rem;
+    right: 0.9rem;
+    padding: 0.45rem 0.85rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: rgba(34, 197, 94, 0.9);
+    color: #052e16;
+}
+
+.innovation-zone .innovation-card .status-pill.is-inactive {
+    background: rgba(248, 113, 113, 0.85);
+    color: #450a0a;
+}
+
+.innovation-zone .innovation-card .card-body {
+    padding: 1.25rem 1.5rem 1.25rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    flex: 1 1 auto;
+    justify-content: space-between;
+}
+
+.innovation-zone .innovation-card .card-heading {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.innovation-zone .innovation-card .school-name {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(148, 163, 184, 0.85);
+}
+
+.innovation-zone .innovation-card .innovation-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    line-height: 1.35;
+    color: #f8fafc;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.innovation-zone .innovation-card .innovation-description {
+    font-size: 0.875rem;
+    color: rgba(226, 232, 240, 0.88);
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.innovation-zone .innovation-card .card-footer {
+    margin-top: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 0.75rem;
+    align-items: center;
+}
+
+.innovation-zone .innovation-card .meta-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.4rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: rgba(148, 163, 184, 0.15);
+    color: rgba(226, 232, 240, 0.85);
+}
+
+.innovation-zone .innovation-card .cta {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--innovation-accent);
+    padding: 0.45rem 0.7rem;
+    border-radius: 0.75rem;
+    background: rgba(99, 102, 241, 0.12);
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.innovation-zone .innovation-card:hover .cta {
+    color: #ffffff;
+    background: rgba(99, 102, 241, 0.35);
+}
+
+.innovation-zone .empty-results {
+    margin-top: 2.5rem;
+    background: rgba(15, 23, 42, 0.9);
+    color: #f8fafc;
+    border-radius: 22px;
+    padding: 2.75rem;
+    text-align: center;
+    box-shadow: 0 30px 60px -35px rgba(15, 23, 42, 0.9);
+}
+
+.innovation-zone .empty-results h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.innovation-zone .empty-results p {
+    color: rgba(226, 232, 240, 0.75);
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+/* Loading Indicator */
+.loading-indicator {
+    text-align: center;
+    padding: 2rem;
+    display: none;
+}
+
+.loading-indicator.active,
+.loading-indicator[style*="display: block"] {
+    display: block;
+}
+
+.loading-indicator .spinner {
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid var(--innovation-accent);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.loading-indicator p {
+    color: var(--innovation-muted);
+    font-size: 0.95rem;
+}
+
+/* No More Data */
+.no-more-data {
+    text-align: center;
+    padding: 2rem;
+    color: var(--innovation-muted);
+    display: none;
+}
+
+.no-more-data.active,
+.no-more-data[style*="display: block"] {
+    display: block;
+}
+
+.no-more-data p {
+    font-size: 0.9rem;
+}
+
+/* Fade in animation for cards */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 1024px) {
+    .innovation-zone .zone-title h2 {
+        font-size: 2.15rem;
+    }
+
+    .innovation-zone .filters-panel form {
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .innovation-zone {
+        margin-top: 3rem;
+        padding: 3rem 0 3.5rem;
+    }
+
+    .innovation-zone .zone-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    /* .innovation-zone .zone-summary {
+        max-width: 100%;
+    } */
+
+    .innovation-zone .filters-panel {
+        padding: 1.35rem 1.5rem;
+    }
+
+    .innovation-zone .filters-panel form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .innovation-zone .filter-search {
+        max-width: 100%;
+    }
+
+    .innovation-zone .filter-meta {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .innovation-zone .categories-scroll {
+        gap: 0.55rem;
+    }
+
+    .innovation-zone .innovation-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .innovation-zone .innovation-card {
+        grid-template-columns: 140px 1fr;
+        min-height: 140px;
+    }
+
+    .innovation-zone .innovation-card .card-figure {
+        width: 140px;
+        min-height: 140px;
+    }
+
+    .innovation-zone .innovation-card .card-body {
+        padding: 1rem 1.25rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .innovation-zone .innovation-card {
+        grid-template-columns: 1fr;
+        min-height: auto;
+    }
+
+    .innovation-zone .innovation-card .card-figure {
+        width: 100%;
+        min-height: 140px;
+        height: 140px;
+    }
+
+    .innovation-zone .innovation-card .card-body {
+        padding: 1.25rem 1.25rem 1.35rem;
+    }
+
+    .innovation-zone .categories-scroll {
+        overflow-x: auto;
+        padding-bottom: 0.35rem;
+    }
+
+    .innovation-zone .category-chip {
+        flex-shrink: 0;
+    }
+}

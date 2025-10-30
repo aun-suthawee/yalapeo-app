@@ -1,10 +1,17 @@
-<section class="tiktok-videos py-5 bg-light">
+<section id="tiktok" class="tiktok-videos py-5 bg-light">
     <div class="container-fluid px-md-5">
         <h2 class="title text-center mb-4">
             <span class="text-highlight">TikTok</span>ล่าสุด
         </h2>
 
-        <div class="tiktok-slider owl-carousel owl-theme">
+        <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@semayalanews" data-unique-id="semayalanews"
+            data-embed-from="embed_page" data-embed-type="creator" style="max-width:780px; min-width:288px;">
+            <section> <a target="_blank"
+                    href="https://www.tiktok.com/@semayalanews?refer=creator_embed">@semayalanews</a> </section>
+        </blockquote>
+        <script async src="https://www.tiktok.com/embed.js"></script>
+
+        {{-- <div class="tiktok-slider owl-carousel owl-theme">
             @if (isset($tiktok_videos) && count($tiktok_videos) > 0)
                 @foreach ($tiktok_videos as $index => $tiktok)
                     @if ($index < 4)
@@ -55,6 +62,7 @@
                     <p>ยังไม่มีวิดีโอ TikTok</p>
                 </div>
             @endif
-        </div>
+        </div> --}}
     </div>
 </section>
+

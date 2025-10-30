@@ -15,13 +15,14 @@
                 <div class="position-relative vision-container">
                     <div class="vision-text">
                         <div class="quote-marks quote-left">&ldquo;</div>
-                        
-                        <h1 class="vision-title">การบริหารและจัดการศึกษาแบบบูรณาการเพื่อความเป็นเลิศ</h1>
-                        
-                        <p class="vision-subtitle">มุ่งสู่การพัฒนาผู้เรียนให้ได้รับ<span class="vission-highlight">การเรียนรู้ตลอดชีวิตอย่างมีคุณภาพ</span></p>
-                        
-                        <p class="vision-subtitle">พร้อมเสริมสร้าง<span class="vission-highlight">ทักษะที่จำเป็นสำหรับความสำเร็จในศตวรรษที่ 21</span></p>
-                        
+
+                        <h1 class="vision-title">บูรณาการจัดการศึกษา เพื่อพัฒนาผู้เรียนให้เป็นพลเมืองโลกยุคใหม่</h1>
+
+                        <p class="vision-subtitle"><span class="vission-highlight">มีความรู้ ทักษะ
+                                และคุณธรรม</span>พร้อมรับมือกับความท้าทายในศตวรรษที่ 21 สร้างสรรค์นวัตกรรม
+                            และมีส่วนร่วมในการพัฒนาความมั่นคงทาง<span
+                                class="vission-highlight">สังคมพหุวัฒนธรรมที่ยั่งยืน</span></p>
+
                         <div class="quote-marks quote-right">&rdquo;</div>
                     </div>
                 </div>
@@ -38,3 +39,4 @@
         </div>
     </div>
 </section>
+

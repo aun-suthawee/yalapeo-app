@@ -89,7 +89,7 @@ if (!function_exists('__fileExtension')) {
   function __fileExtension($file_name)
   {
     $tmp = explode('.', $file_name);
-    $file_extension = end($tmp);
+    $file_extension = strtolower(end($tmp));
 
     $types = [
       'pdf' => '<i class="fas fa-file-pdf fa-fw"></i>',
@@ -97,11 +97,16 @@ if (!function_exists('__fileExtension')) {
       'docx' => '<i class="fas fa-file-word fa-fw text-primary"></i>',
       'ppt' => '<i class="fas fa-file-powerpoint fa-fw text-danger"></i>',
       'pptx' => '<i class="fas fa-file-powerpoint fa-fw text-danger"></i>',
+      'xls' => '<i class="fas fa-file-excel fa-fw text-success"></i>',
+      'xlsx' => '<i class="fas fa-file-excel fa-fw text-success"></i>',
       'jpg' => '<i class="fas fa-image"></i>',
-      'jpeg' => '<i class="fas fa-image"></i>'
+      'jpeg' => '<i class="fas fa-image"></i>',
+      'png' => '<i class="fas fa-image"></i>',
+      'gif' => '<i class="fas fa-image"></i>'
     ];
 
-    return $types[$file_extension];
+    // ถ้าไม่มีในรายการ ให้แสดงไอคอน file ทั่วไป
+    return isset($types[$file_extension]) ? $types[$file_extension] : '<i class="fas fa-file fa-fw"></i>';
   }
 }
 
@@ -109,7 +114,7 @@ if (!function_exists('__fileType')) {
   function __fileType($file_name)
   {
     $tmp = explode('.', $file_name);
-    $file_extension = end($tmp);
+    $file_extension = strtolower(end($tmp));
 
     $types = [
       'pdf' => 'pdf',
@@ -117,11 +122,16 @@ if (!function_exists('__fileType')) {
       'docx' => 'office',
       'ppt' => 'office',
       'pptx' => 'office',
+      'xls' => 'office',
+      'xlsx' => 'office',
       'jpg' => 'image',
-      'jpeg' => 'image'
-    ];
+      'jpeg' => 'image',
+      'png' => 'image',
+      'gif' => 'image'
+    ]; 
 
-    return $types[$file_extension];
+    // ถ้าไม่มีในรายการ ให้ return 'other'
+    return isset($types[$file_extension]) ? $types[$file_extension] : 'other';
   }
 }
 
@@ -389,3 +399,4 @@ if (!function_exists('limitText')) {
     return $string;
   }
 }
+

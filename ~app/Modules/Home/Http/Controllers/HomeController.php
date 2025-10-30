@@ -61,10 +61,10 @@ class HomeController extends BaseViewController
         //     ],
         //     10,
         // );
-        $data['lasted_news'] = $this->news->getLastedNewOfActivity([], 4);
-        $data['news'] = $this->news->getNewOfTypeAll([], 6);
-        $data['news_purchase'] = $this->news->getNewOfTypePurchase([]);
-        $data['news_purchase_summary'] = $this->news->getNewOfTypePurchaseSummary([]);
+        $data['lasted_news'] = $this->news->getLastedNewOfActivity(['date' => 'desc'], 4);
+        $data['news'] = $this->news->getNewOfTypeAll(['date' => 'desc'], 6);
+        $data['news_purchase'] = $this->news->getNewOfTypePurchase(['date' => 'desc'], 10);
+        $data['news_purchase_summary'] = $this->news->getNewOfTypePurchaseSummary(['date' => 'desc'], 10);
         $data['galleries'] = $this->gallery->limit(
             [
                 'sort' => 'ASC',
@@ -133,35 +133,35 @@ class HomeController extends BaseViewController
             [
                 'title' => 'แบบสอบถามความพึงพอใจเว็บไซต์',
                 'cover' => asset('assets/images/assessment/link-1.png'),
-                'url' => '#',
+                'url' => 'https://forms.gle/Dfi4MSZzJNmPrfxA7',
             ],
+            // [
+            //     'title' => 'แบบสอบถามออนไลน์',
+            //     'cover' => asset('assets/images/assessment/link-2.png'),
+            //     'url' => '#',
+            // ],
             [
-                'title' => 'แบบสอบถามออนไลน์',
-                'cover' => asset('assets/images/assessment/link-2.png'),
-                'url' => '#',
-            ],
-            [
-                'title' => 'แบบสอบถามความพึงพอใจการให้บริหาร',
+                'title' => 'แบบสอบถามความพึงพอใจการให้บริการ',
                 'cover' => asset('assets/images/assessment/link-3.png'),
-                'url' => '#',
+                'url' => 'https://forms.gle/YCa28qUFHtdJT2Y56',
             ],
             [
                 'title' => 'Q & A <br>ถาม-ตอบ ปัญหา',
                 'cover' => asset('assets/images/assessment/link-4.png'),
-                'url' => '#',
+                'url' => '/webboard',
             ],
             [
-                'title' => 'รับฟังความคิดเห็น',
-                'cover' => asset('assets/images/assessment/link-5.png'),
-                'url' => '#',
-            ],
-            [
-                'title' => 'ช่องทางการร้องเรียน',
+                'title' => 'ช่องทางการร้องเรียนทั่วไป',
                 'cover' => asset('assets/images/assessment/link-6.png'),
-                'url' => '#',
+                'url' => '/ช่องทางการร้องเรียนทั่วไปของสำนักงานศึกษาธิการจังหวัดยะลา',
+            ],
+            [
+                'title' => 'ช่องทางแจ้งเรื่องร้องเรียนการทุจริตและประพฤติมิชอบ',
+                'cover' => asset('assets/images/assessment/link-6.png'),
+                'url' => '/ช่องทางแจ้งเรื่องร้องเรียนการทุจริตและประพฤติมิชอบ',
             ],
         ];
-
+        
         $data['outerlinks'] = [
             [
                 'title' => 'My office',
@@ -219,7 +219,7 @@ class HomeController extends BaseViewController
             asset('assets/plugins/node_modules/owl.carousel/dist/assets/owl.theme.default.min.css'),
             asset('https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css'),
             asset('assets/common/css/top-picture.css'),
-            asset('assets/common/css/home.css')
+            asset('assets/common/css/home6-5.css')
         ];
         $data['scripts'] = [
             [
@@ -229,7 +229,7 @@ class HomeController extends BaseViewController
             asset('assets/plugins/node_modules/owl.carousel/dist/owl.carousel.min.js'),
             asset('https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js'),
             asset('assets/common/js/index.js'),
-            asset('assets/common/js/home.js'),
+            asset('assets/common/js/home28-4.js'),
         ];
 
         // ดึงข้อมูลวิดีโอ TikTok ล่าสุด 6 รายการ

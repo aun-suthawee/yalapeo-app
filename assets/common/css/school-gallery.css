@@ -1,0 +1,298 @@
+/* School Gallery Styles */
+
+/* Gallery Card */
+.gallery-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    overflow: hidden;
+    border: 1px solid #e0e0e0;
+}
+
+.gallery-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.gallery-card.inactive {
+    opacity: 0.7;
+}
+
+.gallery-card-body {
+    padding: 1.5rem;
+}
+
+.gallery-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 1rem;
+    gap: 1rem;
+}
+
+.gallery-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+    flex: 1;
+}
+
+.gallery-title a {
+    color: #2c3e50;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.gallery-title a:hover {
+    color: #3498db;
+}
+
+.gallery-description {
+    color: #6c757d;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.gallery-meta {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.gallery-meta small {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.gallery-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+}
+
+.empty-icon {
+    font-size: 4rem;
+    color: #cbd5e0;
+    margin-bottom: 1.5rem;
+}
+
+.empty-state h3 {
+    color: #2d3748;
+    margin-bottom: 0.5rem;
+}
+
+/* Gallery Viewer */
+.gallery-viewer-container {
+    background: #f8f9fa;
+    padding: 2rem 0;
+}
+
+.gallery-viewer-wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.gallery-iframe {
+    width: 100%;
+    height: 600px;
+    border: none;
+    display: block;
+}
+
+.loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.95);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+/* Page Header */
+.page-header {
+    padding-bottom: 1rem;
+}
+
+.page-header h1 {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+/* Form Enhancements */
+.form-label {
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 0.5rem;
+}
+
+.form-control:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+}
+
+.invalid-feedback {
+    display: block;
+    margin-top: 0.5rem;
+}
+
+/* Alert Boxes */
+.alert {
+    border-radius: 8px;
+    border: none;
+    padding: 1rem 1.25rem;
+}
+
+.alert-info {
+    background: #e7f3ff;
+    color: #014361;
+}
+
+.alert-warning {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.alert-success {
+    background: #d4edda;
+    color: #155724;
+}
+
+.alert-danger {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .gallery-viewer-wrapper {
+        border-radius: 0;
+    }
+
+    .gallery-iframe {
+        height: 400px;
+    }
+
+    .gallery-viewer-container {
+        padding: 1rem 0;
+    }
+
+    .gallery-card-body {
+        padding: 1rem;
+    }
+
+    .gallery-meta {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .gallery-actions {
+        flex-direction: column;
+    }
+
+    .gallery-actions .btn {
+        width: 100%;
+    }
+
+    .page-header .d-flex {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .page-header .d-flex .btn {
+        width: 100%;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .gallery-iframe {
+        height: 500px;
+    }
+}
+
+/* Button Styles */
+.btn {
+    border-radius: 6px;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: #3498db;
+    border-color: #3498db;
+}
+
+.btn-primary:hover {
+    background: #2980b9;
+    border-color: #2980b9;
+}
+
+.btn-outline-primary:hover {
+    background: #3498db;
+    border-color: #3498db;
+}
+
+/* Badge Styles */
+.badge {
+    padding: 0.375rem 0.75rem;
+    font-weight: 600;
+    border-radius: 6px;
+}
+
+/* Card Enhancements */
+.card {
+    border: none;
+    border-radius: 12px;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+    background: transparent;
+    padding: 0;
+    margin-bottom: 1rem;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    content: "›";
+    color: #6c757d;
+}
+
+.breadcrumb-item a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+.breadcrumb-item a:hover {
+    color: #2980b9;
+    text-decoration: underline;
+}
+
+.breadcrumb-item.active {
+    color: #6c757d;
+}

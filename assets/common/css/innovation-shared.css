@@ -1,0 +1,316 @@
+/* Innovation Shared Styles */
+/* ไฟล์นี้รวม styles ที่ใช้ร่วมกันสำหรับการแสดงผลนวัตกรรม */
+/* ใช้ใน: innovations/index.blade.php, schools/show.blade.php */
+
+:root {
+    --pdf-red-primary: #dc3545;
+    --pdf-red-secondary: #c82333;
+    --skeleton-bg: #f0f0f0;
+    --skeleton-highlight: #e0e0e0;
+    --badge-bg: rgba(0, 0, 0, 0.7);
+}
+
+/* ===================================
+   Innovation Image Container
+   =================================== */
+.innovation-image {
+    position: relative;
+    background: var(--skeleton-bg);
+    min-height: 200px;
+    overflow: hidden;
+}
+
+.innovation-image img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out;
+    position: relative;
+    z-index: 2;
+}
+
+.innovation-image img.loaded {
+    opacity: 1;
+}
+
+.innovation-image.placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa;
+}
+
+.innovation-image.placeholder .placeholder-icon {
+    position: relative;
+    z-index: 2;
+}
+
+/* ===================================
+   Loading Skeleton Animation
+   =================================== */
+/* แสดงเฉพาะเมื่อยังโหลดรูป และไม่ใช่ PDF หรือ placeholder */
+.innovation-image:not(.placeholder):not(.pdf-container)::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(90deg, var(--skeleton-bg) 25%, var(--skeleton-highlight) 50%, var(--skeleton-bg) 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+    z-index: 1;
+}
+
+/* ซ่อน skeleton เมื่อรูปโหลดเสร็จ */
+.innovation-image img.loaded ~ * + ::before {
+    display: none;
+}
+
+@keyframes loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* ===================================
+   PDF Preview Card Styles
+   =================================== */
+.pdf-preview-card {
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(135deg, var(--pdf-red-primary) 0%, var(--pdf-red-secondary) 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    position: relative;
+}
+
+.pdf-preview-card .pdf-icon {
+    font-size: 4rem;
+    margin-bottom: 0.5rem;
+    opacity: 0.9;
+}
+
+.pdf-preview-card .pdf-info {
+    text-align: center;
+}
+
+.pdf-preview-card .pdf-label {
+    font-size: 1.2rem;
+    font-weight: bold;
+    display: block;
+}
+
+.pdf-preview-card .file-count {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    display: block;
+    margin-top: 0.25rem;
+}
+
+/* ===================================
+   File Count Badge
+   =================================== */
+.file-count-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: var(--badge-bg);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    z-index: 3;
+}
+
+.file-count-badge i {
+    font-size: 0.7rem;
+}
+
+/* ===================================
+   PDF Viewer Styles (for Modal)
+   =================================== */
+.pdf-viewer {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.pdf-header {
+    background: #e9ecef;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.pdf-header i {
+    font-size: 1.2rem;
+    margin-right: 0.5rem;
+}
+
+.pdf-header .file-name {
+    font-weight: 600;
+    flex-grow: 1;
+}
+
+.pdf-preview-container {
+    padding: 1rem;
+    background: white;
+}
+
+.pdf-preview-container embed {
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+}
+
+/* ===================================
+   File Display
+   =================================== */
+.file-display {
+    margin-bottom: 1rem;
+}
+
+/* ===================================
+   Carousel Styles (for Multiple Files)
+   =================================== */
+.carousel-item {
+    text-align: center;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    width: 5%;
+}
+
+.carousel-indicators {
+    bottom: -40px;
+}
+
+.carousel-indicators button {
+    background-color: #6c757d;
+}
+
+/* ===================================
+   Innovation Card Enhancements
+   =================================== */
+/* Optimize rendering */
+.innovation-card {
+    will-change: transform;
+    transform: translateZ(0);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+}
+
+/* Card hover effect */
+.innovation-card:hover {
+    transform: translateY(-5px) translateZ(0);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Prevent link/button hover from affecting parent */
+.innovation-actions a,
+.innovation-actions button {
+    position: relative;
+    z-index: 10;
+}
+
+/* Image overlay for status badge */
+.image-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0.5rem;
+    background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.status-badge.active {
+    background: #28a745;
+    color: white;
+}
+
+.status-badge.inactive {
+    background: #6c757d;
+    color: white;
+}
+
+/* ===================================
+   Responsive Design
+   =================================== */
+@media (max-width: 768px) {
+    .pdf-preview-card .pdf-icon {
+        font-size: 3rem;
+    }
+
+    .pdf-preview-card .pdf-label {
+        font-size: 1rem;
+    }
+
+    .file-count-badge {
+        font-size: 0.7rem;
+        padding: 3px 6px;
+    }
+
+    .carousel-control-prev,
+    .carousel-control-next {
+        width: 10%;
+    }
+}
+
+@media (max-width: 576px) {
+    .innovation-image {
+        min-height: 150px;
+    }
+
+    .innovation-image img {
+        height: 150px;
+    }
+
+    .pdf-preview-card {
+        height: 150px;
+    }
+
+    .pdf-preview-card .pdf-icon {
+        font-size: 2.5rem;
+    }
+}
+
+/* ===================================
+   Print Styles
+   =================================== */
+@media print {
+    .file-count-badge,
+    .status-badge,
+    .innovation-actions {
+        display: none !important;
+    }
+
+    .innovation-card {
+        box-shadow: none !important;
+        border: 1px solid #dee2e6;
+    }
+}

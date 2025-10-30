@@ -22,12 +22,34 @@
                         <div class="form-group col-md-3">
                             <label>สถานะการแสดงผล</label>
                             <div class="custom-control custom-switch mt-2">
-                                <input type="checkbox" class="custom-control-input" id="isActive" name="is_active" value="1" 
-                                    {{ old('is_active', 1) ? 'checked' : '' }}>
-                                <label class="custom-control-label" for="isActive">
-                                    <span id="statusText" class="text-success">เปิดใช้งาน</span>
+                                <label>
+                                    <input type="hidden" name="is_active" value="0">
+                                    <input type="checkbox" name="is_active" value="1" checked>
+                                    แสดงรูปภาพนี้ในหน้าเว็บไซต์
                                 </label>
                             </div>
+                        </div>
+                    </div>
+                    
+                    <!-- เพิ่มส่วนลิงค์เชื่อมโยง -->
+                    <div class="form-row">
+                        <div class="form-group col-md-8">
+                            <label>ลิงค์เชื่อมโยง</label>
+                            <input type="text" name="url" class="form-control @error('url') is-invalid @enderror" 
+                                value="{{ old('url') }}" placeholder="ระบุลิงค์เชื่อมโยง">
+                            <small class="form-text text-muted">ระบุ URL ที่ต้องการให้ลิงค์ไปเมื่อคลิกที่รูปภาพ</small>
+                            <x-error-message title="url" />
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>การแสดง (Target)</label>
+                            <select name="target" class="form-control @error('target') is-invalid @enderror">
+                                <option value="">-เลือก-</option>
+                                <option value="_parent" {{ old('target') == '_parent' ? 'selected' : '' }}>_parent (เปิดหน้าต่างที่เป็นหน้าต่างระดับ Parent)</option>
+                                <option value="_blank" {{ old('target') == '_blank' ? 'selected' : '' }}>_blank (เปิดหน้าต่างใหม่ทุกครั้ง)</option>
+                                <option value="_self" {{ old('target') == '_self' ? 'selected' : '' }}>_self (เปิดหน้าต่างเดิม)</option>
+                                <option value="_top" {{ old('target') == '_top' ? 'selected' : '' }}>_top (เปิดหน้าต่างในระดับบนสุด)</option>
+                            </select>
+                            <x-error-message title="target" />
                         </div>
                     </div>
                     

@@ -1,0 +1,134 @@
+<svg width="480" height="720" viewBox="0 0 480 720" fill="none" xmlns="http://www.w3.org/2000/svg">
+<defs>
+    <!-- Main gradient: Orange to Green -->
+    <linearGradient id="bgGradient" x1="0" y1="0" x2="480" y2="720" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#FF6B35"/>
+        <stop offset="50%" stop-color="#F7931E"/>
+        <stop offset="100%" stop-color="#10B981"/>
+    </linearGradient>
+    
+    <!-- Top accent gradient -->
+    <linearGradient id="topGlow" x1="0" y1="0" x2="480" y2="240" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#FFB800" stop-opacity="0.6"/>
+        <stop offset="100%" stop-color="#FF6B35" stop-opacity="0"/>
+    </linearGradient>
+    
+    <!-- Bottom wave gradient -->
+    <linearGradient id="bottomWave" x1="0" y1="520" x2="480" y2="720" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#059669" stop-opacity="0.5"/>
+        <stop offset="100%" stop-color="#10B981" stop-opacity="0.3"/>
+    </linearGradient>
+    
+    <!-- Light bulb glow -->
+    <radialGradient id="bulbGlow" cx="0.5" cy="0.5" r="0.5">
+        <stop offset="0%" stop-color="#FCD34D" stop-opacity="0.9"/>
+        <stop offset="60%" stop-color="#FBBF24" stop-opacity="0.4"/>
+        <stop offset="100%" stop-color="#F59E0B" stop-opacity="0"/>
+    </radialGradient>
+    
+    <!-- Circuit pattern gradient -->
+    <linearGradient id="circuitGrad" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#34D399"/>
+        <stop offset="100%" stop-color="#10B981"/>
+    </linearGradient>
+</defs>
+
+<!-- Background -->
+<rect width="480" height="720" rx="24" fill="url(#bgGradient)"/>
+
+<!-- Decorative waves -->
+<path d="M0 0H480V180C420 145 360 150 300 175C240 200 180 190 120 165C60 140 20 130 0 140V0Z" 
+      fill="url(#topGlow)" opacity="0.7"/>
+<path d="M0 540C80 580 160 570 240 600C320 630 400 615 480 640V720H0V540Z" 
+      fill="url(#bottomWave)" opacity="0.6"/>
+
+<!-- Floating particles (representing ideas) -->
+<circle cx="80" cy="120" r="6" fill="#FBBF24" opacity="0.4"/>
+<circle cx="420" cy="180" r="8" fill="#34D399" opacity="0.5"/>
+<circle cx="150" cy="520" r="5" fill="#FCD34D" opacity="0.3"/>
+<circle cx="380" cy="600" r="7" fill="#10B981" opacity="0.4"/>
+
+<!-- Central innovation icon container -->
+<g transform="translate(240, 310)">
+    <!-- Glow circle -->
+    <circle r="180" fill="url(#bulbGlow)" opacity="0.3"/>
+    
+    <!-- Outer ring -->
+    <circle r="140" fill="none" stroke="#FFD700" stroke-width="2" stroke-opacity="0.6" stroke-dasharray="8 8"/>
+    
+    <!-- Circuit-inspired decoration -->
+    <path d="M-100 -80 L-80 -80 L-80 -60 M100 -80 L120 -80 L120 -60 M-100 80 L-80 80 L-80 60 M100 80 L120 80 L120 60" 
+          stroke="url(#circuitGrad)" stroke-width="3" stroke-linecap="round" opacity="0.5"/>
+    
+    <!-- Light bulb icon (innovation symbol) - LARGER -->
+    <g transform="scale(1.6)">
+        <!-- Bulb glow -->
+        <ellipse cx="0" cy="-20" rx="65" ry="70" fill="#FCD34D" opacity="0.2"/>
+        
+        <!-- Bulb shape -->
+        <path d="M-35 -20 C-35 -50, -20 -70, 0 -70 C20 -70, 35 -50, 35 -20 C35 0, 25 15, 20 30 L-20 30 C-25 15, -35 0, -35 -20 Z" 
+              fill="#FFFFFF" opacity="0.95"/>
+        
+        <!-- Bulb filament -->
+        <path d="M-12 -35 L-8 -15 L8 -15 L12 -35" 
+              stroke="#F59E0B" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <circle cx="0" cy="-25" r="4" fill="#F59E0B"/>
+        
+        <!-- Bulb base -->
+        <rect x="-18" y="30" width="36" height="8" fill="#D97706" rx="2"/>
+        <rect x="-15" y="38" width="30" height="6" fill="#B45309" rx="1"/>
+        <rect x="-12" y="44" width="24" height="4" fill="#92400E" rx="1"/>
+        
+        <!-- Sparkle effects -->
+        <g opacity="0.8">
+            <path d="M-45 -30 L-40 -25 L-45 -20 L-50 -25 Z" fill="#FFD700"/>
+            <path d="M45 -35 L50 -30 L45 -25 L40 -30 Z" fill="#FFD700"/>
+            <path d="M-20 -65 L-16 -60 L-20 -55 L-24 -60 Z" fill="#34D399"/>
+        </g>
+    </g>
+</g>
+
+<!-- Main title below icon -->
+<text x="240" y="510" fill="#FFFFFF" font-family="'Sarabun', 'Kanit', sans-serif" 
+      font-size="32" font-weight="700" text-anchor="middle" opacity="0.95">
+    พื้นที่นวัตกรรมทางการศึกษา
+</text>
+<text x="240" y="545" fill="#FEF3C7" font-family="'Sarabun', sans-serif" 
+      font-size="18" font-weight="500" text-anchor="middle" opacity="0.85">
+    Education Innovation Sandbox
+</text>
+
+<!-- Decorative circuit lines -->
+<g stroke="#34D399" stroke-width="2" fill="none" opacity="0.3" stroke-linecap="round">
+    <path d="M60 200 L100 200 L100 160"/>
+    <circle cx="100" cy="160" r="4" fill="#34D399"/>
+    
+    <path d="M420 250 L380 250 L380 290"/>
+    <circle cx="380" cy="290" r="4" fill="#10B981"/>
+</g>
+
+<!-- Bottom badge -->
+<g transform="translate(240, 620)">
+    <rect x="-90" y="-22" width="180" height="44" rx="22" 
+          fill="rgba(255, 255, 255, 0.15)" stroke="#FFFFFF" stroke-width="2" stroke-opacity="0.3"/>
+    <text x="0" y="6" fill="#FFFFFF" font-family="'Sarabun', sans-serif" 
+          font-size="16" font-weight="600" text-anchor="middle">
+        🚀 ค้นพบนวัตกรรม
+    </text>
+</g>
+
+<!-- Corner decorations -->
+<circle cx="40" cy="40" r="20" fill="none" stroke="#FFD700" stroke-width="2" opacity="0.3"/>
+<circle cx="440" cy="680" r="20" fill="none" stroke="#10B981" stroke-width="2" opacity="0.3"/>
+
+<!-- Static gears (no animation) -->
+<g transform="translate(100, 580)" opacity="0.2">
+    <circle r="15" fill="none" stroke="#FFFFFF" stroke-width="2"/>
+    <path d="M0,-15 L0,-20 M15,0 L20,0 M0,15 L0,20 M-15,0 L-20,0" stroke="#FFFFFF" stroke-width="2"/>
+</g>
+
+<g transform="translate(380, 140)" opacity="0.2">
+    <circle r="12" fill="none" stroke="#FFFFFF" stroke-width="2"/>
+    <path d="M0,-12 L0,-16 M12,0 L16,0 M0,12 L0,16 M-12,0 L-16,0" stroke="#FFFFFF" stroke-width="2"/>
+</g>
+</svg>

@@ -1,0 +1,437 @@
+/* ============================================
+   Sandbox Experiments Theme
+   ============================================ */
+
+:root {
+    --primary-orange: #ff6b35;
+    --primary-green: #2ecc71;
+    --primary-blue: #3498db;
+    --primary-purple: #9b59b6;
+    --accent-white: #ffffff;
+    --light-gray: #f8f9fa;
+    --medium-gray: #e9ecef;
+    --dark-gray: #6c757d;
+    --text-dark: #2c3e50;
+    --success-green: #28a745;
+    --warning-orange: #ffc107;
+    --danger-red: #dc3545;
+    --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.15);
+    --border-radius: 12px;
+    --transition: all 0.3s ease;
+}
+
+/* ============================================
+   Base Experiment Styles
+   ============================================ */
+
+.experiment-builder,
+.experiment-container,
+.experiments-grid-container {
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-purple) 100%);
+    min-height: 100vh;
+}
+
+/* ============================================
+   Cards & Panels
+   ============================================ */
+
+.card,
+.info-panel,
+.sidebar,
+.scenario-card,
+.experiment-card {
+    background: var(--accent-white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-soft);
+    transition: var(--transition);
+}
+
+.card:hover,
+.experiment-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+}
+
+/* ============================================
+   Buttons
+   ============================================ */
+
+.btn-primary,
+.btn-add-scenario {
+    background: linear-gradient(135deg, var(--primary-orange), var(--warning-orange));
+    color: var(--accent-white);
+    border: none;
+    transition: var(--transition);
+}
+
+.btn-primary:hover,
+.btn-add-scenario:hover {
+    background: linear-gradient(135deg, #e55a25, #e6a800);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+.btn-success,
+.btn-run,
+.btn-run-all {
+    background: var(--success-green);
+    color: var(--accent-white);
+    border: none;
+}
+
+.btn-success:hover,
+.btn-run:hover,
+.btn-run-all:hover {
+    background: #218838;
+}
+
+.btn-warning,
+.btn-edit {
+    background: var(--warning-orange);
+    color: var(--text-dark);
+    border: none;
+}
+
+.btn-warning:hover,
+.btn-edit:hover {
+    background: #e6a800;
+}
+
+.btn-danger,
+.btn-delete {
+    background: var(--danger-red);
+    color: var(--accent-white);
+    border: none;
+}
+
+.btn-danger:hover,
+.btn-delete:hover {
+    background: #c82333;
+}
+
+/* ============================================
+   Badges
+   ============================================ */
+
+.badge-primary {
+    background: var(--primary-orange);
+}
+
+.badge-success {
+    background: var(--success-green);
+}
+
+.badge-warning {
+    background: var(--warning-orange);
+    color: var(--text-dark);
+}
+
+.badge-danger {
+    background: var(--danger-red);
+}
+
+.badge-info {
+    background: var(--primary-blue);
+}
+
+/* ============================================
+   Status Indicators
+   ============================================ */
+
+.status-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 6px;
+}
+
+.status-draft {
+    background: var(--dark-gray);
+}
+
+.status-pending {
+    background: var(--warning-orange);
+}
+
+.status-running {
+    background: var(--primary-blue);
+    animation: pulse 1.5s infinite;
+}
+
+.status-completed {
+    background: var(--success-green);
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* ============================================
+   Parameter Items
+   ============================================ */
+
+.parameter-item,
+.param-drag-item {
+    background: var(--light-gray);
+    border: 2px dashed var(--medium-gray);
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+}
+
+.parameter-item:hover,
+.param-drag-item:hover {
+    background: var(--medium-gray);
+    border-color: var(--primary-orange);
+    transform: translateX(4px);
+}
+
+.parameter-icon {
+    background: linear-gradient(135deg, var(--primary-orange), var(--warning-orange));
+    border-radius: 10px;
+    color: var(--accent-white);
+}
+
+/* ============================================
+   Scenario Cards
+   ============================================ */
+
+.scenario-card {
+    background: var(--light-gray);
+    border: 2px solid var(--medium-gray);
+}
+
+.scenario-card:hover {
+    border-color: var(--primary-orange);
+}
+
+.scenario-card.baseline {
+    background: linear-gradient(135deg, rgba(52, 152, 219, 0.1), rgba(155, 89, 182, 0.1));
+    border-color: var(--primary-purple);
+}
+
+.scenario-card.drag-over {
+    border-color: var(--primary-orange);
+    border-width: 3px;
+    background: linear-gradient(135deg, rgba(255, 107, 53, 0.1), rgba(255, 193, 7, 0.1));
+    box-shadow: 0 8px 24px rgba(255, 107, 53, 0.3);
+}
+
+.scenario-number {
+    background: var(--primary-orange);
+    color: var(--accent-white);
+    border-radius: 8px;
+}
+
+/* ============================================
+   Text Colors
+   ============================================ */
+
+h1, h2, h3, h4, h5, h6,
+.text-dark,
+.scenario-name,
+.parameter-name {
+    color: var(--text-dark);
+}
+
+.text-muted,
+.scenario-desc,
+.parameter-desc {
+    color: var(--dark-gray);
+}
+
+/* ============================================
+   Info Values & Highlights
+   ============================================ */
+
+.info-value,
+.highlight-value {
+    color: var(--primary-orange);
+}
+
+/* ============================================
+   Drop Zones
+   ============================================ */
+
+.drop-zone,
+.scenario-drop-zone {
+    border: 3px dashed var(--medium-gray);
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+}
+
+.drop-zone.drag-over,
+.scenario-drop-zone.drag-over {
+    border-color: var(--primary-orange);
+    background: rgba(255, 107, 53, 0.05);
+}
+
+/* ============================================
+   Charts & Visualizations
+   ============================================ */
+
+.chart-container {
+    background: var(--accent-white);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    box-shadow: var(--shadow-soft);
+}
+
+/* ============================================
+   Modals
+   ============================================ */
+
+.modal-header {
+    background: linear-gradient(135deg, var(--primary-orange), var(--warning-orange));
+    color: var(--accent-white);
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+}
+
+.modal-header.bg-warning {
+    background: linear-gradient(135deg, var(--warning-orange), #e6a800) !important;
+}
+
+.modal-header.bg-success {
+    background: linear-gradient(135deg, var(--success-green), #218838) !important;
+}
+
+/* ============================================
+   Progress & Loading
+   ============================================ */
+
+.progress-bar {
+    background: linear-gradient(135deg, var(--primary-orange), var(--warning-orange));
+}
+
+.loading-spinner .spinner {
+    border-top-color: var(--primary-orange);
+}
+
+/* ============================================
+   Links
+   ============================================ */
+
+a {
+    color: var(--primary-orange);
+    transition: var(--transition);
+}
+
+a:hover {
+    color: #e55a25;
+}
+
+/* ============================================
+   Forms
+   ============================================ */
+
+.form-control:focus {
+    border-color: var(--primary-orange);
+    box-shadow: 0 0 0 0.2rem rgba(255, 107, 53, 0.25);
+}
+
+.form-select:focus {
+    border-color: var(--primary-orange);
+    box-shadow: 0 0 0 0.2rem rgba(255, 107, 53, 0.25);
+}
+
+/* ============================================
+   Baseline Info Box
+   ============================================ */
+
+.baseline-info-box {
+    background: linear-gradient(135deg, rgba(52, 152, 219, 0.1) 0%, rgba(155, 89, 182, 0.1) 100%);
+    border: 2px solid var(--primary-blue);
+    border-radius: var(--border-radius);
+}
+
+.baseline-title {
+    color: var(--primary-blue);
+}
+
+.baseline-filter-info {
+    background: var(--accent-white);
+    border-left: 4px solid var(--primary-blue);
+}
+
+/* ============================================
+   Results & Comparison
+   ============================================ */
+
+.results-preview {
+    background: #d4edda;
+    border: 2px solid var(--success-green);
+    border-radius: 8px;
+    color: #155724;
+}
+
+.comparison-card {
+    background: var(--accent-white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-soft);
+}
+
+/* ============================================
+   Statistics Cards
+   ============================================ */
+
+.stat-card {
+    background: var(--accent-white);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    text-align: center;
+    transition: var(--transition);
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+}
+
+.stat-value {
+    font-size: 32px;
+    font-weight: bold;
+    color: var(--primary-orange);
+}
+
+.stat-label {
+    color: var(--dark-gray);
+    font-size: 14px;
+}
+
+/* ============================================
+   Utilities
+   ============================================ */
+
+.bg-light {
+    background-color: var(--light-gray) !important;
+}
+
+.bg-white {
+    background-color: var(--accent-white) !important;
+}
+
+.text-primary {
+    color: var(--primary-orange) !important;
+}
+
+.text-success {
+    color: var(--success-green) !important;
+}
+
+.text-warning {
+    color: var(--warning-orange) !important;
+}
+
+.text-danger {
+    color: var(--danger-red) !important;
+}
+
+.border-primary {
+    border-color: var(--primary-orange) !important;
+}

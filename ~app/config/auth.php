@@ -37,16 +37,8 @@ return [
 
   'guards' => [
     'web' => [
-        'driver' => 'session',
-        'provider' => 'users',
-    ],
-    'yrp' => [
-        'driver' => 'session',
-        'provider' => 'yrp_users',
-    ],
-    'filament' => [
-        'driver' => 'session',
-        'provider' => 'yrp_users',
+      'driver' => 'session',
+      'provider' => 'users',
     ],
   ],
 
@@ -73,10 +65,10 @@ return [
       'model' => Modules\User\Entities\User::class,
     ],
 
-    'yrp_users' => [
-      'driver' => 'eloquent',
-      'model' => Modules\YrpDashboard\Entities\YrpUser::class,
-    ],
+    // 'users' => [
+    //     'driver' => 'database',
+    //     'table' => 'users',
+    // ],
   ],
 
   /*
@@ -97,13 +89,6 @@ return [
   'passwords' => [
     'users' => [
       'provider' => 'users',
-      'table' => 'password_resets',
-      'expire' => 60,
-      'throttle' => 60,
-    ],
-
-    'yrp_users' => [
-      'provider' => 'yrp_users',
       'table' => 'password_resets',
       'expire' => 60,
       'throttle' => 60,

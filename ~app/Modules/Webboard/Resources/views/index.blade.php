@@ -37,7 +37,7 @@
                             {{ $value->title }}
                             <small class="d-block">
                               <span class="text-secondary">จากคุณ {{ $value->author }}</span>
-                              <span class="text-secondary">/ IP Address: {{ $value->ip }}</span>
+                              {{-- <span class="text-secondary">/ IP Address: {{ $value->ip }}</span> --}}
                               <span class="text-danger">[ ตอบคำถาม {{ $value->answers()->count() }}]</span>
                             </small>
                           </a>

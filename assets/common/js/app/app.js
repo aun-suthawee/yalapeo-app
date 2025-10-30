@@ -3,7 +3,7 @@
 const app = angular.module("myApp", ['ngValidate'], function ($interpolateProvider) {
     $interpolateProvider.startSymbol('<%');
     $interpolateProvider.endSymbol('%>');
-}).constant('BASE_URL', 'http://127.0.0.1:8000');
+}).constant('BASE_URL', 'http://209.15.122.27');
 
 angular.isUndefinedOrNull = function (val) {
     return angular.isUndefined(val) || val === null || val === "";

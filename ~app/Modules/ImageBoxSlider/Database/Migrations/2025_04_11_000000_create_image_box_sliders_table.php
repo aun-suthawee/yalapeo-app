@@ -21,6 +21,8 @@ class CreateImageBoxSlidersTable extends Migration
             $table->string('pdf_file')->nullable();
             $table->string('slug')->unique()->nullable();
             $table->boolean('is_active')->default(true);
+            $table->string('url')->nullable();
+            $table->string('target')->nullable()->default('_parent');
             $table->timestamps();
         });
     }

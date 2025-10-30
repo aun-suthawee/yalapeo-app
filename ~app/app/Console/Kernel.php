@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        \App\Console\Commands\GenerateSitemap::class,
+        \Modules\Sandbox\Console\Commands\RunScheduledExperiments::class,
     ];
 
     /**
@@ -24,7 +24,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('sitemap:generate')->weekly();
+        // $schedule->command('inspire')->hourly();
+        
+        // Run scheduled What-If Analysis experiments every 5 minutes
+        $schedule->command('sandbox:run-scheduled-experiments')->everyFiveMinutes();
     }
 
     /**

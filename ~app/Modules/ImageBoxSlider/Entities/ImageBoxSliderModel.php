@@ -16,7 +16,9 @@ class ImageBoxSliderModel extends Model
         'description',
         'pdf_file',
         'is_active',
-        'slug'
+        'slug',
+        'url',
+        'target'
     ];
     
     protected $casts = [

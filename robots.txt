@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://yalapeo.go.th/sitemap-17-4.xml
+Sitemap: https://yalapeo.go.th/page-sitemap.xml

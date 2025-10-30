@@ -14,12 +14,15 @@
           <div class="tile-body">
             <div class="form-row">
               <div class="form-group col-md-12">
-                <label>หัวข้อ</label>
+                <label>หัวข้อ <span class="text-danger">*</span> <small class="text-muted">(ไม่เกิน 191 ตัวอักษร)</small></label>
                 <input type="text"
-                       class="form-control"
+                       class="form-control @error('title') is-invalid @enderror"
                        name="title"
+                       maxlength="191"
+                       value="{{ old('title') }}"
                        placeholder="ระบุหัวข้อ"
                        required>
+                <x-error-message title="title" />
               </div>
             </div>
             <div class="form-row">
@@ -60,6 +63,12 @@
                        data-msg-placeholder="เลือกไฟล์หน้าปก"
                        accept="image/*">
                 <small class="form-text text-muted">ขนาดรูปภาพที่เหมาะสม 670 × 405 (กว้าง x สูง)</small>
+                
+                <!-- เพิ่มส่วนแสดงภาพตั้งต้น -->
+                <div class="mt-2">
+                  <p><small>หากไม่มีการอัพโหลดรูปภาพ ระบบจะใช้รูปภาพนี้เป็นค่าเริ่มต้น:</small></p>
+                  <img src="{{ asset('assets/images/new_thumbnail.jpg') }}" alt="รูปภาพตั้งต้น" style="max-height: 100px;">
+                </div>
               </div>
             </div>
             <div class="form-row">
@@ -111,6 +120,9 @@
                          name="attach[]"
                          multiple>
                 </div>
+                <small class="form-text text-muted">
+                  รองรับไฟล์: PDF, Word (.doc, .docx), Excel (.xls, .xlsx), PowerPoint (.ppt, .pptx)
+                </small>
               </div>
             </div>
           </div>
@@ -138,7 +150,7 @@
         showCaption: false,
         showRemove: false,
         showUpload: false,
-        allowedFileExtensions: ["doc", "docx", "pdf", "ppt", "pptx"],
+        allowedFileExtensions: ["doc", "docx", "pdf", "ppt", "pptx", "xls", "xlsx"],
         fileActionSettings: {
           showDrag: false,
           showZoom: true,
@@ -149,3 +161,4 @@
     });
   </script>
 @endsection
+

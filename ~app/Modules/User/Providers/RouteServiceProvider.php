@@ -45,39 +45,9 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapAdminRoutes()
     {
-        if (!$this->isSubdomain(request()->getHost())) {
-            Route::middleware('admin')
-                ->prefix('admin')
-                ->namespace($this->moduleNamespace . "\Admin")
-                ->group(module_path('User', 'Routes/admin.php'));
-        }
-    }
-
-    /**
-     * ตรวจสอบว่า hostname ที่ส่งมาเป็น subdomain หรือไม่
-     *
-     * @param string $host
-     * @return bool
-     */
-    protected function isSubdomain($host)
-    {
-        // รายชื่อ subdomain ที่มีในระบบ
-        $subdomains = ['yrp'];
-
-        $baseDomain = 'yalapeo-app.test';
-
-        // ถ้า host คือโดเมนหลัก จะคืนค่า false
-        if ($host === $baseDomain) {
-            return false;
-        }
-
-        // ตรวจสอบว่า host เป็น subdomain หรือไม่
-        foreach ($subdomains as $subdomain) {
-            if (strpos($host, $subdomain . '.') === 0) {
-                return true;
-            }
-        }
-
-        return false;
+        Route::middleware('admin')
+            ->prefix('admin')
+            ->namespace($this->moduleNamespace."\Admin")
+            ->group(module_path('User', 'Routes/admin.php'));
     }
 }

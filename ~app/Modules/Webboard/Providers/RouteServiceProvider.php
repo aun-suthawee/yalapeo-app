@@ -39,46 +39,21 @@ class RouteServiceProvider extends ServiceProvider
 
     protected function mapAdminRoutes()
     {
-        if (!$this->isSubdomain(request()->getHost())) {
         Route::namespace($this->moduleNamespace)
             ->group(module_path('Webboard', 'Routes/admin.php'));
-        }
-    }
-
-    protected function mapWebRoutes()
-    {
-        if (!$this->isSubdomain(request()->getHost())) {
-            Route::middleware('web')
-                ->namespace($this->moduleNamespace)
-                ->group(module_path('Webboard', '/Routes/web.php'));
-        }
     }
 
     /**
-     * ตรวจสอบว่า hostname ที่ส่งมาเป็น subdomain หรือไม่
+     * Define the "web" routes for the application.
      *
-     * @param string $host
-     * @return bool
+     * These routes all receive session state, CSRF protection, etc.
+     *
+     * @return void
      */
-    protected function isSubdomain($host)
+    protected function mapWebRoutes()
     {
-        // รายชื่อ subdomain ที่มีในระบบ
-        $subdomains = ['yrp'];
-
-        $baseDomain = 'yalapeo-app.test';
-
-        // ถ้า host คือโดเมนหลัก จะคืนค่า false
-        if ($host === $baseDomain) {
-            return false;
-        }
-
-        // ตรวจสอบว่า host เป็น subdomain หรือไม่
-        foreach ($subdomains as $subdomain) {
-            if (strpos($host, $subdomain . '.') === 0) {
-                return true;
-            }
-        }
-
-        return false;
+        Route::middleware('web')
+            ->namespace($this->moduleNamespace)
+            ->group(module_path('Webboard', 'Routes/web.php'));
     }
 }

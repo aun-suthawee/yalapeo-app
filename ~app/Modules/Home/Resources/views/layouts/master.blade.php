@@ -2,7 +2,6 @@
 <html lang="{{ app()->getLocale() }}" ng-app="myApp">
 
 <head>
-
     <title>สำนักงานศึกษาธิการจังหวัดยะลา | ศธจ.ยะลา</title>
     <meta name="description"
         content="เว็บไซต์ทางการของสำนักงานศึกษาธิการจังหวัดยะลา (ศธจ.ยะลา) ข้อมูลการศึกษา ข่าวสาร และบริการทางการศึกษาสำหรับประชาชนจังหวัดยะลา">
@@ -10,9 +9,14 @@
         content="ศธจ.ยะลา, สำนักงานศึกษาธิการจังหวัดยะลา, การศึกษายะลา, ศึกษาธิการยะลา, ข้อมูลการศึกษายะลา, yalapeo, yalaedu, yala, education, yala education">
 
     <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <title>{{ isset($body['title']) ? $body['title'] : '' }} - {{ $cacheMeta->title }}</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <meta name="app-base-url" content="{{ url('/') }}" />
+    <script>
+        window.APP_BASE_URL = window.APP_BASE_URL || '{{ url('/') }}';
+    </script>
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="author" content="{{ request()->getHttpHost() }}">
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}" />
@@ -95,10 +99,49 @@
         }
     </script>
 
+    <!-- ไวอาลัย - Mourning Style -->
+    <style>
+        /* ทำให้ทั้งเว็บเป็นขาวดำ */
+        html {
+            filter: grayscale(100%) brightness(0.95);
+            -webkit-filter: grayscale(100%) brightness(0.95);
+        }
+        
+        /* ให้ภาพและวิดีโอเป็นขาวดำด้วย */
+        img, video, iframe {
+            filter: grayscale(100%);
+            -webkit-filter: grayscale(100%);
+        }
+        
+        /* Ribbon ไวอาลัย */
+        .wpm-ribbon {
+            position: fixed;
+            z-index: 99999999;
+            left: -1rem;
+            top: -0.8rem;
+            max-width: 30%;
+            cursor: pointer;
+            -webkit-backface-visibility: hidden;
+            filter: none !important;
+            -webkit-filter: none !important;
+        }
+        
+        /* ป้องกันไม่ให้ ribbon เป็นขาวดำ */
+        .wpm-ribbon img {
+            filter: none !important;
+            -webkit-filter: none !important;
+        }
+    </style>
+
     @yield('stylesheet-content')
 </head>
 
 <body id="{{ isset($module_name) ? $module_name : '' }}">
+
+    <!-- Ribbon ไวอาลัย -->
+    <a href="/" class="wpm-ribbon" title="กลับหน้าแรก"> 
+        <img src="https://bict.moe.go.th/wp-content/uploads/2025/10/wp-mourning-ribbon.png" alt="ไวอาลัย">
+    </a>
 
     @include('home::layouts.header')
 
@@ -154,77 +197,112 @@
     <section class="diff diff-box5">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-md-auto col-xl-auto col-sm-12 text-white">
-                    <img src="{{ asset('assets/images/footer-logo.png') }}" class="img-fluid me-3"
-                        alt="{{ Request::getHost() }}">
+                <!-- Column 1: Contact Information -->
+                <div class="col-lg-4 col-md-6 col-sm-12 text-white mb-4">
+                    <div class="footer-section h-100">
+                        <h4 class="section-title border-bottom pb-2 mb-3">ติดต่อเรา</h4>
+                        <div class="contact-info">
+                            <div class="text-center text-md-start mb-3">
+                                <img src="{{ asset('assets/images/footer-logo.png') }}" class="img-fluid"
+                                    alt="{{ Request::getHost() }}" style="max-height: 80px;">
+                            </div>
+                            <p>
+                                สำนักงานศึกษาธิการจังหวัดยะลา<br>
+                                เลขที่ 3/4 ถนนอาคารสงเคราะห์ ตำบลสะเตง<br>
+                                อำเภอเมืองยะลา จังหวัดยะลา 95000<br>
+                                ทุกวัน จันทร์-ศุกร์ เวลา 08.30 น. – 16.30 น.
+                            </p>
+                            <p>โทรศัพท์: 0 7372 9828<br>
+                                โทรสาร: 0 7372 9827<br>
+                                ติดต่องานคุรุสภายะลา: 0 7329 9310<br>
+                                อีเมล: yalaedu01@gmail.com
+                            </p>
 
-                    <h4 class="mt-3">ติดต่อเรา</h4>
-                    <p>
-                        สำนักงานศึกษาธิการจังหวัดยะลา<br>
-                        เลขที่ 3/4 ถนนอาคารสงเคราะห์ ตำบลสะเตง<br>
-                        อำเภอเมืองยะลา จังหวัดยะลา 95000<br>
-                        ทุกวัน จันทร์-ศุกร์ เวลา 08.30 น. – 16.30 น.
-                    </p>
-
-                    <h4 class="text-highlight mt-3">สถิติผู้เข้าชม</h4>
-                    <div class="visitor-counter">
-                        <script type="text/javascript" src="https://counter.websiteout.com/js/7/7/42055/1"></script>
+                            <div class="visitor-counter mt-3">
+                                <h4 class="text-highlight">สถิติผู้เข้าชม</h4>
+                                <script type="text/javascript" src="https://counter.websiteout.com/js/7/7/42055/1"></script>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-auto col-xl-auto col-sm-12 text-white">
-                    <h4 class="mt-3">กระทรวงศึกษาธิการ</h4>
-                    <ul>
-                        <li><a href="/เกี่ยวกับเรา">เกี่ยวกับกระทรวง</a></li>
-                        <li><a href="/news?type=7">ข่าวสารกิจกรรม</a></li>
-                        {{-- <li><a href="#">การดำเนินงาน</a></li> --}}
-                        {{-- <li><a href="#">ข่าวรับสมัครงาน</a></li> --}}
-                        <li><a href="/news?type=5">จัดซื้อจัดจ้าง</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-auto col-xl-auto col-sm-12 text-white">
-                    <h4 class="mt-3">แหล่งความรู้</h4>
-                    <ul>
-                        <li><a href="#articles">ข่าวที่น่าสนใจ</a></li>
-                        <li><a href="#infographics">Infographic</a></li>
-                        {{-- <li><a href="#downloads">บริการ Download การเรียนการสอน</a></li> --}}
-                        <li><a href="#statistics">สถิติการศึกษา</a></li>
-                        <li><a href="#ebooks">e-Book</a></li>
-                        {{-- <li><a href="#elibrary">e-library</a></li> --}}
-                        {{-- <li><a href="#research">งานวิจัย</a></li> --}}
-                    </ul>
-                </div>
-                <div class="col-md-auto col-xl-auto col-sm-12 text-white">
-                    <h4 class="mt-3">ช่องทางการรับเรื่อง/ร้องเรียน</h4>
-                    <ul>
-                        <li><a href="#">แจ้งเรื่องร้องเรียนการทุจริตประพฤติมิชอบ</a></li>
-                        <li><a href="#">การรับฟังความคิดเห็น</a></li>
-                    </ul>
 
-                    <h4 class="mt-3">Social Media</h4>
-                    <p class="social-link">
-                        <a target="_blank" href="https://www.facebook.com/yalaedu">
-                            <span class="fa-stack">
-                                <i class="fas fa-circle fa-stack-2x"></i>
-                                <i class="fab fa-facebook-square fa-stack-1x fa-inverse"></i>
-                            </span>
-                        </a>
-                        <a target="_blank"
-                            href="https://lineit.line.me/share/ui?url=https%3A%2F%2Fyalapeo.moe.go.th%2F4ita-2567%2F">
-                            <span class="fa-stack">
-                                <i class="fas fa-circle fa-stack-2x"></i>
-                                <i class="fab fa-line fa-stack-1x fa-inverse"></i>
-                            </span>
-                        </a>
-                        <a target="_blank" href="tel:073-729828">
-                            <span class="fa-stack">
-                                <i class="fas fa-circle fa-stack-2x"></i>
-                                <i class="fas fa-phone-alt fa-stack-1x fa-inverse"></i>
-                            </span>
-                        </a>
-                    </p>
-                    <p>
-                        Support Browser: IE9, IE10, Chrome, FireFox
-                    </p>
+                <!-- Column 2: Facebook -->
+                <div class="col-lg-4 col-md-6 col-sm-12 text-white mb-4">
+                    <div class="footer-section h-100">
+                        <h4 class="section-title border-bottom pb-2 mb-3">Facebook</h4>
+                        <div class="facebook-container">
+                            <div id="fb-root"></div>
+                            <script async="1" defer="1" crossorigin="anonymous"
+                                src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v23.0"></script>
+                            <div class="fb-page" data-href="https://www.facebook.com/yalaedu" data-height="400"
+                                data-small-header="false" data-adapt-container-width="true" data-hide-cover="false"
+                                data-show-facepile="true" data-show-posts="true" data-width="">
+                                <blockquote cite="https://www.facebook.com/yalaedu" class="fb-xfbml-parse-ignore">
+                                    <a href="https://www.facebook.com/yalaedu">สำนักงานศึกษาธิการจังหวัดยะลา</a>
+                                </blockquote>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Column 3: Map and Useful Links -->
+                <div class="col-lg-4 col-md-12 col-sm-12 text-white mb-4">
+                    <div class="footer-section h-100">
+                        <h4 class="section-title border-bottom pb-2 mb-3">แผนที่</h4>
+                        <div class="map-container mb-3">
+                            <iframe width="100%" height="220" frameborder="0" scrolling="no" marginheight="0"
+                                marginwidth="0"
+                                src="https://maps.google.com/maps?width=100%25&amp;height=350&amp;hl=th&amp;q=+(%E0%B8%AA%E0%B8%B3%E0%B8%99%E0%B8%B1%E0%B8%81%E0%B8%87%E0%B8%B2%E0%B8%99%E0%B8%A8%E0%B8%B6%E0%B8%81%E0%B8%A9%E0%B8%B2%E0%B8%98%E0%B8%B4%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%88%E0%B8%B1%E0%B8%87%E0%B8%AB%E0%B8%A7%E0%B8%B1%E0%B8%94%E0%B8%A2%E0%B8%B0%E0%B8%A5%E0%B8%B2)&amp;t=&amp;z=16&amp;ie=UTF8&amp;iwloc=B&amp;output=embed">
+                            </iframe>
+                        </div>
+
+                        <div class="useful-links mt-3">
+                            <h4 class="border-bottom pb-2">ลิงก์ที่เป็นประโยชน์</h4>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <ul class="list-unstyled">
+                                        <li class="mb-2"><a href="/เกี่ยวกับเรา" class="text-white"><i
+                                                    class="fas fa-angle-right me-2"></i>เกี่ยวกับกระทรวง</a></li>
+                                        <li class="mb-2"><a href="/news?type=7" class="text-white"><i
+                                                    class="fas fa-angle-right me-2"></i>ข่าวสารกิจกรรม</a></li>
+                                        <li class="mb-2"><a href="/news?type=5" class="text-white"><i
+                                                    class="fas fa-angle-right me-2"></i>จัดซื้อจัดจ้าง</a></li>
+                                        <li class="mb-2"><a
+                                                href="/ช่องทางแจ้งเรื่องร้องเรียนการทุจริตและประพฤติมิชอบ"
+                                                class="text-white"><i
+                                                    class="fas fa-angle-right me-2"></i>แจ้งเรื่องร้องเรียนการทุจริตและประพฤติมิชอบ</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-md-none d-block mt-4">
+                            <h4 class="border-bottom pb-2">ช่องทางการติดต่อ</h4>
+                            <div class="text-center">
+                                <a target="_blank" href="https://www.facebook.com/yalaedu" class="me-3">
+                                    <span class="fa-stack">
+                                        <i class="fas fa-circle fa-stack-2x"></i>
+                                        <i class="fab fa-facebook-square fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                                <a target="_blank"
+                                    href="https://lineit.line.me/share/ui?url=https%3A%2F%2Fyalapeo.moe.go.th%2F4ita-2567%2F"
+                                    class="me-3">
+                                    <span class="fa-stack">
+                                        <i class="fas fa-circle fa-stack-2x"></i>
+                                        <i class="fab fa-line fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                                <a target="_blank" href="tel:073-729828" class="me-3">
+                                    <span class="fa-stack">
+                                        <i class="fas fa-circle fa-stack-2x"></i>
+                                        <i class="fas fa-phone-alt fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

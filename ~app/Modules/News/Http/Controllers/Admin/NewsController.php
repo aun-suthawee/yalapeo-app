@@ -4,10 +4,11 @@ namespace Modules\News\Http\Controllers\Admin;
 
 use App\Http\Controllers\BaseManageController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Modules\News\Http\Requests\NewsStoreRequest;
 use Modules\News\Repositories\NewsRepository as Repository;
 use Modules\News\Repositories\NewsTypeRepository as RepositoryNewsType;
-use Storage;
 
 class NewsController extends BaseManageController
 {
@@ -61,6 +62,13 @@ class NewsController extends BaseManageController
     $data['result'] = $this->repository->get($id);
     $result = $this->repository->get($id);
 
+    if ($result->cover === 'assets/images/new_thumbnail.jpg') {
+      $result->cover_display = 'รูปภาพตั้งต้น (default)';
+    } else {
+      $result->cover_display = $result->cover;
+    }
+
+    // จัดการไฟล์แนบ...
     $initialPreview = [];
     $initialPreviewConfig = [];
     if (!empty($result->attach)) {
@@ -124,18 +132,55 @@ class NewsController extends BaseManageController
 
   public function attachDestroy(Request $request, $id)
   {
-    $index = $request->input("key");
-    $result = $this->repository->get($id);
-    $attach = $result->attach;
+    try {
+      $index = $request->input("key");
+      $result = $this->repository->get($id);
+      
+      // ตรวจสอบว่ามีข้อมูลและ index ที่ถูกต้อง
+      if (!$result || !isset($result->attach) || !isset($result->attach[$index])) {
+        return response()->json([
+          'error' => 'ไม่พบไฟล์ที่ต้องการลบ'
+        ], 404);
+      }
+      
+      $attach = $result->attach;
+      
+      // ตรวจสอบว่ามีชื่อไฟล์ที่ต้องการลบ
+      if (!isset($attach[$index]["name_uploaded"])) {
+        return response()->json([
+          'error' => 'ข้อมูลไฟล์ไม่ถูกต้อง'
+        ], 400);
+      }
 
-    $this->repository->storageAttachDelete($id, $attach[$index]["name_uploaded"]);
-    unset($attach[$index]);
+      // ลบไฟล์จาก storage
+      $this->repository->storageAttachDelete($id, $attach[$index]["name_uploaded"]);
+      
+      // ลบข้อมูลไฟล์จาก array
+      unset($attach[$index]);
 
-    $response = array_values($attach);
-    $this->repository->update([
-      'attach' => $response
-    ], $id);
+      // อัพเดทข้อมูลใน database
+      $response = array_values($attach);
+      $this->repository->update([
+        'attach' => $response
+      ], $id);
 
-    return response()->json(['success' => 'updated successfully.']);
+      return response()->json([
+        'success' => true, 
+        'message' => 'ลบไฟล์สำเร็จ'
+      ]);
+      
+    } catch (\Exception $e) {
+      // บันทึก error log
+      Log::error('Error deleting attachment: ' . $e->getMessage(), [
+        'id' => $id,
+        'index' => $request->input("key"),
+        'trace' => $e->getTraceAsString()
+      ]);
+      
+      return response()->json([
+        'error' => 'เกิดข้อผิดพลาดในการลบไฟล์ กรุณาลองอีกครั้ง'
+      ], 500);
+    }
   }
 }
+

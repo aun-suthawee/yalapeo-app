@@ -45,6 +45,8 @@ class AdminImageBoxSliderController extends Controller
             'title' => 'required|string|max:255',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:20480',
             'pdf_files.*' => 'nullable|mimes:pdf|max:20480',
+            'url' => 'nullable|string|max:255',
+            'target' => 'nullable|string|in:_blank,_self,_parent,_top',
         ]);
 
         // บันทึกรูปภาพและแปลงเป็น WebP หากรองรับ
@@ -145,7 +147,9 @@ class AdminImageBoxSliderController extends Controller
         $slider->image = $imageName;
         $slider->description = $request->description;
         $slider->pdf_file = $pdfData;
-        $slider->is_active = 1;
+        $slider->is_active = $request->is_active;
+        $slider->url = $request->url;
+        $slider->target = $request->target;
         $slider->save();
         
         return redirect()->route('admin.imageboxslider.index')
@@ -174,6 +178,8 @@ class AdminImageBoxSliderController extends Controller
             'title' => 'required|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:20480',
             'pdf_files.*' => 'nullable|mimes:pdf|max:20480',
+            'url' => 'nullable|string|max:255',
+            'target' => 'nullable|string|in:_blank,_self,_parent,_top',
         ]);
         
         $slider = ImageBoxSliderModel::findOrFail($id);
@@ -183,7 +189,11 @@ class AdminImageBoxSliderController extends Controller
         $slider->description = $request->description;
         
         // อัปเดตสถานะการแสดงผล
-        $slider->is_active = $request->has('is_active') ? 1 : 0;
+        $slider->is_active = $request->is_active;
+        
+        // อัปเดต URL และ target
+        $slider->url = $request->url;
+        $slider->target = $request->target;
         
         // อัปเดตรูปภาพ (ถ้ามีการอัปโหลดใหม่)
         if ($request->hasFile('image')) {

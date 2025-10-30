@@ -62,3 +62,8 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## Deployment notes
+
+- The application now auto-detects its base URL (including sub-directory installs) from the incoming HTTP request. Make sure reverse proxies forward the `X-Forwarded-Proto` header so HTTPS assets are generated correctly.
+- When running Artisan commands that need to generate URLs (e.g. queue workers), set `APP_URL` in your environment file to the public domain as a fallback.

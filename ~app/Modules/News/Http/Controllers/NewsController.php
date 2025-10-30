@@ -40,6 +40,8 @@ class NewsController extends BaseViewController
   public function show($slug)
   {
     $result = $this->repository->getSlug($slug);
+    
+    $result->increment('view');
 
     $this->init([
       'body' => [

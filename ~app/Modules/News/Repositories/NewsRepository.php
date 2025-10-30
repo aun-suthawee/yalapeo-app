@@ -5,14 +5,17 @@ namespace Modules\News\Repositories;
 use App\CustomClass\ItopCyberUpload;
 use App\Repositories\BaseRepository;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Modules\News\Entities\News;
 use Modules\News\Repositories\NewsTypeRepository as RepositoryNewsType;
-use Storage;
-use Str;
 
 class NewsRepository extends BaseRepository
 {
   protected $repositoryNewType;
+  
+  protected $defaultCoverImage = 'assets/images/new_thumbnail.jpg';
 
   public function __construct(RepositoryNewsType $repositoryNewType)
   {
@@ -43,7 +46,7 @@ class NewsRepository extends BaseRepository
    */
   public function ctlUploadAttachOption()
   {
-    return [];
+        return [];
   }
 
   public function ctlUploadAttach($file, $id)
@@ -54,6 +57,11 @@ class NewsRepository extends BaseRepository
 
     $options = $this->ctlUploadAttachOption();
 
+    // ตรวจสอบโฟลเดอร์ถ้ายังไม่มีให้สร้าง
+    if (!file_exists(storage_path('app/public/' . $folder))) {
+        mkdir(storage_path('app/public/' . $folder), 0777, true);
+    }
+
     return ItopCyberUpload::upload(storage_path('app/public/' . $folder), $file, $options);
   }
 
@@ -62,17 +70,31 @@ class NewsRepository extends BaseRepository
     $exp = explode("\\", $this->classModelName);
     $sub_folder = gen_folder($id);
     $folder = strtolower(end($exp)) . "/{$sub_folder}/attach";
+    $filePath = "$folder/$file_name";
 
-    Storage::disk('public')->delete("$folder/$file_name");
+    // ตรวจสอบว่าไฟล์มีอยู่จริงก่อนลบ
+    if (Storage::disk('public')->exists($filePath)) {
+      Storage::disk('public')->delete($filePath);
+      return true;
+    }
+    
+    // ถ้าไฟล์ไม่พบ ให้บันทึก log แต่ไม่ให้ error
+    Log::warning("File not found for deletion: {$filePath}");
+    return false;
   }
 
   public function create($request)
   {
     $result = $this->classModelName::create($this->arrayExclude($request, ['attach']));
     if ($result) {
-      if (isset($request['cover'])) {
+      if (isset($request['cover']) && !empty($_FILES['cover']['name'])) {
         $this->classModelName::where('id', $result->id)->update([
           'cover' => $this->ctlUpload($_FILES['cover'], $result->id)
+        ]);
+      } else {
+        // กำหนดรูปภาพตั้งต้นเมื่อไม่มีการอัพโหลด
+        $this->classModelName::where('id', $result->id)->update([
+          'cover' => $this->defaultCoverImage
         ]);
       }
 
@@ -109,8 +131,11 @@ class NewsRepository extends BaseRepository
     $attachs = $result->attach;
     $result->update($request);
     if ($result) {
-      if (isset($request['cover'])) {
-        $this->storageDelete($id, $cover);
+      if (isset($request['cover']) && !empty($_FILES['cover']['name'])) {
+        // ลบรูปภาพเก่าเฉพาะเมื่อไม่ใช่รูปภาพตั้งต้น
+        if ($cover !== $this->defaultCoverImage) {
+          $this->storageDelete($id, $cover);
+        }
 
         $this->classModelName::where('id', $id)->update([
           'cover' => $this->ctlUpload($_FILES['cover'], $id)
@@ -177,9 +202,14 @@ class NewsRepository extends BaseRepository
         }
       }
 
-      $item->cover = _fileExists('news/' . gen_folder($item->id) . '/crop', $item->cover) ?
-        Storage::url('news/' . gen_folder($item->id) . '/crop/' . $item->cover) :
-        __via_placeholder(370, 287);
+      // ตรวจสอบว่าภาพ cover เป็น default หรือไม่
+      if ($item->cover === $this->defaultCoverImage) {
+        $item->cover = asset($this->defaultCoverImage);
+      } else {
+        $item->cover = _fileExists('news/' . gen_folder($item->id) . '/crop', $item->cover) ?
+          Storage::url('news/' . gen_folder($item->id) . '/crop/' . $item->cover) :
+          asset($this->defaultCoverImage);
+      }
 
       return $item;
     });
@@ -208,9 +238,14 @@ class NewsRepository extends BaseRepository
         }
       }
 
-      $item->cover = _fileExists('news/' . gen_folder($item->id) . '/crop', $item->cover) ?
-        Storage::url('news/' . gen_folder($item->id) . '/crop/' . $item->cover) :
-        __via_placeholder(370, 287);
+      // ตรวจสอบว่าภาพ cover เป็น default หรือไม่
+      if ($item->cover === $this->defaultCoverImage) {
+        $item->cover = asset($this->defaultCoverImage);
+      } else {
+        $item->cover = _fileExists('news/' . gen_folder($item->id) . '/crop', $item->cover) ?
+          Storage::url('news/' . gen_folder($item->id) . '/crop/' . $item->cover) :
+          asset($this->defaultCoverImage);
+      }
 
       return $item;
     });
@@ -240,9 +275,14 @@ class NewsRepository extends BaseRepository
         }
       }
 
-      $item->cover = _fileExists('news/' . gen_folder($item->id) . '/crop', $item->cover) ?
-        Storage::url('news/' . gen_folder($item->id) . '/crop/' . $item->cover) :
-        __via_placeholder(670, 405);
+      // ตรวจสอบว่าภาพ cover เป็น default หรือไม่
+      if ($item->cover === $this->defaultCoverImage) {
+        $item->cover = asset($this->defaultCoverImage);
+      } else {
+        $item->cover = _fileExists('news/' . gen_folder($item->id) . '/crop', $item->cover) ?
+          Storage::url('news/' . gen_folder($item->id) . '/crop/' . $item->cover) :
+          asset($this->defaultCoverImage);
+      }
 
       return $item;
     });
@@ -277,9 +317,15 @@ class NewsRepository extends BaseRepository
 
         $item->title = Str::limit(_stripTags($item->title), 35);
         $item->description = _stripTags($item->description);
-        $item->cover = _fileExists('news/' . gen_folder($item->id) . '/crop', $item->cover) ?
-          Storage::url('news/' . gen_folder($item->id) . '/crop/' . $item->cover) :
-          __via_placeholder(298, 180);
+        
+        // ตรวจสอบว่าภาพ cover เป็น default หรือไม่
+        if ($item->cover === $this->defaultCoverImage) {
+          $item->cover = asset($this->defaultCoverImage);
+        } else {
+          $item->cover = _fileExists('news/' . gen_folder($item->id) . '/crop', $item->cover) ?
+            Storage::url('news/' . gen_folder($item->id) . '/crop/' . $item->cover) :
+            asset($this->defaultCoverImage);
+        }
 
         return $item;
       });
@@ -350,4 +396,21 @@ class NewsRepository extends BaseRepository
   {
     return redirect()->route('admin.news.index');
   }
+
+  public function storageDelete($id, $filename)
+  {
+    // ไม่ลบไฟล์ถ้าเป็นภาพ default
+    if ($filename === $this->defaultCoverImage) {
+      return;
+    }
+    
+    // ลบไฟล์จาก storage ตามปกติ
+    $exp = explode("\\", $this->classModelName);
+    $sub_folder = gen_folder($id);
+    $folder = strtolower(end($exp)) . "/{$sub_folder}";
+    
+    Storage::disk('public')->delete("$folder/$filename");
+    Storage::disk('public')->delete("$folder/crop/$filename");
+  }
 }
+

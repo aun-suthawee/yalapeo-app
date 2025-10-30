@@ -1,0 +1,769 @@
+/* School Management Styles */
+:root {
+  --primary-orange: #ff6b35;
+  --primary-green: #2ecc71;
+  --primary-blue: #3498db;
+  --accent-white: #ffffff;
+  --light-gray: #f8f9fa;
+  --medium-gray: #e9ecef;
+  --dark-gray: #6c757d;
+  --text-dark: #2c3e50;
+  --success-green: #28a745;
+  --warning-orange: #ffc107;
+  --danger-red: #dc3545;
+  --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.15);
+  --border-radius: 12px;
+  --transition: all 0.3s ease;
+}
+
+.school-management-container {
+  background: var(--light-gray);
+  min-height: 100vh;
+  padding: 2rem 0;
+}
+
+/* Page Header */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  background: white;
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-soft);
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin: 0;
+}
+
+.page-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+/* Alerts */
+.alert {
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+}
+
+.alert-success {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.alert-danger {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+/* Stats Cards */
+.stats-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-soft);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: var(--transition);
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+.stat-card.active {
+  border-left: 4px solid var(--success-green);
+}
+
+.stat-card.inactive {
+  border-left: 4px solid var(--warning-orange);
+}
+
+.stat-card.total {
+  border-left: 4px solid var(--primary-blue);
+}
+
+.stat-icon {
+  font-size: 2rem;
+  opacity: 0.8;
+}
+
+.stat-content h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.9rem;
+  color: var(--dark-gray);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-number {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin: 0;
+}
+
+/* Search and Filter */
+.search-filter-section {
+  background: white;
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-soft);
+  margin-bottom: 1rem;
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.search-box {
+  position: relative;
+  flex: 1;
+  min-width: 250px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  border: 1px solid var(--medium-gray);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  transition: var(--transition);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--primary-orange);
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+}
+
+.search-box i {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--dark-gray);
+}
+
+.filter-options {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.filter-select {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--medium-gray);
+  border-radius: 8px;
+  background: white;
+  font-size: 0.9rem;
+  min-width: 150px;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--primary-orange);
+  color: var(--primary-orange);
+}
+
+.btn-outline:hover {
+  background: var(--primary-orange);
+  color: white;
+}
+
+/* Results Info */
+.results-info {
+  text-align: center;
+  padding: 1rem;
+  color: #666;
+  font-size: 14px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+}
+
+#loadingIndicator {
+  text-align: center;
+  padding: 20px;
+  color: var(--primary-orange);
+}
+
+#loadingIndicator i {
+  font-size: 24px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Schools Grid */
+.schools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 1.5rem;
+}
+
+.school-card {
+  background: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-soft);
+  padding: 2rem;
+  transition: var(--transition);
+}
+
+.school-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-hover);
+}
+
+.school-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.school-name {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin: 0;
+  flex: 1;
+  line-height: 1.3;
+}
+
+.department-badge {
+  background: var(--primary-orange);
+  color: white;
+  font-size: 0.75rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.department-badge.สปร {
+  background: var(--primary-orange);
+}
+.department-badge.ศธ {
+  background: var(--primary-green);
+}
+.department-badge.เอกชน {
+  background: var(--primary-blue);
+}
+.department-badge.อปท {
+  background: var(--warning-orange);
+  color: var(--text-dark);
+}
+
+/* School Stats */
+.school-stats {
+  margin-bottom: 1.5rem;
+}
+
+.stat-row {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--light-gray);
+  border-radius: 8px;
+  border-left: 4px solid var(--primary-orange);
+}
+
+.stat-icon {
+  font-size: 1.5rem;
+  width: 30px;
+  text-align: center;
+}
+
+.stat-details {
+  flex: 1;
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--dark-gray);
+  margin-bottom: 0.2rem;
+}
+
+.stat-value {
+  display: block;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 0.2rem;
+}
+
+.stat-breakdown {
+  font-size: 0.75rem;
+  color: var(--dark-gray);
+}
+
+/* Contact Info */
+.school-contact {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: var(--light-gray);
+  border-radius: 8px;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--dark-gray);
+  margin-bottom: 0.3rem;
+}
+
+.contact-item:last-child {
+  margin-bottom: 0;
+}
+
+.contact-item i {
+  width: 16px;
+  color: var(--primary-orange);
+}
+
+/* School Actions */
+.school-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.school-actions .btn {
+  font-size: 0.8rem;
+  padding: 0.5rem 1rem;
+}
+
+.school-actions form {
+  display: inline-block;
+}
+
+.btn-danger:hover {
+  background: #c82333;
+}
+
+/* Empty State */
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 4rem 2rem;
+  background: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-soft);
+}
+
+.empty-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.empty-state h3 {
+  font-size: 1.5rem;
+  color: var(--text-dark);
+  margin-bottom: 0.5rem;
+}
+
+.empty-state p {
+  color: var(--dark-gray);
+  margin-bottom: 2rem;
+}
+
+/* Pagination */
+.pagination-wrapper {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+/* Innovations Section */
+.innovations-section {
+  background: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-soft);
+  overflow: hidden;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid var(--medium-gray);
+  background: var(--light-gray);
+}
+
+.section-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin: 0;
+}
+
+.section-filters {
+  display: flex;
+  gap: 1rem;
+}
+
+.section-filters select {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--medium-gray);
+  border-radius: 6px;
+  background: white;
+  cursor: pointer;
+  min-width: 150px;
+}
+
+.innovations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem;
+}
+
+.innovation-card {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid var(--medium-gray);
+  overflow: hidden;
+  transition: var(--transition);
+  position: relative;
+}
+
+.innovation-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+.innovation-card.highlight-pulse {
+  animation: innovationPulse 1.8s ease-in-out;
+  box-shadow: 0 0 0 3px rgba(67, 56, 202, 0.3);
+}
+
+@keyframes innovationPulse {
+  0% {
+    transform: translateY(0) scale(1);
+    box-shadow: 0 0 0 0 rgba(67, 56, 202, 0.55);
+  }
+  50% {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 18px 40px -25px rgba(79, 70, 229, 0.6), 0 0 0 8px rgba(67, 56, 202, 0.35);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    box-shadow: var(--shadow-hover);
+  }
+}
+
+.innovation-card.active {
+  border-left: 4px solid var(--success-green);
+}
+
+.innovation-card.inactive {
+  border-left: 4px solid var(--warning-orange);
+  opacity: 0.8;
+}
+
+.innovation-image {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+}
+
+.innovation-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.innovation-image.placeholder {
+  background: var(--light-gray);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.placeholder-icon i {
+  font-size: 3rem;
+  color: var(--dark-gray);
+  opacity: 0.5;
+}
+
+.image-overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), transparent);
+}
+
+.status-badge {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.status-badge.active {
+  background: var(--success-green);
+  color: white;
+}
+
+.status-badge.inactive {
+  background: var(--warning-orange);
+  color: white;
+}
+
+.innovation-content {
+  padding: 1.5rem;
+}
+
+.innovation-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin: 0 0 0.75rem 0;
+  line-height: 1.3;
+}
+
+.innovation-category {
+  display: inline-block;
+  background: var(--primary-blue);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 15px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-bottom: 0.75rem;
+}
+
+.innovation-description {
+  color: var(--dark-gray);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.innovation-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-size: 0.8rem;
+  color: var(--dark-gray);
+}
+
+.innovation-year,
+.innovation-date {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.innovation-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.innovation-actions .btn {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.75rem;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  transition: var(--transition);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.btn-primary {
+  background: var(--primary-blue);
+  color: white;
+}
+.btn-warning {
+  background: var(--warning-orange);
+  color: white;
+}
+.btn-danger {
+  background: var(--danger-red);
+  color: white;
+}
+.btn-success {
+  background: var(--success-green);
+  color: white;
+}
+.btn-secondary {
+  background: var(--medium-gray);
+  color: var(--text-dark);
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(110%);
+}
+
+.empty-innovations {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--dark-gray);
+}
+
+.empty-innovations .empty-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.empty-innovations h3 {
+  font-size: 1.5rem;
+  color: var(--text-dark);
+  margin-bottom: 0.5rem;
+}
+
+.empty-innovations p {
+  margin-bottom: 2rem;
+}
+
+.empty-innovations .btn {
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  background: var(--primary-blue);
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: var(--transition);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+
+  .page-actions {
+    justify-content: center;
+  }
+
+  .search-filter-section {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-box {
+    min-width: auto;
+  }
+
+  .filter-options {
+    justify-content: center;
+  }
+
+  .schools-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .school-card {
+    padding: 1.5rem;
+  }
+
+  .school-header {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: stretch;
+  }
+
+  .department-badge {
+    align-self: flex-start;
+    margin-left: 0;
+  }
+
+  .school-actions {
+    justify-content: center;
+  }
+
+  .stat-item {
+    padding: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .school-management-container {
+    padding: 1rem 0;
+  }
+
+  .container {
+    padding: 0 10px;
+  }
+
+  .page-title {
+    font-size: 1.5rem;
+  }
+
+  .school-actions .btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.75rem;
+  }
+}

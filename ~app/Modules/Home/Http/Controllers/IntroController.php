@@ -24,7 +24,7 @@ class IntroController extends BaseViewController
   {
     $response = Http::get('https://backdrop.itopcybersoft.com');
     $result = $response->object();
-    
+
 
     return $this->render('home::intro', compact('result'));
   }
@@ -38,3 +38,4 @@ class IntroController extends BaseViewController
     return redirect()->route('home.index');
   }
 }
+

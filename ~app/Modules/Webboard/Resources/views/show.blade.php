@@ -30,7 +30,7 @@
                     {!! $result->detail !!}
                   </p>
                   <div class="card-link text-end">
-                    {{ $result->created_at }} / IP Address: {{ $result->ip }}
+                    {{ $result->created_at }}
                   </div>
                 </div>
               </div>
@@ -45,7 +45,7 @@
                       {!! $value->detail !!}
                     </p>
                     <div class="card-link text-end">
-                      {{ $value->date_created_format_1 }} / IP Address: {{ $value->ip }}
+                      {{ $value->date_created_format_1 }}
                     </div>
                   </div>
                 </div>
@@ -88,3 +88,4 @@
     </div>
   </section>
 @endsection
+

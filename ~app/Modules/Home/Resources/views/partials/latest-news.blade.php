@@ -1,8 +1,8 @@
 <section class="lasted-news">
     <div class="container-fluid px-md-5 py-5">
-        <div class="row">
-            <div class="col-md-8">
-                <h2 class="title text-center">
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-lg-8">
+                <h2 class="title text-center mb-4">
                     <span class="text-highlight">ข่าวกิจกรรม</span>ศธจ.ยะลา
                 </h2>
                 <div class="row justify-content-center mt-0 mt-md-5">
@@ -61,7 +61,7 @@
                             </div>
                         @endfor
 
-                        <div class="text-end">
+                        <div class="text-center mt-4">
                             <a href="{{ route('news.index') }}/?type=7" class="btn btn-danger view-all-btn">
                                 ดูทั้งหมด
                             </a>
@@ -70,13 +70,13 @@
                 </div>
             </div>
 
-            @if ($box->detail_1 != '')
+            {{-- @if ($box->detail_1 != '')
                 <div class="col-md-4 mt-5 mt-md-0">
                     <div class="box-content h-100 d-flex flex-column justify-content-center p-3">
                         {!! $box->detail_1 !!}
                     </div>
                 </div>
-            @endif
+            @endif --}}
         </div>
     </div>
 </section>
