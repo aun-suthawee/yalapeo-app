@@ -87,9 +87,12 @@ class NewsRepository extends BaseRepository
   {
     $result = $this->classModelName::create($this->arrayExclude($request, ['attach']));
     if ($result) {
-      if (isset($request['cover']) && !empty($_FILES['cover']['name'])) {
+      // Harden: อัปโหลดเฉพาะเคสที่มีไฟล์จริงและ tmp_name ชี้ไปยังไฟล์ที่อัปโหลด
+      if (isset($_FILES['cover']) && !empty($_FILES['cover']['name']) && isset($_FILES['cover']['tmp_name'])
+        && $_FILES['cover']['tmp_name'] !== '' && @is_uploaded_file($_FILES['cover']['tmp_name'])) {
+        $uploadedName = $this->ctlUpload($_FILES['cover'], $result->id);
         $this->classModelName::where('id', $result->id)->update([
-          'cover' => $this->ctlUpload($_FILES['cover'], $result->id)
+          'cover' => $uploadedName
         ]);
       } else {
         // กำหนดรูปภาพตั้งต้นเมื่อไม่มีการอัพโหลด
@@ -131,14 +134,14 @@ class NewsRepository extends BaseRepository
     $attachs = $result->attach;
     $result->update($request);
     if ($result) {
-      if (isset($request['cover']) && !empty($_FILES['cover']['name'])) {
-        // ลบรูปภาพเก่าเฉพาะเมื่อไม่ใช่รูปภาพตั้งต้น
+      if (isset($_FILES['cover']) && !empty($_FILES['cover']['name']) && isset($_FILES['cover']['tmp_name'])
+        && $_FILES['cover']['tmp_name'] !== '' && @is_uploaded_file($_FILES['cover']['tmp_name'])) {
         if ($cover !== $this->defaultCoverImage) {
           $this->storageDelete($id, $cover);
         }
-
+        $uploadedName = $this->ctlUpload($_FILES['cover'], $id);
         $this->classModelName::where('id', $id)->update([
-          'cover' => $this->ctlUpload($_FILES['cover'], $id)
+          'cover' => $uploadedName
         ]);
       }
 
@@ -206,9 +209,15 @@ class NewsRepository extends BaseRepository
       if ($item->cover === $this->defaultCoverImage) {
         $item->cover = asset($this->defaultCoverImage);
       } else {
-        $item->cover = _fileExists('news/' . gen_folder($item->id) . '/crop', $item->cover) ?
-          Storage::url('news/' . gen_folder($item->id) . '/crop/' . $item->cover) :
-          asset($this->defaultCoverImage);
+          $cropFolder = 'news/' . gen_folder($item->id) . '/crop';
+          $baseFolder = 'news/' . gen_folder($item->id);
+          if (_fileExists($cropFolder, $item->cover)) {
+            $item->cover = Storage::url($cropFolder . '/' . $item->cover);
+          } elseif (_fileExists($baseFolder, $item->cover)) {
+            $item->cover = Storage::url($baseFolder . '/' . $item->cover);
+          } else {
+            $item->cover = asset($this->defaultCoverImage);
+          }
       }
 
       return $item;
@@ -242,9 +251,15 @@ class NewsRepository extends BaseRepository
       if ($item->cover === $this->defaultCoverImage) {
         $item->cover = asset($this->defaultCoverImage);
       } else {
-        $item->cover = _fileExists('news/' . gen_folder($item->id) . '/crop', $item->cover) ?
-          Storage::url('news/' . gen_folder($item->id) . '/crop/' . $item->cover) :
-          asset($this->defaultCoverImage);
+          $cropFolder = 'news/' . gen_folder($item->id) . '/crop';
+          $baseFolder = 'news/' . gen_folder($item->id);
+          if (_fileExists($cropFolder, $item->cover)) {
+            $item->cover = Storage::url($cropFolder . '/' . $item->cover);
+          } elseif (_fileExists($baseFolder, $item->cover)) {
+            $item->cover = Storage::url($baseFolder . '/' . $item->cover);
+          } else {
+            $item->cover = asset($this->defaultCoverImage);
+          }
       }
 
       return $item;
@@ -279,9 +294,15 @@ class NewsRepository extends BaseRepository
       if ($item->cover === $this->defaultCoverImage) {
         $item->cover = asset($this->defaultCoverImage);
       } else {
-        $item->cover = _fileExists('news/' . gen_folder($item->id) . '/crop', $item->cover) ?
-          Storage::url('news/' . gen_folder($item->id) . '/crop/' . $item->cover) :
-          asset($this->defaultCoverImage);
+          $cropFolder = 'news/' . gen_folder($item->id) . '/crop';
+          $baseFolder = 'news/' . gen_folder($item->id);
+          if (_fileExists($cropFolder, $item->cover)) {
+            $item->cover = Storage::url($cropFolder . '/' . $item->cover);
+          } elseif (_fileExists($baseFolder, $item->cover)) {
+            $item->cover = Storage::url($baseFolder . '/' . $item->cover);
+          } else {
+            $item->cover = asset($this->defaultCoverImage);
+          }
       }
 
       return $item;
@@ -318,13 +339,19 @@ class NewsRepository extends BaseRepository
         $item->title = Str::limit(_stripTags($item->title), 35);
         $item->description = _stripTags($item->description);
         
-        // ตรวจสอบว่าภาพ cover เป็น default หรือไม่
+        // ตรวจสอบว่าภาพ cover เป็น default หรือไม่ (ไม่แก้บล็อกนี้เพื่อให้ lists type all ยังใช้ตรรกะเดิม)
         if ($item->cover === $this->defaultCoverImage) {
           $item->cover = asset($this->defaultCoverImage);
         } else {
-          $item->cover = _fileExists('news/' . gen_folder($item->id) . '/crop', $item->cover) ?
-            Storage::url('news/' . gen_folder($item->id) . '/crop/' . $item->cover) :
-            asset($this->defaultCoverImage);
+          $cropFolder = 'news/' . gen_folder($item->id) . '/crop';
+          $baseFolder = 'news/' . gen_folder($item->id);
+          if (_fileExists($cropFolder, $item->cover)) {
+            $item->cover = Storage::url($cropFolder . '/' . $item->cover);
+          } elseif (_fileExists($baseFolder, $item->cover)) {
+            $item->cover = Storage::url($baseFolder . '/' . $item->cover);
+          } else {
+            $item->cover = asset($this->defaultCoverImage);
+          }
         }
 
         return $item;

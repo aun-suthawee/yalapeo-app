@@ -60,11 +60,12 @@ class ItopCyberUpload
 
                 $handle->file_new_name_body = $file_name_to_store;
 
-                $handle->image_resize =  true;
-                if (($options['watermark']['width'] === $handle->image_src_x) &&
+                $handle->image_resize = true;
+                if (
+                  ($options['watermark']['width'] === $handle->image_src_x) &&
                   ($options['watermark']['height'] === $handle->image_src_y)
                 ) {
-                  $handle->image_resize =  false;
+                  $handle->image_resize = false;
                 }
 
                 $handle->image_x = $options['thumbnail']['width'];
@@ -97,11 +98,12 @@ class ItopCyberUpload
 
                 $handle->file_new_name_body = $file_name_to_store;
 
-                $handle->image_resize =  true;
-                if (($options['resize']['width'] === $handle->image_src_x) &&
+                $handle->image_resize = true;
+                if (
+                  ($options['resize']['width'] === $handle->image_src_x) &&
                   ($options['resize']['height'] === $handle->image_src_y)
                 ) {
-                  $handle->image_resize =  false;
+                  $handle->image_resize = false;
                 }
 
                 $handle->image_x = $options['resize']['width'];
@@ -135,11 +137,12 @@ class ItopCyberUpload
 
                 $handle->file_new_name_body = $file_name_to_store;
 
-                $handle->image_resize =  true;
-                if (($options['crop']['width'] === $handle->image_src_x) &&
+                $handle->image_resize = true;
+                if (
+                  ($options['crop']['width'] === $handle->image_src_x) &&
                   ($options['crop']['height'] === $handle->image_src_y)
                 ) {
-                  $handle->image_resize =  false;
+                  $handle->image_resize = false;
                 }
 
                 $handle->image_ratio_crop = true;

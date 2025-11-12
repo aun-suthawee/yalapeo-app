@@ -9,14 +9,14 @@
         content="ศธจ.ยะลา, สำนักงานศึกษาธิการจังหวัดยะลา, การศึกษายะลา, ศึกษาธิการยะลา, ข้อมูลการศึกษายะลา, yalapeo, yalaedu, yala, education, yala education">
 
     <meta charset="utf-8">
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    {{-- <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> --}}
     <title>{{ isset($body['title']) ? $body['title'] : '' }} - {{ $cacheMeta->title }}</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
-    <meta name="app-base-url" content="{{ url('/') }}" />
+    {{-- <meta name="app-base-url" content="{{ url('/') }}" />
     <script>
         window.APP_BASE_URL = window.APP_BASE_URL || '{{ url('/') }}';
-    </script>
+    </script> --}}
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="author" content="{{ request()->getHttpHost() }}">
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}" />
@@ -106,13 +106,15 @@
             filter: grayscale(100%) brightness(0.95);
             -webkit-filter: grayscale(100%) brightness(0.95);
         }
-        
+
         /* ให้ภาพและวิดีโอเป็นขาวดำด้วย */
-        img, video, iframe {
+        img,
+        video,
+        iframe {
             filter: grayscale(100%);
             -webkit-filter: grayscale(100%);
         }
-        
+
         /* Ribbon ไวอาลัย */
         .wpm-ribbon {
             position: fixed;
@@ -125,7 +127,7 @@
             filter: none !important;
             -webkit-filter: none !important;
         }
-        
+
         /* ป้องกันไม่ให้ ribbon เป็นขาวดำ */
         .wpm-ribbon img {
             filter: none !important;
@@ -139,7 +141,7 @@
 <body id="{{ isset($module_name) ? $module_name : '' }}">
 
     <!-- Ribbon ไวอาลัย -->
-    <a href="/" class="wpm-ribbon" title="กลับหน้าแรก"> 
+    <a href="/" class="wpm-ribbon" title="กลับหน้าแรก">
         <img src="https://bict.moe.go.th/wp-content/uploads/2025/10/wp-mourning-ribbon.png" alt="ไวอาลัย">
     </a>
 

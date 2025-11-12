@@ -24,26 +24,38 @@
                 <p class="m-0 mt-3">ไฟล์แนบ</p>
                 <ul>
                   @foreach ($result->attach as $attach)
-                    <li>
-                      {!! __fileExtension($attach['name']) !!}
-                      <a href="{{ route('news.download', [$result->id, $attach['name_uploaded'], time()]) }}">
-                        {{ $attach['name'] }}
-                      </a>
-                    </li>
+                    @php
+                      $attachName = $attach['name'] ?? '';
+                      $storedName = $attach['name_uploaded'] ?? '';
+                      $attachPath = 'news/' . gen_folder($result->id) . '/attach/' . $storedName;
+                      $exists = $storedName !== '' && Storage::disk('public')->exists($attachPath);
+                    @endphp
+                    @if($exists)
+                      <li>
+                        {!! __fileExtension($attachName) !!}
+                        <a href="{{ route('news.download', [$result->id, $storedName, time()]) }}">
+                          {{ $attachName }}
+                        </a>
+                      </li>
+                    @endif
                   @endforeach
                 </ul>
                 <hr>
                 @foreach ($result->attach as $attach)
                   @php
-                    $extension = strtolower(pathinfo($attach['name'], PATHINFO_EXTENSION));
+                    $attachName = $attach['name'] ?? '';
+                    $storedName = $attach['name_uploaded'] ?? '';
+                    $extension = strtolower(pathinfo($attachName, PATHINFO_EXTENSION));
                     $isPdf = $extension === 'pdf';
-                    $fileUrl = Storage::url('news/' . gen_folder($result->id) . '/attach/' .$attach['name_uploaded']);
+                    $attachPath = 'news/' . gen_folder($result->id) . '/attach/' . $storedName;
+                    $exists = $storedName !== '' && Storage::disk('public')->exists($attachPath);
+                    $fileUrl = $exists ? Storage::url($attachPath) : '';
                   @endphp
                   
                   <p>
-                    <code class="d-block text-center mb-2">{{$attach['name']}}</code>
+                    <code class="d-block text-center mb-2">{{$attachName}}</code>
                     
-                    @if ($isPdf)
+                    @if ($isPdf && $exists)
                       <div class="d-flex justify-content-center">
                         <iframe src="{{ $fileUrl }}"
                                 width="800px"
@@ -51,12 +63,16 @@
                                 style="border: 1px solid #dee2e6; max-width: 100%;"
                                 allowfullscreen></iframe>
                       </div>
-                    @else
+                    @elseif($exists)
                       <div class="alert alert-info text-center">
                         <i class="fas fa-download"></i>
-                        <a href="{{ route('news.download', [$result->id, $attach['name_uploaded'], time()]) }}">
-                          ดาวน์โหลด {{ $attach['name'] }}
+                        <a href="{{ route('news.download', [$result->id, $storedName, time()]) }}">
+                          ดาวน์โหลด {{ $attachName }}
                         </a>
+                      </div>
+                    @else
+                      <div class="alert alert-warning text-center">
+                        ไฟล์แนบไม่พร้อมใช้งาน
                       </div>
                     @endif
                   </p>

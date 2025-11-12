@@ -313,7 +313,7 @@ class BaseRepository
    * @param mixed $id
    * @param mixed $file_name
    * @return void
-   */
+   */ 
   public function storageDelete($id, $file_name)
   {
     $exp = explode("\\", $this->classModelName);

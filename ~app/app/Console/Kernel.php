@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         \Modules\Sandbox\Console\Commands\RunScheduledExperiments::class,
+        \App\Console\Commands\StorageLinkCheckCommand::class,
     ];
 
     /**

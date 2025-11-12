@@ -1,17 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
   <system.webServer>
-
-    <!-- ให้ IIS อ่านไฟล์ static (css, js, webp, etc.) -->
-    <staticContent>
-      <mimeMap fileExtension=".webp" mimeType="image/webp" />
-    </staticContent>
-
-    <!-- rewrite rule สำหรับ Laravel -->
     <rewrite>
       <rules>
         <rule name="Laravel" stopProcessing="true">
-          <match url=".*" />
+          <match url=".*" ignoreCase="false" />
           <conditions logicalGrouping="MatchAll">
             <add input="{REQUEST_FILENAME}" matchType="IsFile" negate="true" />
             <add input="{REQUEST_FILENAME}" matchType="IsDirectory" negate="true" />
@@ -21,7 +14,6 @@
       </rules>
     </rewrite>
 
-    <!-- ตั้ง index.php เป็น default -->
     <defaultDocument>
       <files>
         <clear />
@@ -29,14 +21,8 @@
       </files>
     </defaultDocument>
 
-    <!-- อนุญาตให้เข้าถึง -->
     <security>
       <requestFiltering allowDoubleEscaping="true" />
-      <authorization>
-        <add accessType="Allow" users="*" />
-      </authorization>
     </security>
-        <httpErrors errorMode="Detailed" />
-
   </system.webServer>
 </configuration>

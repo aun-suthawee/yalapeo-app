@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
-
+ 
 <head>
     <title>สำนักงานศึกษาธิการจังหวัดยะลา | ศธจ.ยะลา</title>
     <meta name="description"
