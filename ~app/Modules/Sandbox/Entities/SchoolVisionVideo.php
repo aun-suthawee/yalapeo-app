@@ -50,6 +50,8 @@ class SchoolVisionVideo extends Model
                 return $this->parseFacebookUrl($url);
             case 'tiktok':
                 return $this->parseTiktokUrl($url);
+            case 'google_drive':
+                return $this->parseGoogleDriveUrl($url);
             default:
                 return $url;
         }
@@ -89,6 +91,25 @@ class SchoolVisionVideo extends Model
             }
         }
         
+        return $url;
+    }
+
+    /**
+     * Parse Google Drive URL to embeddable preview URL
+     */
+    private function parseGoogleDriveUrl(string $url): string
+    {
+        $patterns = [
+            '/\/file\/d\/([a-zA-Z0-9_-]+)/',
+            '/[?&]id=([a-zA-Z0-9_-]+)/',
+        ];
+
+        foreach ($patterns as $pattern) {
+            if (preg_match($pattern, $url, $matches) && isset($matches[1])) {
+                return 'https://drive.google.com/file/d/' . $matches[1] . '/preview';
+            }
+        }
+
         return $url;
     }
 

@@ -18,7 +18,7 @@ class SchoolInnovationsTable extends Migration
             $table->foreignId('school_id')->constrained()->onDelete('cascade');
             $table->string('title'); // ชื่อนวัตกรรม
             $table->text('description')->nullable(); // รายละเอียดนวัตกรรม
-            $table->string('image_path')->nullable(); // ที่เก็บรูปภาพ infographic
+            $table->text('image_path')->nullable(); // เก็บได้ทั้งไฟล์เดี่ยวหรือ JSON ของหลายไฟล์
             $table->string('category')->nullable(); // ประเภทนวัตกรรม
             $table->smallInteger('year')->nullable(); // ปีที่สร้างนวัตกรรม
             $table->boolean('is_active')->default(true); // สถานะการแสดงผล

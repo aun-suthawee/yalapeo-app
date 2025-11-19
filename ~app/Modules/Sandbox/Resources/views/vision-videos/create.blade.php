@@ -133,6 +133,9 @@
                                     <option value="tiktok" {{ old('video_type') == 'tiktok' ? 'selected' : '' }}>
                                         TikTok
                                     </option>
+                                    <option value="google_drive" {{ old('video_type') == 'google_drive' ? 'selected' : '' }}>
+                                        Google Drive
+                                    </option>
                                     <option value="other" {{ old('video_type') == 'other' ? 'selected' : '' }}>
                                         อื่นๆ
                                     </option>
@@ -261,6 +264,7 @@
                 youtube: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
                 facebook: 'https://www.facebook.com/username/videos/1234567890/',
                 tiktok: 'https://www.tiktok.com/@username/video/1234567890',
+                google_drive: 'https://drive.google.com/file/d/FILE_ID/view?usp=sharing',
                 other: 'https://example.com/video.mp4'
             };
 
@@ -268,6 +272,7 @@
                 youtube: 'https://www.youtube.com/watch?v=...',
                 facebook: 'https://www.facebook.com/username/videos/...',
                 tiktok: 'https://www.tiktok.com/@username/video/...',
+                google_drive: 'https://drive.google.com/file/d/FILE_ID/view?usp=sharing',
                 other: 'https://example.com/video.mp4'
             };
 
@@ -338,6 +343,8 @@
                             return generateFacebookEmbed(url);
                         case 'tiktok':
                             return generateTikTokEmbed(url);
+                        case 'google_drive':
+                            return generateGoogleDriveEmbed(url);
                         default:
                             return `<video controls style="width: 100%; max-width: 640px; height: 360px; border-radius: 8px;"><source src="${url}"></video>`;
                     }
@@ -392,6 +399,20 @@
                     </blockquote>
                     <script async src="https://www.tiktok.com/embed.js"><\/script>`;
                 }
+                return null;
+            }
+
+            function generateGoogleDriveEmbed(url) {
+                const matchFilePath = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+                if (matchFilePath && matchFilePath[1]) {
+                    return `<iframe src="https://drive.google.com/file/d/${matchFilePath[1]}/preview" width="640" height="360" allow="autoplay" frameborder="0" allowfullscreen></iframe>`;
+                }
+
+                const matchIdParam = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+                if (matchIdParam && matchIdParam[1]) {
+                    return `<iframe src="https://drive.google.com/file/d/${matchIdParam[1]}/preview" width="640" height="360" allow="autoplay" frameborder="0" allowfullscreen></iframe>`;
+                }
+
                 return null;
             }
         });

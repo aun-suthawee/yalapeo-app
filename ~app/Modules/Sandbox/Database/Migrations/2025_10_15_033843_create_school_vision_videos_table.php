@@ -17,7 +17,7 @@ class CreateSchoolVisionVideosTable extends Migration
             $table->id();
             $table->unsignedBigInteger('school_id');
             $table->string('video_url', 500);
-            $table->enum('video_type', ['youtube', 'facebook', 'tiktok', 'other'])->default('youtube');
+            $table->enum('video_type', ['youtube', 'facebook', 'tiktok', 'google_drive', 'other'])->default('youtube');
             $table->string('title', 255);
             $table->text('description')->nullable();
             $table->boolean('is_active')->default(true);

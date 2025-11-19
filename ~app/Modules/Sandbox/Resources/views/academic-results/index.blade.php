@@ -121,11 +121,11 @@
                 </select>
             </div>
             <div class="col-md-3">
-                <label class="form-label">สังกัด</label>
-                <select name="department" class="form-select">
+                <label class="form-label">เขตพื้นที่การศึกษา</label>
+                <select name="education_area" class="form-select">
                     <option value="">ทั้งหมด</option>
-                    @foreach($departments as $dept)
-                        <option value="{{ $dept }}" {{ $department == $dept ? 'selected' : '' }}>{{ $dept }}</option>
+                    @foreach($educationAreas as $area)
+                        <option value="{{ $area }}" {{ $educationArea == $area ? 'selected' : '' }}>{{ $area }}</option>
                     @endforeach
                 </select>
             </div>
@@ -175,6 +175,52 @@
             </div>
         </form>
     </div>
+
+    <!-- Education area summary -->
+    @if($educationAreaSummaries->count())
+        <div class="card mb-4 fade-in">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <i class="fas fa-layer-group me-2"></i>ภาพรวมตามเขตพื้นที่การศึกษา
+                </h5>
+                <small class="text-muted">จำนวนโรงเรียนที่ส่งข้อมูลในปี {{ $selectedYear + 543 }}</small>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped mb-0">
+                    <thead>
+                        <tr>
+                            <th>เขตพื้นที่</th>
+                            <th class="text-end" width="140">โรงเรียนทั้งหมด</th>
+                            <th class="text-end" width="140">ส่งข้อมูลแล้ว</th>
+                            <th class="text-end" width="140">ยังไม่ส่ง</th>
+                            <th class="text-end" width="120">อัตราส่ง (%)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($educationAreaSummaries as $summary)
+                            @php
+                                $completionRate = $summary['total'] > 0
+                                    ? round(($summary['submitted'] / $summary['total']) * 100, 1)
+                                    : 0;
+                            @endphp
+                            <tr>
+                                <td>
+                                    <strong>{{ $summary['short_label'] }}</strong>
+                                    @if($summary['label'] !== $summary['short_label'])
+                                        <div class="text-muted small">{{ $summary['label'] }}</div>
+                                    @endif
+                                </td>
+                                <td class="text-end">{{ number_format($summary['total']) }}</td>
+                                <td class="text-end text-success">{{ number_format($summary['submitted']) }}</td>
+                                <td class="text-end text-danger">{{ number_format($summary['pending']) }}</td>
+                                <td class="text-end">{{ number_format($completionRate, 1) }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    @endif
 
     <!-- Schools List -->
     <div class="schools-table-card fade-in">

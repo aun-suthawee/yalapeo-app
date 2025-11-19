@@ -8,15 +8,15 @@
 
     // Chart instances
     let ntAreaChart = null;
-    let ntDeptChart = null;
+    let ntEducationAreaChart = null;
     let rtAreaChart = null;
-    let rtDeptChart = null;
+    let rtEducationAreaChart = null;
     let onetAreaChart = null;
 
     // Current filters
     let currentFilters = {
         year: 2025,
-        department: 'all'
+        education_area: 'all'
     };
 
     /**
@@ -61,17 +61,17 @@
         // Update NT stat cards and charts
         updateNTStatCards(data.subjects['NT']);
         updateNTAreaChart(data.subjects['NT'], data.comparisons.areas);
-        updateNTDeptChart(data.subjects['NT'], data.comparisons.departments);
+        updateNTEducationAreaChart(data.subjects['NT'], data.comparisons.education_areas);
         
         // Update RT stat cards and charts
         updateRTStatCards(data.subjects['RT']);
         updateRTAreaChart(data.subjects['RT'], data.comparisons.areas);
-        updateRTDeptChart(data.subjects['RT'], data.comparisons.departments);
+        updateRTEducationAreaChart(data.subjects['RT'], data.comparisons.education_areas);
         
         // Update O-NET chart and tables
         updateONETAreaChart(data.subjects['O-NET'], data.comparisons.areas);
         updateONETAreaTable(data.subjects['O-NET'], data.comparisons.areas);
-        updateONETDeptTable(data.subjects['O-NET'], data.comparisons.departments);
+        updateONETEducationAreaTable(data.subjects['O-NET'], data.comparisons.education_areas);
     }
 
     /**
@@ -185,22 +185,21 @@
     }
 
     /**
-     * Update NT department comparison chart
+     * Update NT education area comparison chart
      */
-    function updateNTDeptChart(ntData, deptComparisons) {
-        const ctx = document.getElementById('ntDeptChart');
+    function updateNTEducationAreaChart(ntData, educationAreaComparisons) {
+        const ctx = document.getElementById('ntEducationAreaChart');
         if (!ctx) return;
 
         const labels = [];
         const mathData = [];
         const thaiData = [];
 
-        Object.keys(deptComparisons).forEach(dept => {
-            const deptData = deptComparisons[dept];
-            if (deptData.nt_count > 0) {
-                labels.push(dept);
-                mathData.push(deptData.nt_math / deptData.nt_count);
-                thaiData.push(deptData.nt_thai / deptData.nt_count);
+        Object.entries(educationAreaComparisons).forEach(([area, areaData]) => {
+            if (areaData.nt_count > 0) {
+                labels.push(area);
+                mathData.push(areaData.nt_math / areaData.nt_count);
+                thaiData.push(areaData.nt_thai / areaData.nt_count);
             }
         });
 
@@ -270,12 +269,12 @@
             }
         };
 
-        if (ntDeptChart) {
-            ntDeptChart.data = chartData;
-            ntDeptChart.options = options;
-            ntDeptChart.update();
+        if (ntEducationAreaChart) {
+            ntEducationAreaChart.data = chartData;
+            ntEducationAreaChart.options = options;
+            ntEducationAreaChart.update();
         } else {
-            ntDeptChart = new Chart(ctx, {
+            ntEducationAreaChart = new Chart(ctx, {
                 type: 'bar',
                 data: chartData,
                 options: options
@@ -394,22 +393,21 @@
     }
 
     /**
-     * Update RT department comparison chart
+     * Update RT education area comparison chart
      */
-    function updateRTDeptChart(rtData, deptComparisons) {
-        const ctx = document.getElementById('rtDeptChart');
+    function updateRTEducationAreaChart(rtData, educationAreaComparisons) {
+        const ctx = document.getElementById('rtEducationAreaChart');
         if (!ctx) return;
 
         const labels = [];
         const readingData = [];
         const compData = [];
 
-        Object.keys(deptComparisons).forEach(dept => {
-            const deptData = deptComparisons[dept];
-            if (deptData.rt_count > 0) {
-                labels.push(dept);
-                readingData.push(deptData.rt_reading / deptData.rt_count);
-                compData.push(deptData.rt_comprehension / deptData.rt_count);
+        Object.entries(educationAreaComparisons).forEach(([area, areaData]) => {
+            if (areaData.rt_count > 0) {
+                labels.push(area);
+                readingData.push(areaData.rt_reading / areaData.rt_count);
+                compData.push(areaData.rt_comprehension / areaData.rt_count);
             }
         });
 
@@ -479,12 +477,12 @@
             }
         };
 
-        if (rtDeptChart) {
-            rtDeptChart.data = chartData;
-            rtDeptChart.options = options;
-            rtDeptChart.update();
+        if (rtEducationAreaChart) {
+            rtEducationAreaChart.data = chartData;
+            rtEducationAreaChart.options = options;
+            rtEducationAreaChart.update();
         } else {
-            rtDeptChart = new Chart(ctx, {
+            rtEducationAreaChart = new Chart(ctx, {
                 type: 'bar',
                 data: chartData,
                 options: options
@@ -670,19 +668,18 @@
     }
 
     /**
-     * Update O-NET department ranking table
+     * Update O-NET education area ranking table
      */
-    function updateONETDeptTable(onetData, deptComparisons) {
-        const container = document.getElementById('onetDeptTable');
+    function updateONETEducationAreaTable(onetData, educationAreaComparisons) {
+        const container = document.getElementById('onetEducationAreaTable');
         if (!container) return;
 
-        // Calculate averages for each department and subject
-        const deptData = [];
-        Object.keys(deptComparisons).forEach(dept => {
-            const data = deptComparisons[dept];
+        // Calculate averages for each education area and subject
+        const areaData = [];
+        Object.entries(educationAreaComparisons).forEach(([area, data]) => {
             if (data.onet_count > 0) {
-                deptData.push({
-                    name: dept,
+                areaData.push({
+                    name: area,
                     math: data.onet_math / data.onet_count,
                     thai: data.onet_thai / data.onet_count,
                     english: data.onet_english / data.onet_count,
@@ -696,7 +693,7 @@
         let html = '<table style="width: 100%; font-size: 13px; border-collapse: collapse;">';
         html += '<thead style="background: #f7fafc; border-bottom: 2px solid #e2e8f0;">';
         html += '<tr><th style="padding: 10px; text-align: left; font-weight: 600;">วิชา</th>';
-        html += '<th style="padding: 10px; text-align: left; font-weight: 600;">สังกัด</th>';
+        html += '<th style="padding: 10px; text-align: left; font-weight: 600;">เขตพื้นที่การศึกษา</th>';
         html += '<th style="padding: 10px; text-align: center; font-weight: 600;">คะแนน</th></tr></thead>';
         html += '<tbody>';
 
@@ -709,7 +706,7 @@
         ];
 
         subjects.forEach(subject => {
-            const sorted = [...deptData].sort((a, b) => b[subject.key] - a[subject.key]).slice(0, 4);
+            const sorted = [...areaData].sort((a, b) => b[subject.key] - a[subject.key]).slice(0, 4);
             sorted.forEach((item, index) => {
                 if (index === 0) {
                     html += `<tr style="border-bottom: 1px solid #f0f0f0;">`;
@@ -769,11 +766,11 @@
             });
         }
 
-        // Department filter
-        const departmentFilter = document.getElementById('departmentFilter');
-        if (departmentFilter) {
-            departmentFilter.addEventListener('change', function() {
-                currentFilters.department = this.value;
+        // Education area filter
+        const educationAreaFilter = document.getElementById('educationAreaFilter');
+        if (educationAreaFilter) {
+            educationAreaFilter.addEventListener('change', function() {
+                currentFilters.education_area = this.value || 'all';
                 loadChartData();
             });
         }

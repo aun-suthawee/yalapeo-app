@@ -13,20 +13,35 @@ use Illuminate\Support\Facades\DB;
 class AcademicResultsController extends Controller
 {
     /**
-     * Shorten department names
+     * Normalize education area label (trim and fallback for empty values)
      */
-    private function shortenDepartment($department)
+    private function normalizeEducationArea(?string $educationArea): string
+    {
+        if ($educationArea === null) {
+            return 'ไม่ระบุ';
+        }
+
+        $trimmed = trim($educationArea);
+
+        return $trimmed !== '' ? $trimmed : 'ไม่ระบุ';
+    }
+
+    /**
+     * Shorten education area names for display
+     */
+    private function shortenEducationArea(string $educationArea): string
     {
         $mapping = [
             'สำนักงานเขตพื้นที่การศึกษาประถมศึกษายะลา เขต 1' => 'สพป.ยะลา เขต 1',
             'สำนักงานเขตพื้นที่การศึกษาประถมศึกษายะลา เขต 2' => 'สพป.ยะลา เขต 2',
             'สำนักงานเขตพื้นที่การศึกษาประถมศึกษายะลา เขต 3' => 'สพป.ยะลา เขต 3',
-            'สำนักงานส่งเสริมการศึกษาเอกชน' => 'สช.',
+            'สำนักงานคณะกรรมการส่งเสริมการศึกษาเอกชน' => 'สช.',
             'เทศบาลนครยะลา' => 'เทศบาลนครยะลา',
             'องค์การบริหารส่วนจังหวัดยะลา' => 'อบจ.ยะลา',
+            'ไม่ระบุ' => 'ไม่ระบุ',
         ];
-        
-        return $mapping[$department] ?? $department;
+
+        return $mapping[$educationArea] ?? $educationArea;
     }
     
     /**
@@ -39,7 +54,7 @@ class AcademicResultsController extends Controller
         $filter = $request->get('filter', 'all'); // all, not_submitted, submitted
         
         // Get additional filters
-        $department = $request->get('department');
+        $educationArea = $request->get('education_area');
         $ministry = $request->get('ministry');
         $bureau = $request->get('bureau');
         $district = $request->get('district');
@@ -51,8 +66,15 @@ class AcademicResultsController extends Controller
         }]);
 
         // Apply additional filters
-        if ($department) {
-            $query->where('department', $department);
+        if ($educationArea) {
+            $query->where(function($subQuery) use ($educationArea) {
+                if ($educationArea === 'ไม่ระบุ') {
+                    $subQuery->whereNull('education_area')
+                        ->orWhereRaw("TRIM(education_area) = ''");
+                } else {
+                    $subQuery->whereRaw('TRIM(education_area) = ?', [$educationArea]);
+                }
+            });
         }
         if ($ministry) {
             $query->where('ministry_affiliation', $ministry);
@@ -97,11 +119,48 @@ class AcademicResultsController extends Controller
         })->count();
         $notSubmittedCount = $totalSchools - $submittedCount;
 
+        // Totals by education area for overview table
+        $normalizedEducationAreaSql = "CASE WHEN TRIM(COALESCE(education_area, '')) = '' THEN 'ไม่ระบุ' ELSE TRIM(education_area) END";
+
+        $totalsByEducationArea = School::selectRaw("$normalizedEducationAreaSql AS education_area_label, COUNT(*) AS total")
+            ->groupBy('education_area_label')
+            ->orderBy('education_area_label')
+            ->get();
+
+        $submittedByEducationArea = AcademicResult::selectRaw("$normalizedEducationAreaSql AS education_area_label, COUNT(DISTINCT schools.id) AS submitted_total")
+            ->join('schools', 'academic_results.school_id', '=', 'schools.id')
+            ->where('academic_results.academic_year', $selectedYear)
+            ->whereNotNull('academic_results.submitted_at')
+            ->groupBy('education_area_label')
+            ->get()
+            ->pluck('submitted_total', 'education_area_label');
+
+        $educationAreaSummaries = $totalsByEducationArea
+            ->map(function ($row) use ($submittedByEducationArea) {
+                $label = $row->education_area_label;
+                $total = (int) $row->total;
+                $submitted = (int) ($submittedByEducationArea[$label] ?? 0);
+
+                return [
+                    'label' => $label,
+                    'short_label' => $this->shortenEducationArea($label),
+                    'total' => $total,
+                    'submitted' => $submitted,
+                    'pending' => max(0, $total - $submitted),
+                ];
+            })
+            ->sortByDesc('total')
+            ->values();
+
         // Get available years (only current year: 2568 BE = 2025 CE)
         $availableYears = [$currentYear]; // เฉพาะปีปัจจุบัน
         
         // Get filter options
-        $departments = School::distinct()->orderBy('department')->pluck('department');
+        $educationAreas = School::pluck('education_area')
+            ->map(fn($value) => $this->normalizeEducationArea($value))
+            ->unique()
+            ->sort()
+            ->values();
         $ministries = School::distinct()->whereNotNull('ministry_affiliation')->orderBy('ministry_affiliation')->pluck('ministry_affiliation');
         $bureaus = School::distinct()->whereNotNull('bureau_affiliation')->orderBy('bureau_affiliation')->pluck('bureau_affiliation');
         $districts = School::distinct()->whereNotNull('district')->orderBy('district')->pluck('district');
@@ -121,16 +180,17 @@ class AcademicResultsController extends Controller
             'submittedCount',
             'notSubmittedCount',
             'availableYears',
-            'departments',
+            'educationAreas',
             'ministries',
             'bureaus',
             'districts',
             'subdistricts',
-            'department',
+            'educationArea',
             'ministry',
             'bureau',
             'district',
-            'subdistrict'
+            'subdistrict',
+            'educationAreaSummaries'
         ));
     }
 
@@ -293,17 +353,27 @@ class AcademicResultsController extends Controller
     public function getChartData(Request $request)
     {
         $year = $request->get('year', 2025);
-        $department = $request->get('department', 'all');
+        $educationAreaFilter = $request->get('education_area', 'all');
+
+        // Backward compatibility with legacy "department" query parameter
+        if ($educationAreaFilter === 'all' && $request->filled('department')) {
+            $educationAreaFilter = $request->get('department', 'all');
+        }
         
         // Base query for academic results
         $query = AcademicResult::with('school')
             ->where('academic_year', $year)
             ->whereNotNull('submitted_at');
         
-        // Filter by department if specified
-        if ($department !== 'all') {
-            $query->whereHas('school', function($q) use ($department) {
-                $q->where('department', $department);
+        // Filter by education area if specified
+        if ($educationAreaFilter !== 'all') {
+            $query->whereHas('school', function($q) use ($educationAreaFilter) {
+                if ($educationAreaFilter === 'ไม่ระบุ') {
+                    $q->whereNull('education_area')
+                        ->orWhereRaw("TRIM(education_area) = ''");
+                } else {
+                    $q->whereRaw('TRIM(education_area) = ?', [$educationAreaFilter]);
+                }
             });
         }
         
@@ -341,52 +411,65 @@ class AcademicResultsController extends Controller
         $rtAvg = count($rtScores) > 0 ? round(array_sum($rtScores) / count($rtScores), 2) : 0;
         $onetAvg = count($onetScores) > 0 ? round(array_sum($onetScores) / count($onetScores), 2) : 0;
         
-        // Comparison by department
-        $departmentComparison = [];
-        $departments = School::distinct()->pluck('department');
-        
-        foreach ($departments as $dept) {
-            $deptResults = AcademicResult::with('school')
+        // Comparison by education area
+        $educationAreaComparison = [];
+        $educationAreaLabels = School::pluck('education_area')
+            ->map(fn($value) => $this->normalizeEducationArea($value))
+            ->unique()
+            ->sort()
+            ->values();
+
+        if ($educationAreaLabels->isEmpty()) {
+            $educationAreaLabels = collect(['ไม่ระบุ']);
+        }
+
+        foreach ($educationAreaLabels as $areaLabel) {
+            $areaResults = AcademicResult::with('school')
                 ->where('academic_year', $year)
                 ->whereNotNull('submitted_at')
-                ->whereHas('school', function($q) use ($dept) {
-                    $q->where('department', $dept);
+                ->whereHas('school', function($q) use ($areaLabel) {
+                    if ($areaLabel === 'ไม่ระบุ') {
+                        $q->whereNull('education_area')
+                            ->orWhereRaw("TRIM(education_area) = ''");
+                    } else {
+                        $q->whereRaw('TRIM(education_area) = ?', [$areaLabel]);
+                    }
                 })->get();
-            
-            $deptNTMath = $deptNTThai = [];
-            $deptRTReading = $deptRTComp = [];
-            $deptONETMath = $deptONETThai = $deptONETEnglish = $deptONETScience = [];
-            
-            foreach ($deptResults as $result) {
+
+            $areaNTMath = $areaNTThai = [];
+            $areaRTReading = $areaRTComp = [];
+            $areaONETMath = $areaONETThai = $areaONETEnglish = $areaONETScience = [];
+
+            foreach ($areaResults as $result) {
                 if ($result->has_nt_test && $result->hasNtScores()) {
-                    if ($result->nt_math_score) $deptNTMath[] = (float) $result->nt_math_score;
-                    if ($result->nt_thai_score) $deptNTThai[] = (float) $result->nt_thai_score;
+                    if ($result->nt_math_score) $areaNTMath[] = (float) $result->nt_math_score;
+                    if ($result->nt_thai_score) $areaNTThai[] = (float) $result->nt_thai_score;
                 }
                 if ($result->has_rt_test && $result->hasRtScores()) {
-                    if ($result->rt_reading_score) $deptRTReading[] = (float) $result->rt_reading_score;
-                    if ($result->rt_comprehension_score) $deptRTComp[] = (float) $result->rt_comprehension_score;
+                    if ($result->rt_reading_score) $areaRTReading[] = (float) $result->rt_reading_score;
+                    if ($result->rt_comprehension_score) $areaRTComp[] = (float) $result->rt_comprehension_score;
                 }
                 if ($result->has_onet_test && $result->hasOnetScores()) {
-                    if ($result->onet_math_score) $deptONETMath[] = (float) $result->onet_math_score;
-                    if ($result->onet_thai_score) $deptONETThai[] = (float) $result->onet_thai_score;
-                    if ($result->onet_english_score) $deptONETEnglish[] = (float) $result->onet_english_score;
-                    if ($result->onet_science_score) $deptONETScience[] = (float) $result->onet_science_score;
+                    if ($result->onet_math_score) $areaONETMath[] = (float) $result->onet_math_score;
+                    if ($result->onet_thai_score) $areaONETThai[] = (float) $result->onet_thai_score;
+                    if ($result->onet_english_score) $areaONETEnglish[] = (float) $result->onet_english_score;
+                    if ($result->onet_science_score) $areaONETScience[] = (float) $result->onet_science_score;
                 }
             }
-            
-            $shortDept = $this->shortenDepartment($dept);
-            $departmentComparison[$shortDept] = [
-                'nt_count' => count($deptNTMath),
-                'nt_math' => array_sum($deptNTMath),
-                'nt_thai' => array_sum($deptNTThai),
-                'rt_count' => count($deptRTReading),
-                'rt_reading' => array_sum($deptRTReading),
-                'rt_comprehension' => array_sum($deptRTComp),
-                'onet_count' => count($deptONETMath),
-                'onet_math' => array_sum($deptONETMath),
-                'onet_thai' => array_sum($deptONETThai),
-                'onet_english' => array_sum($deptONETEnglish),
-                'onet_science' => array_sum($deptONETScience),
+
+            $displayArea = $this->shortenEducationArea($areaLabel);
+            $educationAreaComparison[$displayArea] = [
+                'nt_count' => count($areaNTMath),
+                'nt_math' => array_sum($areaNTMath),
+                'nt_thai' => array_sum($areaNTThai),
+                'rt_count' => count($areaRTReading),
+                'rt_reading' => array_sum($areaRTReading),
+                'rt_comprehension' => array_sum($areaRTComp),
+                'onet_count' => count($areaONETMath),
+                'onet_math' => array_sum($areaONETMath),
+                'onet_thai' => array_sum($areaONETThai),
+                'onet_english' => array_sum($areaONETEnglish),
+                'onet_science' => array_sum($areaONETScience),
             ];
         }
         
@@ -562,7 +645,7 @@ class AcademicResultsController extends Controller
                 ],
                 'subjects' => $subjectAverages,
                 'comparisons' => [
-                    'departments' => $departmentComparison,
+                    'education_areas' => $educationAreaComparison,
                     'areas' => $areaComparison,
                     'districts' => $districtComparison
                 ],
@@ -597,8 +680,16 @@ class AcademicResultsController extends Controller
             ->where('academic_year', $year);
         
         // Apply school filters
-        if ($department = $request->get('department')) {
-            $query->whereHas('school', fn($q) => $q->where('department', $department));
+        $educationArea = $request->get('education_area', $request->get('department'));
+        if ($educationArea) {
+            $query->whereHas('school', function($q) use ($educationArea) {
+                if ($educationArea === 'ไม่ระบุ') {
+                    $q->whereNull('education_area')
+                        ->orWhereRaw("TRIM(education_area) = ''");
+                } else {
+                    $q->whereRaw('TRIM(education_area) = ?', [$educationArea]);
+                }
+            });
         }
         if ($ministry = $request->get('ministry')) {
             $query->whereHas('school', fn($q) => $q->where('ministry_affiliation', $ministry));
@@ -652,8 +743,16 @@ class AcademicResultsController extends Controller
             ->where('academic_year', $year);
         
         // Apply school filters
-        if ($department = $request->get('department')) {
-            $query->whereHas('school', fn($q) => $q->where('department', $department));
+        $educationArea = $request->get('education_area', $request->get('department'));
+        if ($educationArea) {
+            $query->whereHas('school', function($q) use ($educationArea) {
+                if ($educationArea === 'ไม่ระบุ') {
+                    $q->whereNull('education_area')
+                        ->orWhereRaw("TRIM(education_area) = ''");
+                } else {
+                    $q->whereRaw('TRIM(education_area) = ?', [$educationArea]);
+                }
+            });
         }
         if ($ministry = $request->get('ministry')) {
             $query->whereHas('school', fn($q) => $q->where('ministry_affiliation', $ministry));

@@ -164,6 +164,11 @@
             color: white;
         }
 
+        .badge-google_drive {
+            background: #0f9d58;
+            color: white;
+        }
+
         .badge-other {
             background: #6c757d;
             color: white;
@@ -318,6 +323,7 @@
                 youtube: { label: 'YouTube', className: 'badge-youtube', iconClass: 'fab fa-youtube' },
                 facebook: { label: 'Facebook', className: 'badge-facebook', iconClass: 'fab fa-facebook' },
                 tiktok: { label: 'TikTok', className: 'badge-tiktok', iconClass: 'fab fa-tiktok' },
+                google_drive: { label: 'Google Drive', className: 'badge-google_drive', iconClass: 'fab fa-google-drive' },
                 other: { label: 'Video', className: 'badge-other', iconClass: 'fas fa-video' }
             };
 
@@ -555,6 +561,8 @@
                                             <i class="fab fa-facebook"></i> Facebook
                                         @elseif($video->video_type == 'tiktok')
                                             <i class="fab fa-tiktok"></i> TikTok
+                                        @elseif($video->video_type == 'google_drive')
+                                            <i class="fab fa-google-drive"></i> Google Drive
                                         @else
                                             <i class="fas fa-video"></i> Video
                                         @endif

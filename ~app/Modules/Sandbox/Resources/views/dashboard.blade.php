@@ -369,6 +369,11 @@
             color: white;
         }
 
+        .badge-google_drive {
+            background: #0f9d58;
+            color: white;
+        }
+
         .badge-other {
             background: #6c757d;
             color: white;
@@ -849,16 +854,19 @@
                         </div>
                     @endauth
 
-                    <!-- Department Stats -->
+                    <!-- Education Area Stats -->
                     <div class="section-card">
                         <div class="section-header">
-                            <h2>สถิติตามสังกัด</h2>
+                            <h2>สถิติตามเขตพื้นที่การศึกษา</h2>
                             <a href="{{ route('sandbox.schools.index') }}" class="view-all-link">ดูโรงเรียนทั้งหมด</a>
                         </div>
                         <div class="department-grid">
-                            @foreach ($stats['by_department'] as $department => $data)
+                            @foreach ($stats['by_education_area'] as $area => $data)
+                                @php
+                                    $displayLabel = $data['label'] ?? $area;
+                                @endphp
                                 <div class="department-card">
-                                    <h3 class="department-name">{{ $department }}</h3>
+                                    <h3 class="department-name">{{ $displayLabel }}</h3>
                                     <div class="department-stats">
                                         <div class="dept-stat">
                                             <span class="label">โรงเรียน</span>
@@ -969,11 +977,14 @@
                                 style="display: block; margin-bottom: 5px; font-weight: 600; color: #4a5568; font-size: 14px;">
                                 สังกัด
                             </label>
-                            <select id="departmentFilter" class="form-control"
+                            <select id="educationAreaFilter" class="form-control"
                                 style="padding: 8px 12px; border-radius: 6px;">
                                 <option value="all" selected>ทั้งหมด</option>
-                                @foreach ($stats['by_department'] as $department => $data)
-                                    <option value="{{ $department }}">{{ $department }}</option>
+                                @foreach ($stats['by_education_area'] as $area => $data)
+                                    @php
+                                        $displayLabel = $data['label'] ?? $area;
+                                    @endphp
+                                    <option value="{{ $displayLabel }}">{{ $displayLabel }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -1062,7 +1073,7 @@
                             <div>
                                 <h5 style="margin: 0 0 10px 0; font-size: 14px; color: #4a5568;">เปรียบเทียบตามสังกัด</h5>
                                 <div style="position: relative; height: 300px;">
-                                    <canvas id="ntDeptChart"></canvas>
+                                    <canvas id="ntEducationAreaChart"></canvas>
                                 </div>
                             </div>
                         </div>
@@ -1098,7 +1109,7 @@
                             <div>
                                 <h5 style="margin: 0 0 10px 0; font-size: 14px; color: #4a5568;">เปรียบเทียบตามสังกัด</h5>
                                 <div style="position: relative; height: 300px;">
-                                    <canvas id="rtDeptChart"></canvas>
+                                    <canvas id="rtEducationAreaChart"></canvas>
                                 </div>
                             </div>
                         </div>
@@ -1126,8 +1137,8 @@
                                 <div id="onetAreaTable" style="max-height: 300px; overflow-y: auto;"></div>
                             </div>
                             <div>
-                                <h5 style="margin: 0 0 10px 0; font-size: 14px; color: #4a5568;">สังกัดที่ได้คะแนนเฉลี่ยแต่ละวิชา</h5>
-                                <div id="onetDeptTable" style="max-height: 300px; overflow-y: auto;"></div>
+                                <h5 style="margin: 0 0 10px 0; font-size: 14px; color: #4a5568;">เขตพื้นที่การศึกษาที่ได้คะแนนเฉลี่ยแต่ละวิชา</h5>
+                                <div id="onetEducationAreaTable" style="max-height: 300px; overflow-y: auto;"></div>
                             </div>
                         </div>
                     </div>
@@ -1146,7 +1157,7 @@
                         <div class="school-preview-card">
                             <div class="school-header">
                                 <h4>{{ $school->name }}</h4>
-                                <span class="department-badge">{{ $school->department }}</span>
+                                <span class="department-badge">{{ $school->education_area ?? 'ไม่ระบุ' }}</span>
                             </div>
                             <div class="school-stats">
                                 <div class="quick-stat">
@@ -1232,6 +1243,8 @@
                                                 <i class="fab fa-facebook"></i> Facebook
                                             @elseif($video->video_type == 'tiktok')
                                                 <i class="fab fa-tiktok"></i> TikTok
+                                            @elseif($video->video_type == 'google_drive')
+                                                <i class="fab fa-google-drive"></i> Google Drive
                                             @else
                                                 <i class="fas fa-video"></i> Video
                                             @endif
@@ -1456,6 +1469,11 @@
                     label: 'TikTok',
                     className: 'badge-tiktok',
                     iconClass: 'fab fa-tiktok'
+                    },
+                    google_drive: {
+                        label: 'Google Drive',
+                        className: 'badge-google_drive',
+                        iconClass: 'fab fa-google-drive'
                 },
                 other: {
                     label: 'Video',

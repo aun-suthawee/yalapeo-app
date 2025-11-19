@@ -128,24 +128,16 @@
                                     <i class="fas fa-calendar"></i>
                                     ปีที่เริ่มใช้งาน (พ.ศ.)
                                 </label>
-                                <select class="form-control @error('year') is-invalid @enderror" id="year"
-                                    name="year">
-                                    <option value="">เลือกปี (พ.ศ.)...</option>
-                                    @php
-                                        $currentYear = date('Y') + 543; // Convert to Buddhist year
-                                        $maxYear = 2573; // พ.ศ. 2573 = ค.ศ. 2030
-                                        $startYear = $currentYear - 15; // ย้อนหลัง 15 ปี
-                                        $endYear = min($currentYear + 5, $maxYear); // ไปข้างหน้า 5 ปีหรือไม่เกิน 2573
-                                    @endphp
-                                    @for ($year = $endYear; $year >= $startYear; $year--)
-                                        <option value="{{ $year }}" {{ old('year') == $year ? 'selected' : '' }}>
-                                            พ.ศ. {{ $year }}
-                                        </option>
-                                    @endfor
-                                </select>
+                                @php
+                                    $currentBuddhistYear = date('Y') + 543;
+                                @endphp
+                                <input type="number" class="form-control @error('year') is-invalid @enderror"
+                                    id="year" name="year" value="{{ old('year', $currentBuddhistYear) }}"
+                                    placeholder="เช่น {{ $currentBuddhistYear }}" min="2543" max="2573">
                                 @error('year')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+                                <small class="form-text">ระบุปี พ.ศ. ที่เริ่มใช้นวัตกรรมนี้</small>
                             </div>
 
                             <div class="form-group">

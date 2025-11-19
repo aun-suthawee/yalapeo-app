@@ -97,6 +97,11 @@
             color: white;
         }
 
+        .badge-google_drive {
+            background: #0f9d58;
+            color: white;
+        }
+
         .badge-other {
             background: #6c757d;
             color: white;
@@ -515,6 +520,8 @@
                                                     <i class="fab fa-facebook"></i> Facebook
                                                 @elseif($video->video_type == 'tiktok')
                                                     <i class="fab fa-tiktok"></i> TikTok
+                                                @elseif($video->video_type == 'google_drive')
+                                                    <i class="fab fa-google-drive"></i> Google Drive
                                                 @else
                                                     <i class="fas fa-video"></i> Video
                                                 @endif

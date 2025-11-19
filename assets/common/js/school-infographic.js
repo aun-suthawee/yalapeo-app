@@ -26,7 +26,7 @@ function initSearch() {
 
 function filterSchools(searchTerm) {
     const schoolItems = document.querySelectorAll('.school-item');
-    const departmentSections = document.querySelectorAll('.department-section');
+    const educationAreaSections = document.querySelectorAll('.department-section');
     
     schoolItems.forEach(item => {
         const schoolName = item.getAttribute('data-name') || '';
@@ -40,8 +40,8 @@ function filterSchools(searchTerm) {
         }
     });
 
-    // Hide empty department sections
-    departmentSections.forEach(section => {
+    // Hide empty education area sections
+    educationAreaSections.forEach(section => {
         const visibleSchools = section.querySelectorAll('.school-item[style*="display: block"], .school-item:not([style*="display: none"])');
         const hasVisibleSchools = Array.from(visibleSchools).some(school => 
             school.style.display !== 'none'
@@ -72,9 +72,9 @@ function initAnimations() {
         observer.observe(card);
     });
 
-    // Animate department sections
-    const departmentSections = document.querySelectorAll('.department-section');
-    departmentSections.forEach((section, index) => {
+    // Animate education area sections
+    const educationAreaSections = document.querySelectorAll('.department-section');
+    educationAreaSections.forEach((section, index) => {
         section.style.opacity = '0';
         section.style.transform = 'translateY(20px)';
         section.style.transition = `opacity 0.5s ease ${index * 0.1}s, transform 0.5s ease ${index * 0.1}s`;

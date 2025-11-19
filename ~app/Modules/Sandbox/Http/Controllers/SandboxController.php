@@ -155,6 +155,15 @@ class SandboxController extends Controller
             ];
         });
         
+        $educationAreaGroups = $schools->groupBy(function ($school) {
+            $label = $school->education_area;
+            if (is_string($label)) {
+                $label = trim($label);
+            }
+
+            return $label !== null && $label !== '' ? $label : 'ไม่ระบุ';
+        })->sortKeys();
+
         $stats = [
             'total_schools' => $schools->count(),
             'total_students' => $schools->sum(fn($school) => $school->total_students),
@@ -162,8 +171,9 @@ class SandboxController extends Controller
             'total_innovations' => SchoolInnovation::count(),
             'active_innovations' => SchoolInnovation::where('is_active', true)->count(),
             'inactive_innovations' => SchoolInnovation::where('is_active', false)->count(),
-            'by_department' => $schools->groupBy('department')->map(function ($group) {
+            'by_education_area' => $educationAreaGroups->map(function ($group, $label) {
                 return [
+                    'label' => $label,
                     'count' => $group->count(),
                     'students' => $group->sum(fn($school) => $school->total_students),
                     'teachers' => $group->sum(fn($school) => $school->total_teachers),
@@ -196,13 +206,23 @@ class SandboxController extends Controller
             $query->where('is_active', true);
         }])->get();
         
+        $educationAreaGroups = $schools->groupBy(function ($school) {
+            $label = $school->education_area;
+            if (is_string($label)) {
+                $label = trim($label);
+            }
+
+            return $label !== null && $label !== '' ? $label : 'ไม่ระบุ';
+        })->sortKeys();
+
         $stats = [
             'total_schools' => $schools->count(),
             'total_students' => $schools->sum(fn($school) => $school->total_students),
             'total_teachers' => $schools->sum(fn($school) => $school->total_teachers),
             'total_innovations' => SchoolInnovation::where('is_active', true)->count(),
-            'by_department' => $schools->groupBy('department')->map(function ($group) {
+            'by_education_area' => $educationAreaGroups->map(function ($group, $label) {
                 return [
+                    'label' => $label,
                     'count' => $group->count(),
                     'students' => $group->sum(fn($school) => $school->total_students),
                     'teachers' => $group->sum(fn($school) => $school->total_teachers),
@@ -396,6 +416,10 @@ class SandboxController extends Controller
         ]);
 
         $validated['school_id'] = $schoolId;
+        // If year is not provided, default to current Buddhist year
+        if (empty($validated['year'])) {
+            $validated['year'] = date('Y') + 543;
+        }
         
         // Handle multiple file uploads
         if ($request->hasFile('files')) {
@@ -544,6 +568,11 @@ class SandboxController extends Controller
             }
         }
 
+        // If year is not provided in update, fallback to current Buddhist year
+        if (empty($validated['year'])) {
+            $validated['year'] = date('Y') + 543;
+        }
+
         $innovation->update($validated);
 
         return redirect()->route('sandbox.schools.innovations', $schoolId)
@@ -606,7 +635,7 @@ class SandboxController extends Controller
         
         $validated = $request->validate([
             'video_url' => 'required|url|max:500',
-            'video_type' => 'required|in:youtube,facebook,tiktok,other',
+            'video_type' => 'required|in:youtube,facebook,tiktok,google_drive,other',
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'order' => 'nullable|integer|min:0'
@@ -642,7 +671,7 @@ class SandboxController extends Controller
         
         $validated = $request->validate([
             'video_url' => 'required|url|max:500',
-            'video_type' => 'required|in:youtube,facebook,tiktok,other',
+            'video_type' => 'required|in:youtube,facebook,tiktok,google_drive,other',
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'order' => 'nullable|integer|min:0'

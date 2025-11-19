@@ -57,11 +57,24 @@
                 </div>
             </div>
 
-            <!-- Department Sections -->
-            @foreach ($stats['by_department'] as $department => $data)
-                <div class="department-section" data-department="{{ $department }}">
+            <!-- Education Area Sections -->
+            @foreach ($stats['by_education_area'] as $area => $data)
+                @php
+                    $displayLabel = $data['label'] ?? $area;
+                    $areaSchools = $schools->filter(function ($school) use ($area) {
+                        $label = $school->education_area;
+                        if (is_string($label)) {
+                            $label = trim($label);
+                        }
+
+                        $normalized = $label !== null && $label !== '' ? $label : 'ไม่ระบุ';
+
+                        return $normalized === $area;
+                    });
+                @endphp
+                <div class="department-section" data-education-area="{{ $displayLabel }}">
                     <div class="department-header {{ $loop->index % 2 == 1 ? 'green' : '' }}">
-                        <h2 class="department-title">{{ $department }}</h2>
+                        <h2 class="department-title">{{ $displayLabel }}</h2>
                         <div class="department-stats">
                             <span class="dept-count">{{ $data['count'] }}</span> โรงเรียน |
                             <span class="student-count">{{ number_format($data['students']) }}</span> นักเรียน |
@@ -70,7 +83,7 @@
                     </div>
 
                     <div class="schools-grid active">
-                        @foreach ($schools->where('department', $department) as $school)
+                        @foreach ($areaSchools as $school)
                             <div class="school-item {{ $loop->parent->index % 2 == 1 ? 'green' : '' }}"
                                 data-name="{{ strtolower($school->name) }}"
                                 data-innovations="{{ $school->active_innovations_count }}"
@@ -152,7 +165,7 @@
                 return [
                     'id' => $school->id,
                     'name' => $school->name,
-                    'department' => $school->department,
+                    'education_area' => $school->education_area,
                     'total_students' => $school->total_students,
                     'male_students' => $school->male_students,
                     'female_students' => $school->female_students,
