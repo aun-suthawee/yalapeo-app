@@ -259,9 +259,209 @@
 }
 
 /* ===================================
+   Innovation Lightbox Modal
+   =================================== */
+.innovation-lightbox .modal-dialog {
+    max-width: min(1100px, 95vw);
+}
+
+.innovation-lightbox .modal-content {
+    background: #0b0d17;
+    border: none;
+    border-radius: 18px;
+    padding: 1.5rem 1.5rem 1.75rem;
+    position: relative;
+    color: #f8f9ff;
+}
+
+.innovation-lightbox .btn-close {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    filter: invert(1);
+    opacity: 0.7;
+}
+
+.innovation-lightbox .btn-close:hover,
+.innovation-lightbox .btn-close:focus-visible {
+    opacity: 1;
+}
+
+.innovation-lightbox-share {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(255, 255, 255, 0.18);
+    border: none;
+    color: #ffffff;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    transition: background 0.3s ease;
+}
+
+.innovation-lightbox-share:hover,
+.innovation-lightbox-share:focus-visible {
+    background: rgba(255, 255, 255, 0.3);
+    outline: none;
+}
+
+.innovation-lightbox-main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+    position: relative;
+}
+
+.innovation-lightbox-image-wrapper {
+    position: relative;
+    overflow: hidden;
+    border-radius: 16px;
+    background: #141a2b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-height: 70vh;
+    width: 100%;
+    cursor: zoom-in;
+    touch-action: none;
+    user-select: none;
+}
+
+.innovation-lightbox-image-wrapper img {
+    max-width: 100%;
+    max-height: 70vh;
+    width: auto;
+    height: auto;
+    user-select: none;
+    -webkit-user-drag: none;
+    will-change: transform;
+    transition: transform 0.25s ease;
+}
+
+.innovation-lightbox-image-wrapper.is-zoomed {
+    cursor: grab;
+}
+
+.innovation-lightbox-image-wrapper.is-zoomed img {
+    cursor: grab;
+}
+
+.innovation-lightbox-image-wrapper.is-panning,
+.innovation-lightbox-image-wrapper.is-panning img {
+    cursor: grabbing;
+}
+
+.innovation-lightbox-image-wrapper[data-zoom-level="1"] {
+    cursor: zoom-in;
+}
+
+.innovation-lightbox-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.18);
+    border: none;
+    color: #ffffff;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.innovation-lightbox-nav:hover,
+.innovation-lightbox-nav:focus-visible {
+    background: rgba(255, 255, 255, 0.32);
+    outline: none;
+}
+
+.innovation-lightbox-prev {
+    left: -0.5rem;
+}
+
+.innovation-lightbox-next {
+    right: -0.5rem;
+}
+
+.innovation-lightbox-nav.is-hidden {
+    display: none;
+}
+
+.innovation-lightbox-feedback {
+    min-height: 1.25rem;
+    margin-top: 1rem;
+    color: #9fb3ff;
+    font-size: 0.875rem;
+}
+
+.innovation-lightbox-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1.25rem;
+    flex-wrap: wrap;
+}
+
+.innovation-lightbox-meta-text h3 {
+    font-size: 1.35rem;
+    margin-bottom: 0.25rem;
+    color: #ffffff;
+}
+
+.innovation-lightbox-meta-text p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.7);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.innovation-lightbox-meta-text .bullet {
+    opacity: 0.5;
+}
+
+.innovation-lightbox-meta a {
+    white-space: nowrap;
+}
+
+/* ===================================
    Responsive Design
    =================================== */
 @media (max-width: 768px) {
+    .innovation-lightbox .modal-content {
+        padding: 1.25rem 1.25rem 1.5rem;
+    }
+
+    .innovation-lightbox-main {
+        gap: 0.75rem;
+        margin-top: 2rem;
+    }
+
+    .innovation-lightbox-prev {
+        left: -0.25rem;
+    }
+
+    .innovation-lightbox-next {
+        right: -0.25rem;
+    }
+
+    .innovation-lightbox-nav {
+        width: 42px;
+        height: 42px;
+    }
+
     .pdf-preview-card .pdf-icon {
         font-size: 3rem;
     }

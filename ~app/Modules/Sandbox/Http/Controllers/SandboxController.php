@@ -120,7 +120,7 @@ class SandboxController extends Controller
         $schools = School::with('innovations')->get();
         
         $innovations = SchoolInnovation::with('school')
-            ->orderBy('created_at', 'asc')
+            ->orderBy('created_at', 'desc')
             ->take(16)
             ->get()
             ->map(function($innovation) {

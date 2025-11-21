@@ -6,6 +6,202 @@
     <link rel="stylesheet" href="{{ asset('assets/common/css/school-detail.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/common/css/innovation-shared.css') }}">
     <style>
+        /* Innovation Lightbox */
+        .innovation-lightbox .modal-dialog {
+            max-width: min(1100px, 95vw);
+        }
+
+        .innovation-lightbox .modal-content {
+            background: #0b0d17;
+            border: none;
+            border-radius: 18px;
+            padding: 1.5rem 1.5rem 1.75rem;
+            position: relative;
+            color: #f8f9ff;
+        }
+
+        .innovation-lightbox .btn-close {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            filter: invert(1);
+            opacity: 0.7;
+        }
+
+        .innovation-lightbox .btn-close:hover,
+        .innovation-lightbox .btn-close:focus-visible {
+            opacity: 1;
+        }
+
+        .innovation-lightbox-share {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.18);
+            border: none;
+            color: #ffffff;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: background 0.3s ease;
+        }
+
+        .innovation-lightbox-share:hover,
+        .innovation-lightbox-share:focus-visible {
+            background: rgba(255, 255, 255, 0.3);
+            outline: none;
+        }
+
+        .innovation-lightbox-main {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+            position: relative;
+        }
+
+        .innovation-lightbox-image-wrapper {
+            position: relative;
+            overflow: hidden;
+            border-radius: 16px;
+            background: #141a2b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            max-height: 70vh;
+            width: 100%;
+            cursor: zoom-in;
+            touch-action: none;
+            user-select: none;
+        }
+
+        .innovation-lightbox-image-wrapper img {
+            max-width: 100%;
+            max-height: 70vh;
+            width: auto;
+            height: auto;
+            user-select: none;
+            -webkit-user-drag: none;
+            will-change: transform;
+            transition: transform 0.25s ease;
+        }
+
+        .innovation-lightbox-image-wrapper.is-zoomed {
+            cursor: grab;
+        }
+
+        .innovation-lightbox-image-wrapper.is-zoomed img {
+            cursor: grab;
+        }
+
+        .innovation-lightbox-image-wrapper.is-panning,
+        .innovation-lightbox-image-wrapper.is-panning img {
+            cursor: grabbing;
+        }
+
+        .innovation-lightbox-image-wrapper[data-zoom-level="1"] {
+            cursor: zoom-in;
+        }
+
+        .innovation-lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.18);
+            border: none;
+            color: #ffffff;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .innovation-lightbox-nav:hover,
+        .innovation-lightbox-nav:focus-visible {
+            background: rgba(255, 255, 255, 0.32);
+            outline: none;
+        }
+
+        .innovation-lightbox-prev {
+            left: -0.5rem;
+        }
+
+        .innovation-lightbox-next {
+            right: -0.5rem;
+        }
+
+        .innovation-lightbox-nav.is-hidden {
+            display: none;
+        }
+
+        .innovation-lightbox-feedback {
+            min-height: 1.25rem;
+            margin-top: 1rem;
+            color: #9fb3ff;
+            font-size: 0.875rem;
+        }
+
+        .innovation-lightbox-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 1.25rem;
+            flex-wrap: wrap;
+        }
+
+        .innovation-lightbox-meta-text h3 {
+            font-size: 1.35rem;
+            margin-bottom: 0.25rem;
+            color: #ffffff;
+        }
+
+        .innovation-lightbox-meta-text p {
+            margin: 0;
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.7);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .innovation-lightbox-meta-text .bullet {
+            opacity: 0.5;
+        }
+
+        @media (max-width: 768px) {
+            .innovation-lightbox .modal-content {
+                padding: 1.25rem 1.25rem 1.5rem;
+            }
+
+            .innovation-lightbox-main {
+                gap: 0.75rem;
+                margin-top: 2rem;
+            }
+
+            .innovation-lightbox-prev {
+                left: -0.25rem;
+            }
+
+            .innovation-lightbox-next {
+                right: -0.25rem;
+            }
+
+            .innovation-lightbox-nav {
+                width: 42px;
+                height: 42px;
+            }
+        }
+
         /* Vision Videos Styles */
         .vision-videos-grid {
             display: grid;
@@ -701,53 +897,75 @@
                     @if ($school->innovations->count() > 0)
                         <div class="innovations-grid">
                             @foreach ($school->innovations->sortByDesc('created_at') as $innovation)
+                                @php
+                                    $categoryLabel = $innovation->category ?: 'ไม่ระบุหมวดหมู่';
+                                    $schoolName = strip_tags($school->name ?? 'ไม่พบข้อมูลโรงเรียน');
+                                    $detailUrl = route('sandbox.schools.innovations', $school->id) . '?highlight=' . $innovation->id;
+                                    $imagePaths = collect($innovation->image_paths ?? []);
+                                    $firstPath = $imagePaths->first();
+                                    $firstFile = $firstPath ? basename($firstPath) : null;
+                                    $firstExtension = $firstFile ? strtolower(pathinfo($firstFile, PATHINFO_EXTENSION)) : null;
+                                    $isFirstPdf = $firstExtension === 'pdf';
+                                    $previewImageUrl = $firstFile && !$isFirstPdf
+                                        ? route('sandbox.innovation.image', [$school->id, $firstFile])
+                                        : null;
+                                    $lightboxImages = $imagePaths
+                                        ->map(function ($path) use ($school) {
+                                            $file = $path ? basename($path) : null;
+                                            if (!$file) {
+                                                return null;
+                                            }
+
+                                            $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+                                            if ($ext === 'pdf') {
+                                                return null;
+                                            }
+
+                                            return [
+                                                'url' => route('sandbox.innovation.image', [$school->id, $file]),
+                                                'name' => $file,
+                                            ];
+                                        })
+                                        ->filter()
+                                        ->values();
+                                    $lightboxImagesJson = $lightboxImages->toJson();
+                                @endphp
                                 <div class="innovation-card {{ $innovation->is_active ? 'active' : 'inactive' }}"
-                                    data-category="{{ $innovation->category }}"
+                                    role="button" tabindex="0"
+                                    aria-label="ดูนวัตกรรม {{ strip_tags($innovation->title ?? '') }}"
+                                    data-lightbox="1"
+                                    data-category="{{ $innovation->category ?? '' }}"
                                     data-status="{{ $innovation->is_active ? '1' : '0' }}"
                                     data-innovation-id="{{ $innovation->id }}"
-                                    data-innovation-title="{{ htmlspecialchars($innovation->title, ENT_QUOTES) }}"
-                                    data-innovation-description="{{ htmlspecialchars($innovation->description ?? '', ENT_QUOTES) }}"
-                                    data-innovation-category="{{ $innovation->category }}"
-                                    data-innovation-year="{{ $innovation->year }}"
-                                    data-innovation-active="{{ $innovation->is_active ? '1' : '0' }}"
-                                    data-innovation-files="{{ $innovation->image_paths ? json_encode($innovation->image_paths) : '[]' }}"
-                                    onclick="viewInnovationFast(this)" style="cursor: pointer;">
+                                    data-title="{{ Str::lower(strip_tags($innovation->title ?? '')) }}"
+                                    data-description="{{ Str::lower(strip_tags($innovation->description ?? '')) }}"
+                                    data-title-display="{{ e(strip_tags($innovation->title ?? '')) }}"
+                                    data-school-name="{{ e($schoolName) }}"
+                                    data-category-label="{{ e($categoryLabel) }}"
+                                    data-detail-url="{{ $detailUrl }}"
+                                    data-images="{{ e($lightboxImagesJson) }}"
+                                    style="cursor: pointer;">
 
-                                    @if ($innovation->image_paths && count($innovation->image_paths) > 0)
-                                        @php
-                                            $firstFile = $innovation->image_paths[0];
-                                            $fileName = basename($firstFile);
-                                            $extension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
-                                            $isPDF = $extension === 'pdf';
-                                        @endphp
-                                        <div class="innovation-image {{ $isPDF ? 'pdf-container' : '' }}">
-                                            @if ($isPDF)
-                                                <!-- PDF Preview -->
+                                    @if ($previewImageUrl || $isFirstPdf)
+                                        <div class="innovation-image {{ $isFirstPdf ? 'pdf-container' : '' }}">
+                                            @if ($isFirstPdf)
                                                 <div class="pdf-preview-card">
                                                     <i class="fas fa-file-pdf pdf-icon"></i>
                                                 </div>
                                             @else
-                                                <!-- Image Preview -->
-                                                @php
-                                                    $imageUrl = route('sandbox.innovation.image', [
-                                                        $school->id,
-                                                        $fileName,
-                                                    ]);
-                                                @endphp
-                                                <img src="{{ $imageUrl }}" alt="{{ $innovation->title }}"
+                                                <img src="{{ $previewImageUrl }}" alt="{{ $innovation->title }}"
                                                     loading="lazy" style="width: 100%; height: 200px; object-fit: cover;"
                                                     onerror="this.onerror=null; this.parentElement.classList.add('placeholder'); this.style.display='none';">
-                                                @if (count($innovation->image_paths) > 1)
+                                                @if ($imagePaths->count() > 1)
                                                     <div class="file-count-badge">
                                                         <i class="fas fa-images"></i>
-                                                        {{ count($innovation->image_paths) }}
+                                                        {{ $imagePaths->count() }}
                                                     </div>
                                                 @endif
                                             @endif
 
                                             <div class="image-overlay">
-                                                <div
-                                                    class="status-badge {{ $innovation->is_active ? 'active' : 'inactive' }}">
+                                                <div class="status-badge {{ $innovation->is_active ? 'active' : 'inactive' }}">
                                                     {{ $innovation->is_active ? 'ใช้งาน' : 'ไม่ใช้งาน' }}
                                                 </div>
                                             </div>
@@ -757,8 +975,7 @@
                                             <div class="placeholder-icon">
                                                 <i class="fas fa-lightbulb"></i>
                                             </div>
-                                            <div
-                                                class="status-badge {{ $innovation->is_active ? 'active' : 'inactive' }}">
+                                            <div class="status-badge {{ $innovation->is_active ? 'active' : 'inactive' }}">
                                                 {{ $innovation->is_active ? 'ใช้งาน' : 'ไม่ใช้งาน' }}
                                             </div>
                                         </div>
@@ -791,6 +1008,10 @@
                                         </div>
 
                                         <div class="innovation-actions">
+                                            <a href="{{ $detailUrl }}" class="btn btn-sm btn-outline-primary"
+                                                target="_blank" rel="noopener">
+                                                <i class="fas fa-info-circle"></i> ดูรายละเอียด
+                                            </a>
                                             @auth
                                                 <a href="{{ route('sandbox.schools.innovations.edit', [$school->id, $innovation->id]) }}"
                                                     class="btn btn-sm btn-warning" onclick="event.stopPropagation();">
@@ -800,10 +1021,6 @@
                                                     onclick="event.stopPropagation(); deleteInnovation({{ $innovation->id }}, '{{ addslashes($innovation->title) }}')">
                                                     <i class="fas fa-trash"></i> ลบ
                                                 </button>
-                                            @else
-                                                <div class="text-muted small">
-                                                    <i class="fas fa-hand-pointer"></i> คลิกเพื่อดูรายละเอียด
-                                                </div>
                                             @endauth
                                         </div>
                                     </div>
@@ -826,18 +1043,43 @@
                     @endif
                 </div>
 
-                <!-- Innovation Detail Modal -->
-                <div class="modal fade" id="innovationModal" tabindex="-1" aria-labelledby="innovationModalLabel"
+                <div class="modal fade innovation-lightbox" id="innovationLightboxModal" tabindex="-1"
                     aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
+                    <div class="modal-dialog modal-dialog-centered modal-xl">
                         <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="innovationModalLabel">รายละเอียดนวัตกรรม</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="ปิด"></button>
+                            <button type="button" class="innovation-lightbox-share" id="innovationLightboxShare"
+                                aria-label="คัดลอกลิงก์ภาพ">
+                                <i class="fas fa-share-alt"></i>
+                            </button>
+                            <div class="innovation-lightbox-main">
+                                <button type="button" class="innovation-lightbox-nav innovation-lightbox-prev"
+                                    id="innovationLightboxPrev" aria-label="ภาพก่อนหน้า">
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                                <div class="innovation-lightbox-image-wrapper" id="innovationLightboxImageWrapper">
+                                    <img id="innovationLightboxImage" src="" alt="">
+                                </div>
+                                <button type="button" class="innovation-lightbox-nav innovation-lightbox-next"
+                                    id="innovationLightboxNext" aria-label="ภาพถัดไป">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
                             </div>
-                            <div class="modal-body" id="innovationModalBody">
-                                <!-- Content will be loaded here -->
+                            <div class="innovation-lightbox-feedback" id="innovationLightboxFeedback" role="status"
+                                aria-live="polite"></div>
+                            <div class="innovation-lightbox-meta">
+                                <div class="innovation-lightbox-meta-text">
+                                    <h3 id="innovationLightboxTitle"></h3>
+                                    <p>
+                                        <span id="innovationLightboxSchool"></span>
+                                        <span class="bullet">•</span>
+                                        <span id="innovationLightboxCategory"></span>
+                                    </p>
+                                </div>
+                                <a id="innovationLightboxDetailLink" class="btn btn-outline-light btn-sm" href="#"
+                                    target="_blank" rel="noopener">
+                                    ดูรายละเอียด
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -893,12 +1135,33 @@
 @endsection
 
 @section('script-content')
+    <script src="{{ asset('assets/common/js/innovation-lightbox.js') }}"></script>
     <script src="{{ asset('assets/common/js/school-management.js') }}"></script>
     <script>
-        // Image load handler for fade-in animation
         document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('.innovation-image img').forEach(img => {
-                // Add loaded class when image finishes loading
+            const cards = document.querySelectorAll('.innovation-card');
+            const modalEl = document.getElementById('innovationLightboxModal');
+
+            if (modalEl && window.InnovationLightbox && typeof window.InnovationLightbox.create === 'function') {
+                const lightboxController = window.InnovationLightbox.create(modalEl);
+                if (lightboxController && typeof lightboxController.registerCards === 'function') {
+                    lightboxController.registerCards(cards);
+                    window.schoolInnovationLightbox = lightboxController;
+                }
+            }
+
+            const filterCategoryEl = document.getElementById('filterCategory');
+            const filterStatusEl = document.getElementById('filterStatus');
+
+            if (filterCategoryEl) {
+                filterCategoryEl.addEventListener('change', filterInnovations);
+            }
+
+            if (filterStatusEl) {
+                filterStatusEl.addEventListener('change', filterInnovations);
+            }
+
+            document.querySelectorAll('.innovation-image img').forEach((img) => {
                 if (img.complete) {
                     img.classList.add('loaded');
                 } else {
@@ -907,20 +1170,15 @@
                     });
                 }
             });
-        });
 
-        // Filtering functionality
-        document.getElementById('filterCategory').addEventListener('change', function() {
-            filterInnovations();
-        });
-
-        document.getElementById('filterStatus').addEventListener('change', function() {
             filterInnovations();
         });
 
         function filterInnovations() {
-            const categoryFilter = document.getElementById('filterCategory').value;
-            const statusFilter = document.getElementById('filterStatus').value;
+            const categoryEl = document.getElementById('filterCategory');
+            const statusEl = document.getElementById('filterStatus');
+            const categoryFilter = categoryEl ? categoryEl.value : '';
+            const statusFilter = statusEl ? statusEl.value : '';
             const cards = document.querySelectorAll('.innovation-card');
 
             cards.forEach(card => {
@@ -937,139 +1195,8 @@
                     showCard = false;
                 }
 
-                card.style.display = showCard ? 'block' : 'none';
+                card.style.display = showCard ? '' : 'none';
             });
-        }
-
-        function viewInnovationFast(cardElement) {
-            // Get data from card attributes (instant, no API call)
-            const title = cardElement.dataset.innovationTitle;
-            const description = cardElement.dataset.innovationDescription;
-            const category = cardElement.dataset.innovationCategory;
-            const year = cardElement.dataset.innovationYear;
-            const isActive = cardElement.dataset.innovationActive === '1';
-            const filesData = cardElement.dataset.innovationFiles;
-
-            // Generate files HTML
-            let filesHtml = '';
-            if (filesData && filesData !== '[]') {
-                try {
-                    const filePaths = JSON.parse(filesData);
-                    if (Array.isArray(filePaths) && filePaths.length > 0) {
-                        if (filePaths.length === 1) {
-                            // Single file
-                            const filePath = filePaths[0];
-                            const fileName = filePath.split('/').pop();
-                            const extension = fileName.split('.').pop().toLowerCase();
-                            const isPDF = extension === 'pdf';
-
-                            if (isPDF) {
-                                filesHtml = `
-                            <div class="file-display">
-                                <div class="pdf-viewer">
-                                    <div class="pdf-header">
-                                        <i class="fas fa-file-pdf text-danger"></i>
-                                        <span class="file-name">${fileName}</span>
-                                        <a href="/sandbox/innovation-image/{{ $school->id }}/${fileName}" target="_blank" class="btn btn-sm btn-primary">
-                                            <i class="fas fa-external-link-alt"></i> เปิดดู
-                                        </a>
-                                    </div>
-                                    <div class="pdf-preview-container">
-                                        <embed src="/sandbox/innovation-image/{{ $school->id }}/${fileName}" type="application/pdf" width="100%" height="400px" />
-                                    </div>
-                                </div>
-                            </div>
-                        `;
-                            } else {
-                                const imageUrl = `/sandbox/innovation-image/{{ $school->id }}/${fileName}`;
-                                filesHtml =
-                                    `<img src="${imageUrl}" alt="${title}" class="img-fluid mb-3 rounded" style="max-height: 400px; object-fit: contain; width: 100%;">`;
-                            }
-                        } else {
-                            // Multiple files - show carousel
-                            filesHtml = `
-                        <div id="filesCarousel" class="carousel slide mb-3" data-bs-ride="carousel">
-                            <div class="carousel-inner">`;
-
-                            filePaths.forEach((filePath, index) => {
-                                const fileName = filePath.split('/').pop();
-                                const extension = fileName.split('.').pop().toLowerCase();
-                                const isPDF = extension === 'pdf';
-
-                                filesHtml += `
-                            <div class="carousel-item ${index === 0 ? 'active' : ''}">`;
-
-                                if (isPDF) {
-                                    filesHtml += `
-                                <div class="pdf-viewer">
-                                    <div class="pdf-header">
-                                        <i class="fas fa-file-pdf text-danger"></i>
-                                        <span class="file-name">${fileName}</span>
-                                        <a href="/sandbox/innovation-image/{{ $school->id }}/${fileName}" target="_blank" class="btn btn-sm btn-primary">
-                                            <i class="fas fa-external-link-alt"></i> เปิดดู
-                                        </a>
-                                    </div>
-                                    <div class="pdf-preview-container">
-                                        <embed src="/sandbox/innovation-image/{{ $school->id }}/${fileName}" type="application/pdf" width="100%" height="350px" />
-                                    </div>
-                                </div>
-                            `;
-                                } else {
-                                    const imageUrl = `/sandbox/innovation-image/{{ $school->id }}/${fileName}`;
-                                    filesHtml +=
-                                        `<img src="${imageUrl}" alt="${title}" class="d-block w-100" style="max-height: 400px; object-fit: contain;">`;
-                                }
-
-                                filesHtml += `</div>`;
-                            });
-
-                            filesHtml += `
-                            </div>
-                            <button class="carousel-control-prev" type="button" data-bs-target="#filesCarousel" data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Previous</span>
-                            </button>
-                            <button class="carousel-control-next" type="button" data-bs-target="#filesCarousel" data-bs-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Next</span>
-                            </button>
-                            <div class="carousel-indicators">`;
-
-                            filePaths.forEach((_, index) => {
-                                filesHtml += `
-                            <button type="button" data-bs-target="#filesCarousel" data-bs-slide-to="${index}" 
-                                    ${index === 0 ? 'class="active" aria-current="true"' : ''} 
-                                    aria-label="Slide ${index + 1}"></button>`;
-                            });
-
-                            filesHtml += `
-                            </div>
-                        </div>
-                    `;
-                        }
-                    }
-                } catch (e) {
-                    console.error('Error parsing files data:', e);
-                }
-            }
-
-            // Build modal content instantly
-            document.getElementById('innovationModalBody').innerHTML = `
-        <div class="innovation-detail-modal">
-            ${filesHtml}
-            <h4 class="mb-3">${title}</h4>
-            ${category ? `<span class="badge bg-secondary mb-3">${category}</span>` : ''}
-            ${description ? `<p class="text-muted" style="white-space: pre-wrap;">${description}</p>` : '<p class="text-muted">ไม่มีรายละเอียด</p>'}
-            <hr>
-            <div class="mt-3">
-                ${year ? `<div class="mb-2"><i class="fas fa-calendar text-primary"></i> <strong>ปีที่เริ่มใช้งาน:</strong> พ.ศ. ${year}</div>` : ''}
-                <div><i class="fas fa-toggle-${isActive ? 'on' : 'off'} text-${isActive ? 'success' : 'secondary'}"></i> <strong>สถานะ:</strong> ${isActive ? '<span class="text-success">ใช้งานอยู่</span>' : '<span class="text-muted">ไม่ใช้งาน</span>'}</div>
-            </div>
-        </div>
-    `;
-
-            // Show modal instantly (no delay!)
-            new bootstrap.Modal(document.getElementById('innovationModal')).show();
         }
 
         function deleteInnovation(id, title) {

@@ -113,6 +113,202 @@
             display: block;
         }
 
+        /* Innovation Lightbox */
+        .innovation-lightbox .modal-dialog {
+            max-width: min(1100px, 95vw);
+        }
+
+        .innovation-lightbox .modal-content {
+            background: #0b0d17;
+            border: none;
+            border-radius: 18px;
+            padding: 1.5rem 1.5rem 1.75rem;
+            position: relative;
+            color: #f8f9ff;
+        }
+
+        .innovation-lightbox .btn-close {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            filter: invert(1);
+            opacity: 0.7;
+        }
+
+        .innovation-lightbox .btn-close:hover,
+        .innovation-lightbox .btn-close:focus-visible {
+            opacity: 1;
+        }
+
+        .innovation-lightbox-share {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.18);
+            border: none;
+            color: #ffffff;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: background 0.3s ease;
+        }
+
+        .innovation-lightbox-share:hover,
+        .innovation-lightbox-share:focus-visible {
+            background: rgba(255, 255, 255, 0.3);
+            outline: none;
+        }
+
+        .innovation-lightbox-main {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+            position: relative;
+        }
+
+        .innovation-lightbox-image-wrapper {
+            position: relative;
+            overflow: hidden;
+            border-radius: 16px;
+            background: #141a2b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            max-height: 70vh;
+            width: 100%;
+            cursor: zoom-in;
+            touch-action: none;
+            user-select: none;
+        }
+
+        .innovation-lightbox-image-wrapper img {
+            max-width: 100%;
+            max-height: 70vh;
+            width: auto;
+            height: auto;
+            user-select: none;
+            -webkit-user-drag: none;
+            will-change: transform;
+            transition: transform 0.25s ease;
+        }
+
+        .innovation-lightbox-image-wrapper.is-zoomed {
+            cursor: grab;
+        }
+
+        .innovation-lightbox-image-wrapper.is-zoomed img {
+            cursor: grab;
+        }
+
+        .innovation-lightbox-image-wrapper.is-panning,
+        .innovation-lightbox-image-wrapper.is-panning img {
+            cursor: grabbing;
+        }
+
+        .innovation-lightbox-image-wrapper[data-zoom-level="1"] {
+            cursor: zoom-in;
+        }
+
+        .innovation-lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.18);
+            border: none;
+            color: #ffffff;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .innovation-lightbox-nav:hover,
+        .innovation-lightbox-nav:focus-visible {
+            background: rgba(255, 255, 255, 0.32);
+            outline: none;
+        }
+
+        .innovation-lightbox-prev {
+            left: -0.5rem;
+        }
+
+        .innovation-lightbox-next {
+            right: -0.5rem;
+        }
+
+        .innovation-lightbox-nav.is-hidden {
+            display: none;
+        }
+
+        .innovation-lightbox-feedback {
+            min-height: 1.25rem;
+            margin-top: 1rem;
+            color: #9fb3ff;
+            font-size: 0.875rem;
+        }
+
+        .innovation-lightbox-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 1.25rem;
+            flex-wrap: wrap;
+        }
+
+        .innovation-lightbox-meta-text h3 {
+            font-size: 1.35rem;
+            margin-bottom: 0.25rem;
+            color: #ffffff;
+        }
+
+        .innovation-lightbox-meta-text p {
+            margin: 0;
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.7);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .innovation-lightbox-meta-text .bullet {
+            opacity: 0.5;
+        }
+
+        @media (max-width: 768px) {
+            .innovation-lightbox .modal-content {
+                padding: 1.25rem 1.25rem 1.5rem;
+            }
+
+            .innovation-lightbox-main {
+                gap: 0.75rem;
+                margin-top: 2rem;
+            }
+
+            .innovation-lightbox-prev {
+                left: -0.25rem;
+            }
+
+            .innovation-lightbox-next {
+                right: -0.25rem;
+            }
+
+            .innovation-lightbox-nav {
+                width: 42px;
+                height: 42px;
+            }
+        }
+
         /* Vision Videos Section Styles */
         .vision-section {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -1300,7 +1496,7 @@
         </section>
     @endif
 
-    <!-- Innovation Experience Zone (Full Width) -->
+    <!-- Innovation Zone (Full Width) -->
     <section class="innovation-zone" id="innovation-zone">
         <div class="container">
             <div class="zone-header">
@@ -1362,7 +1558,13 @@
                         ระบบจะแสดงข้อมูลในส่วนนี้พร้อมการค้นหาและตัวกรองให้โดยอัตโนมัติ</p>
                 </div>
             @else
-                <div class="innovation-grid" id="innovationGrid">
+                <div class="innovation-grid" id="innovationGrid"
+                    data-endpoint="{{ route('sandbox.dashboard') }}"
+                    data-placeholder="{{ asset('assets/images/education-sandbox/innovation-placeholder.svg') }}"
+                    data-detail-base="{{ url('sandbox/schools') }}"
+                    data-image-base="{{ url('sandbox/innovation-image') }}"
+                    data-initial-total="{{ $stats['total_innovations'] }}"
+                    data-initial-count="{{ $innovations->count() }}">
                     @foreach ($innovations as $innovation)
                         @php
                             $firstImage = $innovation->first_image_path;
@@ -1379,13 +1581,39 @@
                                 '?highlight=' .
                                 $innovation->id;
                             $assetPlaceholder = asset('assets/images/education-sandbox/innovation-placeholder.svg');
+                            $lightboxImages = collect($innovation->image_paths ?? [])
+                                ->map(function ($path) use ($innovation) {
+                                    $file = $path ? basename($path) : null;
+                                    if (!$file) {
+                                        return null;
+                                    }
+
+                                    $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+                                    if ($ext === 'pdf') {
+                                        return null;
+                                    }
+
+                                    return [
+                                        'url' => route('sandbox.innovation.image', [$innovation->school_id, $file]),
+                                        'name' => $file,
+                                    ];
+                                })
+                                ->filter()
+                                ->values();
+                            $lightboxImagesJson = $lightboxImages->toJson();
                         @endphp
-                        <a href="{{ $detailUrl }}" class="innovation-card"
+                        <a href="{{ $detailUrl }}" class="innovation-card" role="button" tabindex="0"
+                            aria-label="ดูนวัตกรรม {{ strip_tags($innovation->title) }}"
                             data-title="{{ Str::lower(strip_tags($innovation->title)) }}"
                             data-category="{{ Str::lower($categoryName) }}"
                             data-school="{{ Str::lower(strip_tags($schoolName)) }}"
                             data-description="{{ Str::lower(strip_tags($innovation->description ?? '')) }}"
-                            data-active="{{ $innovation->is_active ? '1' : '0' }}">
+                            data-active="{{ $innovation->is_active ? '1' : '0' }}"
+                            data-title-display="{{ e(strip_tags($innovation->title)) }}"
+                            data-school-name="{{ e(strip_tags($schoolName)) }}"
+                            data-category-label="{{ e($categoryName) }}"
+                            data-detail-url="{{ $detailUrl }}"
+                            data-images="{{ e($lightboxImagesJson) }}">
                             <div class="card-figure">
                                 @if ($imageUrl && !$isPdf)
                                     <img src="{{ $imageUrl }}" alt="{{ $innovation->title }}" loading="lazy">
@@ -1426,11 +1654,54 @@
                 </div>
             @endif
         </div>
+
+        <div class="modal fade innovation-lightbox" id="innovationLightboxModal" tabindex="-1"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-xl">
+                <div class="modal-content">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="ปิด"></button>
+                    <button type="button" class="innovation-lightbox-share" id="innovationLightboxShare"
+                        aria-label="คัดลอกลิงก์ภาพ">
+                        <i class="fas fa-share-alt"></i>
+                    </button>
+                    <div class="innovation-lightbox-main">
+                        <button type="button" class="innovation-lightbox-nav innovation-lightbox-prev"
+                            id="innovationLightboxPrev" aria-label="ภาพก่อนหน้า">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <div class="innovation-lightbox-image-wrapper" id="innovationLightboxImageWrapper">
+                            <img id="innovationLightboxImage" src="" alt="">
+                        </div>
+                        <button type="button" class="innovation-lightbox-nav innovation-lightbox-next"
+                            id="innovationLightboxNext" aria-label="ภาพถัดไป">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                    <div class="innovation-lightbox-feedback" id="innovationLightboxFeedback" role="status"
+                        aria-live="polite"></div>
+                    <div class="innovation-lightbox-meta">
+                        <div class="innovation-lightbox-meta-text">
+                            <h3 id="innovationLightboxTitle"></h3>
+                            <p>
+                                <span id="innovationLightboxSchool"></span>
+                                <span class="bullet">•</span>
+                                <span id="innovationLightboxCategory"></span>
+                            </p>
+                        </div>
+                        <a id="innovationLightboxDetailLink" class="btn btn-outline-light btn-sm" href="#"
+                            target="_blank" rel="noopener">
+                            ดูรายละเอียด
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 @endsection
 
 @section('script-content')
     <script src="{{ asset('assets/common/js/school-dashboard.js') }}"></script>
+    <script src="{{ asset('assets/common/js/innovation-lightbox.js') }}"></script>
     <script src="{{ asset('assets/common/js/innovation-dashboard.js') }}"></script>
 
     <!-- Chart.js for Academic Results -->

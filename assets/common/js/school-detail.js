@@ -100,14 +100,22 @@ function initImageGallery() {
     const innovationImages = document.querySelectorAll('.innovation-image img');
     
     innovationImages.forEach(img => {
-        img.addEventListener('click', function() {
-            openImageModal(this.src, this.alt);
-        });
-        
-        // Add loading state
-        img.addEventListener('load', function() {
-            this.classList.add('loaded');
-        });
+        const card = img.closest('.innovation-card');
+        const usesSharedLightbox = card && card.dataset.lightbox === '1';
+
+        if (!usesSharedLightbox) {
+            img.addEventListener('click', function() {
+                openImageModal(this.src, this.alt);
+            });
+        }
+
+        if (img.complete) {
+            img.classList.add('loaded');
+        } else {
+            img.addEventListener('load', function() {
+                this.classList.add('loaded');
+            });
+        }
     });
 }
 

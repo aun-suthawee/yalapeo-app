@@ -1,316 +1,479 @@
-// Innovation Dashboard with Infinite Scroll
-document.addEventListener('DOMContentLoaded', function () {
-    initInnovationDashboard();
-});
+(function () {
+	'use strict';
 
-let currentPage = 1;
-let isLoading = false;
-let hasMoreData = true;
-let currentFilters = {
-    search: '',
-    category: ''
-};
+	document.addEventListener('DOMContentLoaded', initInnovationDashboard);
 
-function initInnovationDashboard() {
-    // Initialize search functionality
-    initSearch();
+	let currentPage = 1;
+	let isLoading = false;
+	let hasMoreData = true;
+	const currentFilters = {
+		search: '',
+		category: ''
+	};
+	let innovationLightboxController = null;
 
-    // Initialize category filters
-    initCategoryFilters();
+	function initInnovationDashboard() {
+		const grid = document.getElementById('innovationGrid');
+		if (!grid) {
+			return;
+		}
 
-    // Initialize infinite scroll
-    initInfiniteScroll();
-}
+		toggleEmptyState(grid.children.length === 0);
 
-function initSearch() {
-    const searchInput = document.getElementById('innovationSearch');
-    if (!searchInput) return;
+		const searchInput = document.getElementById('innovationSearch');
+		if (searchInput) {
+			currentFilters.search = searchInput.value.trim();
+		}
 
-    let searchTimeout;
-    searchInput.addEventListener('input', function (e) {
-        clearTimeout(searchTimeout);
-        searchTimeout = setTimeout(() => {
-            currentFilters.search = e.target.value;
-            resetAndReload();
-        }, 500); // Debounce 500ms
-    });
-}
+		const activeCategory = document.querySelector('#innovationCategories .category-chip.is-active');
+		currentFilters.category = activeCategory ? (activeCategory.dataset.category || '') : '';
 
-function initCategoryFilters() {
-    const categoryButtons = document.querySelectorAll('#innovationCategories .category-chip');
-    
-    categoryButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            // Remove active class from all buttons
-            categoryButtons.forEach(btn => btn.classList.remove('is-active'));
-            
-            // Add active class to clicked button
-            this.classList.add('is-active');
-            
-            // Update filter
-            currentFilters.category = this.dataset.category || '';
-            resetAndReload();
-        });
-    });
-}
+		const initialTotal = Number(grid.dataset.initialTotal || grid.children.length || 0);
+		const initialCount = Number(grid.dataset.initialCount || grid.children.length || 0);
+		hasMoreData = initialCount < initialTotal;
 
-function resetAndReload() {
-    currentPage = 1;
-    hasMoreData = true;
-    const grid = document.getElementById('innovationGrid');
-    if (grid) {
-        grid.innerHTML = '';
-    }
-    loadInnovations(true);
-}
+		initSearch();
+		initCategoryFilters();
+		initInfiniteScroll();
+		initInnovationLightbox();
 
-function initInfiniteScroll() {
-    window.addEventListener('scroll', function () {
-        if (isLoading || !hasMoreData) return;
+		if (innovationLightboxController) {
+			innovationLightboxController.registerCards(document.querySelectorAll('.innovation-card'));
+		}
+	}
 
-        const scrollPosition = window.innerHeight + window.scrollY;
-        const documentHeight = document.documentElement.scrollHeight;
+	function initSearch() {
+		const searchInput = document.getElementById('innovationSearch');
+		if (!searchInput) {
+			return;
+		}
 
-        // Load more when user scrolls to 80% of page
-        if (scrollPosition >= documentHeight * 0.8) {
-            currentPage++;
-            loadInnovations(false);
-        }
-    });
-}
+		let debounceId;
+		searchInput.addEventListener('input', (event) => {
+			clearTimeout(debounceId);
+			debounceId = setTimeout(() => {
+				currentFilters.search = event.target.value.trim();
+				resetAndReload();
+			}, 450);
+		});
+	}
 
-function getPerPageCount() {
-    const width = window.innerWidth;
-    
-    if (width >= 1200) {
-        return 16; // Large screens
-    } else if (width >= 768) {
-        return 12; // Medium screens (tablets)
-    } else if (width >= 576) {
-        return 8; // Small screens
-    } else {
-        return 5; // Mobile
-    }
-}
+	function initCategoryFilters() {
+		const buttons = document.querySelectorAll('#innovationCategories .category-chip');
+		if (!buttons.length) {
+			return;
+		}
 
-function loadInnovations(isInitial) {
-    if (isLoading) return;
+		buttons.forEach((button) => {
+			button.addEventListener('click', () => {
+				buttons.forEach((chip) => chip.classList.remove('is-active'));
+				button.classList.add('is-active');
+				currentFilters.category = button.dataset.category || '';
+				resetAndReload();
+			});
+		});
+	}
 
-    isLoading = true;
-    showLoading();
+	function initInfiniteScroll() {
+		window.addEventListener('scroll', () => {
+			if (isLoading || !hasMoreData) {
+				return;
+			}
 
-    const perPage = getPerPageCount();
-    const params = new URLSearchParams({
-        page: currentPage,
-        perPage: perPage,
-        search: currentFilters.search,
-        category: currentFilters.category
-    });
+			const threshold = document.documentElement.scrollHeight * 0.8;
+			if (window.innerHeight + window.scrollY >= threshold) {
+				currentPage += 1;
+				loadInnovations(false);
+			}
+		});
+	}
 
-    fetch(`/sandbox?${params.toString()}`, {
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest',
-            'Accept': 'application/json'
-        }
-    })
-        .then(response => response.json())
-        .then(data => {
-            hideLoading();
+	function initInnovationLightbox() {
+		const modalEl = document.getElementById('innovationLightboxModal');
+		if (!modalEl || typeof window.InnovationLightbox === 'undefined') {
+			return;
+		}
 
-            if (data.innovations.length === 0 && isInitial) {
-                showEmptyState();
-                updateResultsCount(0);
-            } else {
-                renderInnovations(data.innovations);
-                hasMoreData = data.hasMore;
-                
-                if (isInitial) {
-                    updateResultsCount(data.total);
-                }
-                
-                if (!hasMoreData && !isInitial) {
-                    showNoMoreData();
-                }
-            }
+		innovationLightboxController = window.InnovationLightbox.create(modalEl);
+		if (!innovationLightboxController || typeof innovationLightboxController.registerCards !== 'function') {
+			innovationLightboxController = null;
+		}
+	}
 
-            isLoading = false;
-        })
-        .catch(error => {
-            console.error('Error loading innovations:', error);
-            hideLoading();
-            isLoading = false;
-        });
-}
+	function resetAndReload() {
+		currentPage = 1;
+		hasMoreData = true;
+		hideNoMoreData();
 
-function renderInnovations(innovations) {
-    const grid = document.getElementById('innovationGrid');
-    const emptyState = document.getElementById('innovationEmpty');
+		const grid = document.getElementById('innovationGrid');
+		if (grid) {
+			grid.innerHTML = '';
+		}
 
-    if (emptyState) {
-        emptyState.style.display = 'none';
-    }
+		loadInnovations(true);
+	}
 
-    innovations.forEach(innovation => {
-        const card = createInnovationCard(innovation);
-        grid.appendChild(card);
-    });
-}
+	function loadInnovations(isInitialLoad) {
+		if (isLoading) {
+			return;
+		}
 
-function createInnovationCard(innovation) {
-    const card = document.createElement('a');
-    card.className = 'innovation-card';
-    card.style.animation = 'fadeInUp 0.5s ease';
-    
-    const schoolName = innovation.school?.name || 'ไม่พบข้อมูลโรงเรียน';
-    const categoryName = innovation.category || 'ไม่ระบุหมวดหมู่';
-    
-    // Get first image
-    const firstImage = innovation.image_paths && innovation.image_paths.length > 0 
-        ? innovation.image_paths[0] 
-        : null;
-    
-    let imageUrl = null;
-    let isPdf = false;
-    
-    if (firstImage) {
-        const fileName = firstImage.split('/').pop();
-        const extension = fileName.split('.').pop().toLowerCase();
-        isPdf = extension === 'pdf';
-        
-        if (!isPdf) {
-            imageUrl = `/sandbox/innovation-image/${innovation.school_id}/${fileName}`;
-        }
-    }
-    
-    const assetPlaceholder = '/assets/images/education-sandbox/innovation-placeholder.svg';
-    const detailUrl = `/sandbox/schools/${innovation.school_id}/innovations?highlight=${innovation.id}`;
-    
-    card.href = detailUrl;
-    card.setAttribute('data-title', escapeHtml(innovation.title).toLowerCase());
-    card.setAttribute('data-category', categoryName.toLowerCase());
-    card.setAttribute('data-school', schoolName.toLowerCase());
-    card.setAttribute('data-description', escapeHtml(innovation.description || '').toLowerCase());
-    
-    card.innerHTML = `
-        <div class="card-figure">
-            ${imageUrl && !isPdf ? `
-                <img src="${imageUrl}" alt="${escapeHtml(innovation.title)}" loading="lazy">
-            ` : `
-                <img src="${assetPlaceholder}" alt="Innovation placeholder" loading="lazy">
-            `}
-            <span class="figure-badge">${escapeHtml(categoryName)}</span>
-            <div class="figure-overlay"></div>
-        </div>
-        <div class="card-body">
-            <div class="card-heading">
-                <span class="school-name">${escapeHtml(schoolName)}</span>
-                <h3 class="innovation-title">${escapeHtml(innovation.title)}</h3>
-            </div>
-            ${innovation.description ? `
-                <p class="innovation-description">
-                    ${escapeHtml(limitText(stripTags(innovation.description), 120))}
-                </p>
-            ` : ''}
-            <div class="card-footer">
-                ${innovation.year ? `
-                    <span class="meta-pill"><i class="far fa-calendar"></i> พ.ศ. ${innovation.year}</span>
-                ` : ''}
-                <span class="meta-pill"><i class="far fa-clock"></i> ${formatDate(innovation.created_at)}</span>
-                <span class="cta">ดูรายละเอียด <i class="fas fa-arrow-right"></i></span>
-            </div>
-        </div>
-    `;
+		const grid = document.getElementById('innovationGrid');
+		if (!grid) {
+			return;
+		}
 
-    return card;
-}
+		isLoading = true;
+		showLoading();
 
-function showLoading() {
-    let loading = document.getElementById('innovationLoadingIndicator');
-    if (!loading) {
-        // Create loading indicator if it doesn't exist
-        loading = document.createElement('div');
-        loading.id = 'innovationLoadingIndicator';
-        loading.className = 'loading-indicator';
-        loading.innerHTML = `
-            <div class="spinner"></div>
-            <p>กำลังโหลดนวัตกรรม...</p>
-        `;
-        
-        const grid = document.getElementById('innovationGrid');
-        if (grid && grid.parentNode) {
-            grid.parentNode.insertBefore(loading, grid.nextSibling);
-        }
-    }
-    loading.style.display = 'block';
-}
+		const perPage = getPerPageCount();
+		const params = new URLSearchParams({
+			page: String(currentPage),
+			perPage: String(perPage),
+			search: currentFilters.search || '',
+			category: currentFilters.category || ''
+		});
 
-function hideLoading() {
-    const loading = document.getElementById('innovationLoadingIndicator');
-    if (loading) {
-        loading.style.display = 'none';
-    }
-}
+		const endpoint = grid.dataset.endpoint || window.location.pathname;
+		const url = new URL(endpoint, window.location.origin);
+		['page', 'perPage', 'search', 'category'].forEach((key) => url.searchParams.delete(key));
+		params.forEach((value, key) => {
+			if (value) {
+				url.searchParams.set(key, value);
+			} else {
+				url.searchParams.delete(key);
+			}
+		});
 
-function showEmptyState() {
-    const emptyState = document.getElementById('innovationEmpty');
-    if (emptyState) {
-        emptyState.style.display = 'block';
-    }
-}
+		fetch(url.toString(), {
+			headers: {
+				'X-Requested-With': 'XMLHttpRequest',
+				'Accept': 'application/json'
+			},
+			cache: 'no-store'
+		})
+			.then((response) => {
+				if (!response.ok) {
+					throw new Error(`HTTP ${response.status}`);
+				}
+				return response.json();
+			})
+			.then((payload) => {
+				const innovations = Array.isArray(payload.innovations) ? payload.innovations : [];
+				const replace = isInitialLoad || currentPage === 1;
+				const newCards = renderInnovations(innovations, { replace });
 
-function showNoMoreData() {
-    let noMoreData = document.getElementById('innovationNoMoreData');
-    if (!noMoreData) {
-        noMoreData = document.createElement('div');
-        noMoreData.id = 'innovationNoMoreData';
-        noMoreData.className = 'no-more-data';
-        noMoreData.innerHTML = '<p>แสดงนวัตกรรมครบทั้งหมดแล้ว</p>';
-        
-        const loading = document.getElementById('innovationLoadingIndicator');
-        if (loading && loading.parentNode) {
-            loading.parentNode.insertBefore(noMoreData, loading.nextSibling);
-        }
-    }
-    noMoreData.style.display = 'block';
-}
+				const totalCount = typeof payload.total === 'number'
+					? payload.total
+					: (replace ? innovations.length : grid.children.length);
 
-function updateResultsCount(count) {
-    const resultsCount = document.getElementById('innovationResultsCount');
-    if (resultsCount) {
-        resultsCount.textContent = formatNumber(count);
-    }
-}
+				updateResultsCount(totalCount);
 
-function formatNumber(num) {
-    return new Intl.NumberFormat('th-TH').format(num);
-}
+				hasMoreData = Boolean(payload.hasMore);
+				if (hasMoreData) {
+					hideNoMoreData();
+				} else if (grid.children.length > 0) {
+					showNoMoreData();
+				}
 
-function formatDate(dateString) {
-    const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
-}
+				if (innovationLightboxController && newCards.length) {
+					innovationLightboxController.registerCards(newCards);
+				}
+			})
+			.catch((error) => {
+				console.error('Innovation dashboard load failed:', error);
+				if (!isInitialLoad) {
+					currentPage = Math.max(1, currentPage - 1);
+				}
+			})
+			.finally(() => {
+				isLoading = false;
+				hideLoading();
+			});
+	}
 
-function escapeHtml(text) {
-    const map = {
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#039;'
-    };
-    return text ? String(text).replace(/[&<>"']/g, m => map[m]) : '';
-}
+	function renderInnovations(items, options) {
+		const grid = document.getElementById('innovationGrid');
+		if (!grid) {
+			return [];
+		}
 
-function stripTags(html) {
-    const tmp = document.createElement('div');
-    tmp.innerHTML = html;
-    return tmp.textContent || tmp.innerText || '';
-}
+		const replace = Boolean(options && options.replace);
+		if (replace) {
+			grid.innerHTML = '';
+		}
 
-function limitText(text, limit) {
-    if (text.length <= limit) return text;
-    return text.substring(0, limit) + '...';
-}
+		if (!items.length) {
+			toggleEmptyState(grid.children.length === 0);
+			return [];
+		}
+
+		const assets = {
+			placeholder: grid.dataset.placeholder || '',
+			detailBase: grid.dataset.detailBase || '/sandbox/schools',
+			imageBase: grid.dataset.imageBase || '/sandbox/innovation-image'
+		};
+
+		const fragment = document.createDocumentFragment();
+		const newCards = [];
+
+		items.forEach((item) => {
+			const card = buildInnovationCard(item, assets);
+			newCards.push(card);
+			fragment.appendChild(card);
+		});
+
+		grid.appendChild(fragment);
+		toggleEmptyState(false);
+		return newCards;
+	}
+
+	function buildInnovationCard(item, assets) {
+		const card = document.createElement('a');
+		const schoolName = stripTags((item.school && item.school.name) || '') || 'ไม่พบข้อมูลโรงเรียน';
+		const title = stripTags(item.title || '') || 'นวัตกรรม';
+		const description = stripTags(item.description || '');
+		const categoryName = item.category || 'ไม่ระบุหมวดหมู่';
+		const detailBase = assets.detailBase.replace(/\/$/, '');
+		const detailUrl = `${detailBase}/${item.school_id}/innovations?highlight=${encodeURIComponent(item.id)}`;
+		const lightboxImages = buildLightboxImages(item, assets);
+		const primaryImage = resolvePrimaryImage(item, assets, lightboxImages);
+
+		card.className = 'innovation-card';
+		card.href = detailUrl;
+		card.setAttribute('role', 'button');
+		card.setAttribute('tabindex', '0');
+		card.setAttribute('aria-label', `ดูนวัตกรรม ${title}`);
+
+		card.dataset.title = title.toLowerCase();
+		card.dataset.category = categoryName.toLowerCase();
+		card.dataset.school = schoolName.toLowerCase();
+		card.dataset.description = description.toLowerCase();
+		card.dataset.active = item.is_active ? '1' : '0';
+		card.dataset.titleDisplay = title;
+		card.dataset.schoolName = schoolName;
+		card.dataset.categoryLabel = categoryName;
+		card.dataset.detailUrl = detailUrl;
+		card.dataset.images = JSON.stringify(lightboxImages);
+
+		const yearMarkup = item.year
+			? `<span class="meta-pill"><i class="far fa-calendar"></i> พ.ศ. ${escapeHtml(String(item.year))}</span>`
+			: '';
+
+		const descriptionMarkup = description
+			? `<p class="innovation-description">${escapeHtml(limitText(description, 120))}</p>`
+			: '';
+
+		card.innerHTML = `
+			<div class="card-figure">
+				<img src="${escapeAttribute(primaryImage.src)}" alt="${escapeAttribute(title)}" loading="lazy">
+				<span class="figure-badge">${escapeHtml(categoryName)}</span>
+				<div class="figure-overlay"></div>
+			</div>
+			<div class="card-body">
+				<div class="card-heading">
+					<span class="school-name">${escapeHtml(schoolName)}</span>
+					<h3 class="innovation-title">${escapeHtml(title)}</h3>
+				</div>
+				${descriptionMarkup}
+				<div class="card-footer">
+					${yearMarkup}
+					<span class="meta-pill"><i class="far fa-clock"></i> ${escapeHtml(formatDate(item.created_at))}</span>
+					<span class="cta">ดูรายละเอียด <i class="fas fa-arrow-right"></i></span>
+				</div>
+			</div>
+		`;
+
+		return card;
+	}
+
+	function buildLightboxImages(item, assets) {
+		const imageBase = assets.imageBase.replace(/\/$/, '');
+		const paths = Array.isArray(item.image_paths) ? item.image_paths : [];
+		return paths
+			.map((path) => {
+				const fileName = extractFileName(path);
+				if (!fileName) {
+					return null;
+				}
+				const ext = fileName.split('.').pop();
+				if (ext && ext.toLowerCase() === 'pdf') {
+					return null;
+				}
+				const encoded = encodeURIComponent(fileName);
+				return {
+					url: `${imageBase}/${item.school_id}/${encoded}`,
+					name: fileName
+				};
+			})
+			.filter(Boolean);
+	}
+
+	function resolvePrimaryImage(item, assets, lightboxImages) {
+		if (lightboxImages.length) {
+			return { src: lightboxImages[0].url };
+		}
+
+		const placeholder = assets.placeholder || '';
+		const paths = Array.isArray(item.image_paths) ? item.image_paths : [];
+		if (!paths.length) {
+			return { src: placeholder };
+		}
+
+		const fileName = extractFileName(paths[0]);
+		if (!fileName) {
+			return { src: placeholder };
+		}
+
+		const ext = fileName.split('.').pop();
+		if (ext && ext.toLowerCase() === 'pdf') {
+			return { src: placeholder };
+		}
+
+		const imageBase = assets.imageBase.replace(/\/$/, '');
+		const encoded = encodeURIComponent(fileName);
+		return { src: `${imageBase}/${item.school_id}/${encoded}` };
+	}
+
+	function extractFileName(path) {
+		if (!path) {
+			return '';
+		}
+		const segments = String(path).split('/');
+		return segments.length ? segments.pop() : String(path);
+	}
+
+	function toggleEmptyState(isEmpty) {
+		const grid = document.getElementById('innovationGrid');
+		const emptyState = document.getElementById('innovationEmpty');
+
+		if (grid) {
+			grid.style.display = isEmpty ? 'none' : '';
+		}
+
+		if (emptyState) {
+			emptyState.style.display = isEmpty ? 'block' : 'none';
+		}
+	}
+
+	function showLoading() {
+		let indicator = document.getElementById('innovationLoadingIndicator');
+		if (!indicator) {
+			indicator = document.createElement('div');
+			indicator.id = 'innovationLoadingIndicator';
+			indicator.className = 'loading-indicator';
+			indicator.innerHTML = `
+				<div class="spinner"></div>
+				<p>กำลังโหลดนวัตกรรม...</p>
+			`;
+			const grid = document.getElementById('innovationGrid');
+			if (grid && grid.parentNode) {
+				grid.parentNode.insertBefore(indicator, grid.nextSibling);
+			}
+		}
+		indicator.style.display = 'block';
+	}
+
+	function hideLoading() {
+		const indicator = document.getElementById('innovationLoadingIndicator');
+		if (indicator) {
+			indicator.style.display = 'none';
+		}
+	}
+
+	function showNoMoreData() {
+		let message = document.getElementById('innovationNoMoreData');
+		if (!message) {
+			message = document.createElement('div');
+			message.id = 'innovationNoMoreData';
+			message.className = 'no-more-data';
+			message.innerHTML = '<p>แสดงนวัตกรรมครบทั้งหมดแล้ว</p>';
+			const indicator = document.getElementById('innovationLoadingIndicator');
+			if (indicator && indicator.parentNode) {
+				indicator.parentNode.insertBefore(message, indicator.nextSibling);
+			}
+		}
+		message.style.display = 'block';
+	}
+
+	function hideNoMoreData() {
+		const message = document.getElementById('innovationNoMoreData');
+		if (message) {
+			message.style.display = 'none';
+		}
+	}
+
+	function updateResultsCount(count) {
+		const countEl = document.getElementById('innovationResultsCount');
+		if (countEl) {
+			countEl.textContent = formatNumber(count);
+		}
+	}
+
+	function getPerPageCount() {
+		const width = window.innerWidth;
+		if (width >= 1200) {
+			return 16;
+		}
+		if (width >= 768) {
+			return 12;
+		}
+		if (width >= 576) {
+			return 8;
+		}
+		return 5;
+	}
+
+	function formatDate(dateString) {
+		if (!dateString) {
+			return '-';
+		}
+		const date = new Date(dateString);
+		if (Number.isNaN(date.getTime())) {
+			return '-';
+		}
+		const day = String(date.getDate()).padStart(2, '0');
+		const month = String(date.getMonth() + 1).padStart(2, '0');
+		const year = date.getFullYear();
+		return `${day}/${month}/${year}`;
+	}
+
+	function formatNumber(value) {
+		const number = Number(value) || 0;
+		return new Intl.NumberFormat('th-TH').format(number);
+	}
+
+	function limitText(text, limit) {
+		if (!text) {
+			return '';
+		}
+		return text.length <= limit ? text : `${text.slice(0, limit)}...`;
+	}
+
+	function stripTags(html) {
+		if (!html) {
+			return '';
+		}
+		const temp = document.createElement('div');
+		temp.innerHTML = html;
+		return temp.textContent || temp.innerText || '';
+	}
+
+	function escapeHtml(text) {
+		if (!text) {
+			return '';
+		}
+		const replacements = {
+			'&': '&amp;',
+			'<': '&lt;',
+			'>': '&gt;',
+			'"': '&quot;',
+			"'": '&#039;'
+		};
+		return String(text).replace(/[&<>"']/g, (char) => replacements[char] || char);
+	}
+
+	function escapeAttribute(text) {
+		return escapeHtml(text);
+	}
+})();
