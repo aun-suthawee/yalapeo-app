@@ -11,8 +11,8 @@
 |
 */
 
-Route::resource('webboard', 'WebboardController', ['except' => ['edit', 'update']]);
+Route::resource('webboard', 'WebboardController', ['except' => ['create', 'store', 'edit', 'update']]);
 
 Route::prefix('webboard/{webboard}')->name('webboard.')->group(function () {
-  Route::resource('answer', 'AnswerController', ['except' => ['index', 'edit', 'update', 'show']]);
+  Route::resource('answer', 'AnswerController', ['except' => ['create', 'store', 'index', 'edit', 'update', 'show']]);
 });

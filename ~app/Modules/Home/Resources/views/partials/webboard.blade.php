@@ -11,10 +11,10 @@
                                 </div>
                             </div>
                             <div>
-                                <a href="{{ route('webboard.create') }}"
+                                {{-- <a href="{{ route('webboard.create') }}"
                                     class="btn btn-outline-warning btn-sm rounded-2 create-thread-btn">
                                     <i class="fas fa-plus"></i> ตั้งกระทู้ใหม่
-                                </a>
+                                </a> --}}
                                 <a href="{{ route('webboard.index') }}"
                                     class="btn btn-outline-success btn-sm rounded-2 view-all-btn">
                                     ดูทั้งหมด <i class="feather feather-arrow-right"></i>

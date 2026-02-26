@@ -103,16 +103,16 @@
     <style>
         /* ทำให้ทั้งเว็บเป็นขาวดำ */
         html {
-            filter: grayscale(100%) brightness(0.95);
-            -webkit-filter: grayscale(100%) brightness(0.95);
+            filter: grayscale(70%) brightness(0.95);
+            -webkit-filter: grayscale(70%) brightness(0.95);
         }
 
         /* ให้ภาพและวิดีโอเป็นขาวดำด้วย */
         img,
         video,
         iframe {
-            filter: grayscale(100%);
-            -webkit-filter: grayscale(100%);
+            filter: grayscale(70%);
+            -webkit-filter: grayscale(70%);
         }
 
         /* Ribbon ไวอาลัย */

@@ -20,11 +20,10 @@
               <div class="card">
                 <div class="card-body">
                   <div class="d-flex justify-content-between mx-2 my-3">
-                    <div aria-label="Basic example"
-                         class="btn-group d-inline btn-group-sm mt-2"
-                         role="group">
-                      <a class="btn btn-warning rounded-2"
-                         href="{{ route('webboard.create') }}">ตั้งกระทู้ใหม่</a>
+                    <div aria-label="Basic example" class="btn-group d-inline btn-group-sm mt-2" role="group">
+                      <span class="text-danger">ระบบงดรับการตั้งกระทู้ใหม่ชั่วคราว</span>
+                      {{-- <a class="btn btn-warning rounded-2" href="{{ route('webboard.create') }}">ตั้งกระทู้ใหม่</a>
+                      --}}
                     </div>
                   </div>
 
@@ -32,8 +31,7 @@
                     @foreach ($lists as $value)
                       <tr>
                         <td>
-                          <a class="text-decoration-none"
-                             href="{{ route('webboard.show', [$value->slug]) }}">
+                          <a class="text-decoration-none" href="{{ route('webboard.show', [$value->slug]) }}">
                             {{ $value->title }}
                             <small class="d-block">
                               <span class="text-secondary">จากคุณ {{ $value->author }}</span>
@@ -42,8 +40,7 @@
                             </small>
                           </a>
                         </td>
-                        <td class="text-nowrap"
-                            width="100">
+                        <td class="text-nowrap" width="100">
                           {{ $value->date_created_format_1 }}
                         </td>
                       </tr>
